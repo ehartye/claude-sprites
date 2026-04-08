@@ -32,6 +32,12 @@ function init() {
   ws.on('error', onError);
 
   editor.onPixelClick(onPixelClick);
+  editor.onCursorMove((x, y, inBounds) => {
+    document.getElementById('cursor-pos').textContent = inBounds ? `${x}, ${y}` : '—';
+  });
+  editor.onZoomChange((zoom) => {
+    document.getElementById('zoom-level').textContent = `${zoom}x`;
+  });
 
   updateCellRef();
 }
@@ -163,6 +169,7 @@ function renderPalette() {
     if (name === state.activeColor) swatch.classList.add('active');
     swatch.style.backgroundColor = color;
     swatch.title = `${name} (${color})`;
+    swatch.dataset.name = name;
     swatch.addEventListener('click', () => setActiveColor(name, color));
     container.appendChild(swatch);
   }
@@ -174,7 +181,7 @@ function setActiveColor(name, color) {
   document.getElementById('active-color-name').textContent = name;
 
   document.querySelectorAll('#palette-swatches .swatch').forEach((el) => {
-    el.classList.toggle('active', el.title.startsWith(name + ' '));
+    el.classList.toggle('active', el.dataset.name === name);
   });
 }
 

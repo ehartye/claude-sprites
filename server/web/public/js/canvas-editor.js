@@ -32,8 +32,10 @@ export class CanvasEditor {
     this._pixelClickCb = null;
     this._pixelMoveCb = null;
     this._pixelUpCb = null;
+    this._cursorMoveCb = null;
+    this._zoomChangeCb = null;
 
-    this._boundHandlers = {};
+    this._abortController = null;
   }
 
   init(container, cellSize = 16) {
@@ -47,8 +49,9 @@ export class CanvasEditor {
   }
 
   destroy() {
-    for (const [evt, handler] of Object.entries(this._boundHandlers)) {
-      (this._eventTarget || this.canvas).removeEventListener(evt, handler);
+    if (this._abortController) {
+      this._abortController.abort();
+      this._abortController = null;
     }
   }
 
@@ -77,13 +80,15 @@ export class CanvasEditor {
 
   setZoom(level) {
     this.zoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, level));
-    document.getElementById('zoom-level').textContent = `${this.zoom}x`;
+    if (this._zoomChangeCb) this._zoomChangeCb(this.zoom);
     this.render();
   }
 
   onPixelClick(cb) { this._pixelClickCb = cb; }
   onPixelMove(cb) { this._pixelMoveCb = cb; }
   onPixelUp(cb) { this._pixelUpCb = cb; }
+  onCursorMove(cb) { this._cursorMoveCb = cb; }
+  onZoomChange(cb) { this._zoomChangeCb = cb; }
 
   /* -- Rendering -- */
 
@@ -280,8 +285,10 @@ export class CanvasEditor {
   /* -- Events -- */
 
   _bindEvents(container) {
-    const onResize = () => this._resize(container);
-    window.addEventListener('resize', onResize);
+    this._abortController = new AbortController();
+    const sig = { signal: this._abortController.signal };
+
+    window.addEventListener('resize', () => this._resize(container), sig);
 
     this.canvas.addEventListener('mousedown', (e) => {
       if (e.button === 1 || (this._spaceHeld && e.button === 0)) {
@@ -297,7 +304,7 @@ export class CanvasEditor {
           this._pixelClickCb(px.x, px.y, e);
         }
       }
-    });
+    }, sig);
 
     this.canvas.addEventListener('mousemove', (e) => {
       if (this._isPanning) {
@@ -307,14 +314,9 @@ export class CanvasEditor {
         return;
       }
       const px = this._canvasToPixel(e.clientX, e.clientY);
-      const posEl = document.getElementById('cursor-pos');
-      if (px.inBounds) {
-        posEl.textContent = `${px.x}, ${px.y}`;
-        if (this._pixelMoveCb) this._pixelMoveCb(px.x, px.y, e);
-      } else {
-        posEl.textContent = '—';
-      }
-    });
+      if (this._cursorMoveCb) this._cursorMoveCb(px.x, px.y, px.inBounds);
+      if (px.inBounds && this._pixelMoveCb) this._pixelMoveCb(px.x, px.y, e);
+    }, sig);
 
     this.canvas.addEventListener('mouseup', (e) => {
       if (this._isPanning) {
@@ -327,29 +329,27 @@ export class CanvasEditor {
           this._pixelUpCb(px.x, px.y, e);
         }
       }
-    });
+    }, sig);
 
     this.canvas.addEventListener('wheel', (e) => {
       e.preventDefault();
       const delta = e.deltaY > 0 ? -1 : 1;
       this.setZoom(this.zoom + delta * Math.max(1, Math.floor(this.zoom / 8)));
-    }, { passive: false });
+    }, { passive: false, signal: this._abortController.signal });
 
-    // Prevent context menu on canvas
-    this.canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+    this.canvas.addEventListener('contextmenu', (e) => e.preventDefault(), sig);
 
-    // Spacebar pan
     window.addEventListener('keydown', (e) => {
       if (e.code === 'Space' && !e.repeat) {
         this._spaceHeld = true;
         this.canvas.style.cursor = 'grab';
       }
-    });
+    }, sig);
     window.addEventListener('keyup', (e) => {
       if (e.code === 'Space') {
         this._spaceHeld = false;
         this.canvas.style.cursor = 'crosshair';
       }
-    });
+    }, sig);
   }
 }
