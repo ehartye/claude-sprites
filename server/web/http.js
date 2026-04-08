@@ -1,3 +1,4 @@
+import http from 'http';
 import express from 'express';
 import { WebSocketServer } from 'ws';
 import path from 'path';
@@ -9,9 +10,8 @@ export async function startWebServer(state, port) {
   const app = express();
   app.use(express.static(path.join(__dirname, 'public')));
 
-  const httpServer = await new Promise((resolve) => {
-    const s = app.listen(port, () => resolve(s));
-  });
+  const httpServer = http.createServer(app);
+  await new Promise((resolve) => httpServer.listen(port, resolve));
 
   const actualPort = httpServer.address().port;
 

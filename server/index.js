@@ -6,6 +6,7 @@ import { registerShapeTools } from './mcp/shape-tools.js';
 import { registerCellTools } from './mcp/cell-tools.js';
 import { registerGroupTools } from './mcp/group-tools.js';
 import { registerHistoryTools } from './mcp/history-tools.js';
+import { registerViewTools } from './mcp/view-tools.js';
 
 // Shared state: a project instance (starts null, created/loaded via tools)
 const state = {
@@ -21,6 +22,7 @@ registerShapeTools(server, state);
 registerCellTools(server, state);
 registerGroupTools(server, state);
 registerHistoryTools(server, state);
+registerViewTools(server, state);
 
 const WEB_PORT = parseInt(process.env.SPRITE_PORT ?? '3377', 10);
 
