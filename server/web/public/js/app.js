@@ -114,7 +114,7 @@ function onProjectData(data) {
   editor.setZoom(Math.max(4, Math.min(24, idealZoom)));
 
   renderPalette();
-  cellNav.setGrid(data.grid.rows, data.grid.cols);
+  cellNav.setGrid(data.grid.rows, data.grid.cols, data.cellSize || 16);
   cellNav.setCells(data.cells || {});
   cellNav.render();
   groupPanel.setGroups(data.groups || {});

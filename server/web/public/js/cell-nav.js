@@ -6,6 +6,7 @@
 export class CellNavigator {
   constructor() {
     this._grid = { rows: 0, cols: 0 };
+    this._cellSize = 16;
     this._cells = {};
     this._activeRef = '0,0';
     this._filter = null; // null = all, or array of cell refs
@@ -21,8 +22,9 @@ export class CellNavigator {
     this._selectCb = onSelect;
   }
 
-  setGrid(rows, cols) {
+  setGrid(rows, cols, cellSize = 16) {
     this._grid = { rows, cols };
+    this._cellSize = cellSize;
   }
 
   setCells(cells) {
@@ -111,7 +113,7 @@ export class CellNavigator {
       return;
     }
 
-    const cellSize = cell.size || 16;
+    const cellSize = this._cellSize;
     const scale = 48 / cellSize;
 
     ctx.fillStyle = '#2a2a3e';
