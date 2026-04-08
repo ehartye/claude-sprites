@@ -1,0 +1,320 @@
+/* === Reset & Base === */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
+  --bg-tertiary: #0f3460;
+  --bg-surface: #222244;
+  --text-primary: #e0e0e0;
+  --text-secondary: #a0a0b0;
+  --text-muted: #707088;
+  --accent: #5dade2;
+  --accent-hover: #85c1e9;
+  --border: #333355;
+  --grid-line: #444466;
+  --danger: #e74c3c;
+  --success: #2ecc71;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Courier New', Courier, monospace;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  overflow: hidden;
+}
+
+/* === Layout === */
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+#top-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.4rem 1rem;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+#top-bar h1 {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: var(--accent);
+}
+
+#project-name {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+#connection-status {
+  margin-left: auto;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+}
+
+#connection-status.connected {
+  background: var(--success);
+  color: #111;
+}
+
+#connection-status.disconnected {
+  background: var(--danger);
+  color: #fff;
+}
+
+#workspace {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* === Panels === */
+#left-panel, #right-panel {
+  width: 200px;
+  flex-shrink: 0;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+#right-panel {
+  border-right: none;
+  border-left: 1px solid var(--border);
+}
+
+#left-panel section, #right-panel section {
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+#left-panel h2, #right-panel h2 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+/* === Tool Palette === */
+#tool-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+#tool-buttons button {
+  font-family: inherit;
+  font-size: 0.7rem;
+  padding: 0.3rem;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+#tool-buttons button:hover {
+  background: var(--bg-tertiary);
+}
+
+#tool-buttons button.active {
+  background: var(--accent);
+  color: #111;
+  border-color: var(--accent);
+}
+
+/* === Color Palette === */
+#active-color {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+#active-color-swatch {
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+
+#active-color-name {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+#palette-swatches {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+}
+
+#palette-swatches .swatch {
+  aspect-ratio: 1;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+#palette-swatches .swatch:hover {
+  border-color: var(--text-primary);
+}
+
+#palette-swatches .swatch.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+/* === Center Panel / Canvas === */
+#center-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+#canvas-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  background: var(--bg-primary);
+}
+
+#editor-canvas {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  cursor: crosshair;
+}
+
+#canvas-info {
+  display: flex;
+  gap: 1rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+/* === Shape List === */
+#shape-items {
+  list-style: none;
+}
+
+#shape-items li {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.3rem;
+  font-size: 0.7rem;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+#shape-items li:hover {
+  background: var(--bg-surface);
+}
+
+#shape-items li.selected {
+  background: var(--bg-tertiary);
+  border-left: 2px solid var(--accent);
+}
+
+#shape-items .shape-color {
+  width: 10px;
+  height: 10px;
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+/* === Group Panel === */
+#group-items {
+  list-style: none;
+}
+
+#group-items li {
+  padding: 0.2rem 0.3rem;
+  font-size: 0.7rem;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+#group-items li:hover {
+  background: var(--bg-surface);
+}
+
+#group-items li.active {
+  color: var(--accent);
+}
+
+/* === Bottom Bar / Cell Strip === */
+#bottom-bar {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  padding: 0.4rem;
+  flex-shrink: 0;
+  overflow-x: auto;
+}
+
+#cell-strip {
+  display: flex;
+  gap: 4px;
+  min-height: 52px;
+}
+
+#cell-strip .cell-thumb {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  cursor: pointer;
+  background: var(--bg-surface);
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#cell-strip .cell-thumb:hover {
+  border-color: var(--text-secondary);
+}
+
+#cell-strip .cell-thumb.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+#cell-strip .cell-thumb .label {
+  position: absolute;
+  bottom: 1px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.5rem;
+  color: var(--text-muted);
+  background: rgba(26, 26, 46, 0.8);
+}
+
+/* === Scrollbar === */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
