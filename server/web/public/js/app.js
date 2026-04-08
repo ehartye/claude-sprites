@@ -1,10 +1,12 @@
 /**
- * App entry — wires canvas editor, WebSocket, and UI panels together.
+ * App entry — wires canvas editor, WebSocket, tools, panels, and cell nav.
  */
 
 import { CanvasEditor } from './canvas-editor.js';
 import { WebSocketClient } from './websocket.js';
 import { ToolManager } from './tools.js';
+import { ShapePanel, GroupPanel } from './panels.js';
+import { CellNavigator } from './cell-nav.js';
 
 /** Application state */
 const state = {
@@ -18,6 +20,9 @@ const state = {
 const editor = new CanvasEditor();
 const ws = new WebSocketClient();
 const tools = new ToolManager();
+const shapePanel = new ShapePanel();
+const groupPanel = new GroupPanel();
+const cellNav = new CellNavigator();
 
 /* -- Initialization -- */
 
@@ -26,7 +31,6 @@ function init() {
   editor.init(container, 16);
 
   ws.connect();
-
   ws.on('project', onProjectData);
   ws.on('draw', onDrawUpdate);
   ws.on('shape_update', onShapeUpdate);
@@ -39,6 +43,38 @@ function init() {
     getColor: () => state.activeColor,
   });
   tools.onToolChange((toolId) => { state.activeTool = toolId; });
+
+  shapePanel.init({
+    onSelect: (shapeId) => {
+      shapePanel.setSelected(shapeId);
+    },
+    onAction: (action, shapeId) => {
+      handleShapeAction(action, shapeId);
+    },
+  });
+
+  groupPanel.init({
+    onSelect: (groupName) => {
+      if (groupName && state.project?.groups?.[groupName]) {
+        cellNav.setFilter(state.project.groups[groupName]);
+      } else {
+        cellNav.setFilter(null);
+      }
+    },
+    onCreate: () => {
+      const name = prompt('Group name:');
+      if (name) {
+        ws.send({ action: 'create_group', params: { name, cells: [] } });
+      }
+    },
+    onDelete: (name) => {
+      ws.send({ action: 'delete_group', params: { name } });
+    },
+  });
+
+  cellNav.init({
+    onSelect: (ref) => selectCell(ref),
+  });
 
   editor.onPixelClick((x, y) => tools.handleClick(x, y));
   editor.onPixelMove((x, y) => tools.handleMove(x, y));
@@ -69,6 +105,7 @@ function onProjectData(data) {
   editor.setPalette(state.palette);
   editor.setBackground(data.background);
   editor.setCellSize(data.cellSize || 16);
+  shapePanel.setPalette(state.palette);
 
   // Auto-zoom to fit nicely
   const container = document.getElementById('canvas-container');
@@ -77,22 +114,27 @@ function onProjectData(data) {
   editor.setZoom(Math.max(4, Math.min(24, idealZoom)));
 
   renderPalette();
-  renderCellStrip();
+  cellNav.setGrid(data.grid.rows, data.grid.cols);
+  cellNav.setCells(data.cells || {});
+  cellNav.render();
+  groupPanel.setGroups(data.groups || {});
   selectCell(state.activeCell);
 }
 
 function onDrawUpdate(data) {
   if (!state.project) return;
-  // Update local cell data and re-render if it's the active cell
   const cell = findCell(data.cell);
   if (cell && data.shape) {
+    if (!cell.shapes) cell.shapes = [];
     cell.shapes.push(data.shape);
     cell.shapes.sort((a, b) => a.zIndex - b.zIndex);
   }
   if (data.cell === state.activeCell) {
     editor.setCell(findCell(state.activeCell));
+    refreshShapePanel();
   }
-  renderShapeList();
+  cellNav.setCells(state.project.cells || {});
+  cellNav.render();
 }
 
 function onShapeUpdate(data) {
@@ -103,25 +145,56 @@ function onShapeUpdate(data) {
       cell.shapes = data.shapes;
     }
     editor.setCell(cell);
-    renderShapeList();
+    refreshShapePanel();
   }
 }
 
 function onCellUpdate(data) {
   if (!state.project) return;
-  // Full cell data refresh
   if (data.cell && data.cellData) {
     setCellData(data.cell, data.cellData);
   }
   if (data.cell === state.activeCell) {
     editor.setCell(findCell(state.activeCell));
-    renderShapeList();
+    refreshShapePanel();
   }
-  renderCellStrip();
+  cellNav.setCells(state.project.cells || {});
+  cellNav.render();
 }
 
 function onError(data) {
   console.error('Server error:', data.message || data);
+}
+
+/* -- Shape actions -- */
+
+function handleShapeAction(action, shapeId) {
+  const cell = state.activeCell;
+  switch (action) {
+    case 'rename': {
+      const name = prompt('New shape name:');
+      if (name !== null) {
+        ws.send({ action: 'rename_shape', params: { cell, shape: shapeId, name } });
+      }
+      break;
+    }
+    case 'recolor': {
+      const color = prompt('New color (name or #hex):');
+      if (color !== null) {
+        ws.send({ action: 'recolor_shape', params: { cell, shape: shapeId, color } });
+      }
+      break;
+    }
+    case 'z_up':
+      ws.send({ action: 'shape_z', params: { cell, shape: shapeId, direction: 'up' } });
+      break;
+    case 'z_down':
+      ws.send({ action: 'shape_z', params: { cell, shape: shapeId, direction: 'down' } });
+      break;
+    case 'delete':
+      ws.send({ action: 'delete_shape', params: { cell, shape: shapeId } });
+      break;
+  }
 }
 
 /* -- Cell helpers -- */
@@ -141,16 +214,17 @@ function selectCell(ref) {
   const cell = findCell(ref);
   editor.setCell(cell);
   updateCellRef();
-  renderShapeList();
-
-  // Update active thumb highlight
-  document.querySelectorAll('#cell-strip .cell-thumb').forEach((el) => {
-    el.classList.toggle('active', el.dataset.ref === ref);
-  });
+  refreshShapePanel();
+  cellNav.setActive(ref);
 }
 
 function updateCellRef() {
   document.getElementById('cell-ref').textContent = `Cell ${state.activeCell}`;
+}
+
+function refreshShapePanel() {
+  const cell = findCell(state.activeCell);
+  shapePanel.setShapes(cell?.shapes || []);
 }
 
 /* -- Palette rendering -- */
@@ -162,7 +236,6 @@ function renderPalette() {
   const entries = Object.entries(state.palette);
   if (entries.length === 0) return;
 
-  // Auto-select first color if none selected
   if (!state.activeColor && entries.length > 0) {
     setActiveColor(entries[0][0], entries[0][1]);
   }
@@ -187,61 +260,6 @@ function setActiveColor(name, color) {
   document.querySelectorAll('#palette-swatches .swatch').forEach((el) => {
     el.classList.toggle('active', el.dataset.name === name);
   });
-}
-
-/* -- Shape list -- */
-
-function renderShapeList() {
-  const ul = document.getElementById('shape-items');
-  ul.innerHTML = '';
-
-  const cell = findCell(state.activeCell);
-  if (!cell || !cell.shapes) return;
-
-  for (const shape of cell.shapes) {
-    const li = document.createElement('li');
-    const colorDot = document.createElement('span');
-    colorDot.className = 'shape-color';
-    const resolved = shape.color?.startsWith('#') ? shape.color : (state.palette[shape.color] || '#888');
-    colorDot.style.backgroundColor = resolved;
-    li.appendChild(colorDot);
-
-    const label = document.createTextNode(shape.name || `${shape.type} (${shape.id})`);
-    li.appendChild(label);
-
-    li.dataset.shapeId = shape.id;
-    ul.appendChild(li);
-  }
-}
-
-/* -- Cell strip -- */
-
-function renderCellStrip() {
-  const strip = document.getElementById('cell-strip');
-  strip.innerHTML = '';
-
-  if (!state.project) return;
-
-  const { rows, cols } = state.project.grid;
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      const ref = `${r},${c}`;
-      const thumb = document.createElement('div');
-      thumb.className = 'cell-thumb';
-      if (ref === state.activeCell) thumb.classList.add('active');
-      thumb.dataset.ref = ref;
-
-      const cell = findCell(ref);
-      const name = cell?.name || ref;
-      const label = document.createElement('span');
-      label.className = 'label';
-      label.textContent = name;
-      thumb.appendChild(label);
-
-      thumb.addEventListener('click', () => selectCell(ref));
-      strip.appendChild(thumb);
-    }
-  }
 }
 
 /* -- Boot -- */

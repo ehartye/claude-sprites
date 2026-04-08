@@ -262,6 +262,98 @@ body {
   color: var(--accent);
 }
 
+#group-items li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.group-delete-btn {
+  font-family: inherit;
+  font-size: 0.6rem;
+  padding: 0 0.3rem;
+  border: none;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+#group-items li:hover .group-delete-btn {
+  opacity: 1;
+}
+
+.group-delete-btn:hover {
+  color: var(--danger);
+  background: rgba(231, 76, 60, 0.15);
+}
+
+.group-create-btn {
+  font-family: inherit;
+  font-size: 0.7rem;
+  width: 100%;
+  padding: 0.3rem;
+  margin-top: 0.3rem;
+  border: 1px dashed var(--border);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.group-create-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* === Shape List extras === */
+#shape-items .shape-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#shape-items .shape-z {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* === Context Menu === */
+.context-menu {
+  position: fixed;
+  z-index: 1000;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.2rem 0;
+  min-width: 120px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.context-menu-item {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.7rem;
+  cursor: pointer;
+  color: var(--text-primary);
+}
+
+.context-menu-item:hover {
+  background: var(--bg-tertiary);
+}
+
+/* === Cell Thumb Canvas === */
+#cell-strip .cell-thumb-canvas {
+  width: 46px;
+  height: 46px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
 /* === Bottom Bar / Cell Strip === */
 #bottom-bar {
   background: var(--bg-secondary);
