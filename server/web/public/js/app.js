@@ -113,6 +113,7 @@ function onProjectData(data) {
   editor.setBackground(data.background);
   editor.setCellSize(data.cellSize || 16);
   shapePanel.setPalette(state.palette);
+  cellNav.setPalette(state.palette);
   animPreview.setPalette(state.palette);
   animPreview.setCellSize(data.cellSize || 16);
   animPreview.setCells(data.cells || {});

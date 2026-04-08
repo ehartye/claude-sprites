@@ -7,6 +7,7 @@ export class CellNavigator {
   constructor() {
     this._grid = { rows: 0, cols: 0 };
     this._cellSize = 16;
+    this._palette = {};
     this._cells = {};
     this._activeRef = '0,0';
     this._filter = null; // null = all, or array of cell refs
@@ -25,6 +26,10 @@ export class CellNavigator {
   setGrid(rows, cols, cellSize = 16) {
     this._grid = { rows, cols };
     this._cellSize = cellSize;
+  }
+
+  setPalette(paletteMap) {
+    this._palette = paletteMap;
   }
 
   setCells(cells) {
@@ -124,7 +129,7 @@ export class CellNavigator {
       .sort((a, b) => a.zIndex - b.zIndex);
 
     for (const shape of sorted) {
-      ctx.fillStyle = shape.color?.startsWith('#') ? shape.color : '#888';
+      ctx.fillStyle = this._resolveColor(shape.color);
       const p = shape.params;
 
       switch (shape.type) {
@@ -157,6 +162,12 @@ export class CellNavigator {
           break;
       }
     }
+  }
+
+  _resolveColor(ref) {
+    if (!ref) return '#888';
+    if (ref.startsWith('#')) return ref;
+    return this._palette[ref] || '#888';
   }
 
   _thumbLine(ctx, scale, x1, y1, x2, y2) {

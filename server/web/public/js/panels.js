@@ -171,6 +171,8 @@ export class GroupPanel {
   render() {
     const ul = document.getElementById('group-items');
     ul.innerHTML = '';
+    // Remove any previous create button
+    ul.parentElement.querySelectorAll('.group-create-btn').forEach(el => el.remove());
 
     // "All" option
     const allLi = document.createElement('li');

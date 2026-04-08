@@ -98,8 +98,9 @@ export class ToolManager {
         break;
 
       case 'select':
-        // Select is handled differently — find shape at pixel
         this._send({ action: 'select', params: { cell, x, y } });
+        this._startX = x;
+        this._startY = y;
         break;
     }
   }
