@@ -3,8 +3,38 @@ import express from 'express';
 import { WebSocketServer } from 'ws';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { handleDraw } from '../mcp/drawing-tools.js';
+import { handleNameShape, handleMoveShape, handleRecolorShape, handleDeleteShape, handleSetZ } from '../mcp/shape-tools.js';
+import { handleShiftCell, handleMirrorCell, handleCopyCell, handleClearCell, handleNameCell } from '../mcp/cell-tools.js';
+import { handleCreateGroup, handleAddCells, handleRemoveCells } from '../mcp/group-tools.js';
+import { handleUndo, handleRedo } from '../mcp/history-tools.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const DISPATCH = {
+  draw:               (state, msg) => handleDraw(state, msg.type, msg.params),
+  name_shape:         (state, msg) => handleNameShape(state, msg.params),
+  move_shape:         (state, msg) => handleMoveShape(state, msg.params),
+  recolor_shape:      (state, msg) => handleRecolorShape(state, msg.params),
+  delete_shape:       (state, msg) => handleDeleteShape(state, msg.params),
+  set_z:              (state, msg) => handleSetZ(state, msg.params),
+  undo:               (state, msg) => handleUndo(state, msg.params),
+  redo:               (state, msg) => handleRedo(state, msg.params),
+  shift_cell:         (state, msg) => handleShiftCell(state, msg.params),
+  mirror_cell:        (state, msg) => handleMirrorCell(state, msg.params),
+  copy_cell:          (state, msg) => handleCopyCell(state, msg.params),
+  clear_cell:         (state, msg) => handleClearCell(state, msg.params),
+  name_cell:          (state, msg) => handleNameCell(state, msg.params),
+  create_group:       (state, msg) => handleCreateGroup(state, msg.params),
+  add_to_group:       (state, msg) => handleAddCells(state, msg.params),
+  remove_from_group:  (state, msg) => handleRemoveCells(state, msg.params),
+};
+
+export function dispatchWebMessage(state, msg) {
+  const handler = DISPATCH[msg.action];
+  if (!handler) throw new Error(`Unknown action: ${msg.action}`);
+  return handler(state, msg);
+}
 
 export async function startWebServer(state, port) {
   const app = express();
@@ -33,10 +63,10 @@ export async function startWebServer(state, port) {
     }
 
     ws.on('message', (raw) => {
-      // Handle operations from web UI — will be wired in Task 16
       try {
         const msg = JSON.parse(raw);
-        // TODO: dispatch operation to engine, then broadcast
+        const result = dispatchWebMessage(state, msg);
+        ws.send(JSON.stringify({ type: 'result', action: msg.action, data: result }));
       } catch (e) {
         ws.send(JSON.stringify({ type: 'error', message: e.message }));
       }
