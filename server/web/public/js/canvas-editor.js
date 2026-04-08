@@ -34,6 +34,7 @@ export class CanvasEditor {
     this._pixelUpCb = null;
     this._cursorMoveCb = null;
     this._zoomChangeCb = null;
+    this._onionSkinData = null;
 
     this._abortController = null;
   }
@@ -90,6 +91,15 @@ export class CanvasEditor {
   onCursorMove(cb) { this._cursorMoveCb = cb; }
   onZoomChange(cb) { this._zoomChangeCb = cb; }
 
+  /**
+   * Set onion skin overlay data. Pass null to clear.
+   * @param {{ prev: object[], next: object[] }|null} data
+   */
+  setOnionSkin(data) {
+    this._onionSkinData = data;
+    this.render();
+  }
+
   /* -- Rendering -- */
 
   render() {
@@ -107,6 +117,11 @@ export class CanvasEditor {
 
     // Background
     this._renderBackground(ctx, ox, oy, gridPx);
+
+    // Onion skin (rendered before main shapes at 30% opacity)
+    if (this._onionSkinData) {
+      this._renderOnionSkin(ctx, ox, oy, z);
+    }
 
     // Shapes
     this._renderShapes(ctx, ox, oy, z);
@@ -131,6 +146,62 @@ export class CanvasEditor {
           ctx.fillRect(ox + x, oy + y, w, h);
         }
       }
+    }
+  }
+
+  _renderOnionSkin(ctx, ox, oy, z) {
+    const { prev, next } = this._onionSkinData;
+    // Previous frame: blue-tinted at 30% opacity
+    if (prev && prev.length > 0) {
+      ctx.globalAlpha = 0.3;
+      for (const shape of prev) {
+        ctx.fillStyle = '#4488ff';
+        this._renderOneShape(ctx, ox, oy, z, shape);
+      }
+      ctx.globalAlpha = 1;
+    }
+    // Next frame: red-tinted at 30% opacity
+    if (next && next.length > 0) {
+      ctx.globalAlpha = 0.3;
+      for (const shape of next) {
+        ctx.fillStyle = '#ff4444';
+        this._renderOneShape(ctx, ox, oy, z, shape);
+      }
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  /** Render a single shape without setting fillStyle (caller sets it). */
+  _renderOneShape(ctx, ox, oy, z, shape) {
+    const p = shape.params;
+    switch (shape.type) {
+      case 'point':
+        ctx.fillRect(ox + p.x * z, oy + p.y * z, z, z);
+        break;
+      case 'line':
+        this._drawLine(ctx, ox, oy, z, p.x1, p.y1, p.x2, p.y2);
+        break;
+      case 'rect':
+        if (p.filled) {
+          ctx.fillRect(ox + p.x * z, oy + p.y * z, p.w * z, p.h * z);
+        } else {
+          ctx.fillRect(ox + p.x * z, oy + p.y * z, p.w * z, z);
+          ctx.fillRect(ox + p.x * z, oy + (p.y + p.h - 1) * z, p.w * z, z);
+          ctx.fillRect(ox + p.x * z, oy + p.y * z, z, p.h * z);
+          ctx.fillRect(ox + (p.x + p.w - 1) * z, oy + p.y * z, z, p.h * z);
+        }
+        break;
+      case 'circle':
+        if (p.filled) {
+          for (let y = -p.r; y <= p.r; y++) {
+            for (let x = -p.r; x <= p.r; x++) {
+              if (x * x + y * y <= p.r * p.r) {
+                ctx.fillRect(ox + (p.cx + x) * z, oy + (p.cy + y) * z, z, z);
+              }
+            }
+          }
+        }
+        break;
     }
   }
 

@@ -56,6 +56,9 @@ function init() {
   });
 
   animPreview.init();
+  animPreview.onOnionSkin((data) => {
+    editor.setOnionSkin(data);
+  });
 
   groupPanel.init({
     onSelect: (groupName) => {
@@ -230,6 +233,7 @@ function selectCell(ref) {
   refreshShapePanel();
   cellNav.setActive(ref);
   animPreview.setActiveCell(ref);
+  editor.setOnionSkin(animPreview.getOnionSkinData());
 }
 
 function updateCellRef() {
