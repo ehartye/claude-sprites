@@ -118,16 +118,12 @@ function onPixelClick(x, y) {
 
 function findCell(ref) {
   if (!state.project || !state.project.cells) return null;
-  const [r, c] = ref.split(',').map(Number);
-  const idx = r * state.project.grid.cols + c;
-  return state.project.cells[idx] || null;
+  return state.project.cells[ref] || null;
 }
 
 function setCellData(ref, data) {
   if (!state.project || !state.project.cells) return;
-  const [r, c] = ref.split(',').map(Number);
-  const idx = r * state.project.grid.cols + c;
-  state.project.cells[idx] = data;
+  state.project.cells[ref] = data;
 }
 
 function selectCell(ref) {
