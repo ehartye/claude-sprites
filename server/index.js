@@ -1,5 +1,7 @@
 import { createMcpServer, startMcpServer } from './mcp/server.js';
 import { startWebServer } from './web/http.js';
+import { registerProjectTools } from './mcp/project-tools.js';
+import { registerDrawingTools } from './mcp/drawing-tools.js';
 
 // Shared state: a project instance (starts null, created/loaded via tools)
 const state = {
@@ -8,8 +10,9 @@ const state = {
 
 const { server } = createMcpServer(state);
 
-// Import and register all tool modules
-// (These will be created in subsequent tasks)
+// Register tool modules
+registerProjectTools(server, state);
+registerDrawingTools(server, state);
 
 const WEB_PORT = parseInt(process.env.SPRITE_PORT ?? '3377', 10);
 
