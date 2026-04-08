@@ -1,0 +1,24 @@
+{
+  "name": "claude-sprites",
+  "version": "0.1.0",
+  "description": "Collaborative pixel art sprite sheet editor — Claude Code plugin",
+  "type": "module",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "canvas": "^3.2.3",
+    "express": "^5.2.1",
+    "ws": "^8.20.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "vitest": "^4.1.3"
+  }
+}
