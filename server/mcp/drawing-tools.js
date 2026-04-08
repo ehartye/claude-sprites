@@ -73,7 +73,7 @@ export function registerDrawingTools(server, state) {
     cx: z.number(), cy: z.number(),
     r: z.number(),
     color: z.string(),
-    filled: z.boolean().optional(),
+    filled: z.boolean().optional().describe('Filled (default true)'),
     shape_name: z.string().optional(),
   }, (params) => {
     const result = handleDraw(state, 'circle', params);

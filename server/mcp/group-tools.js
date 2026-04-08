@@ -37,9 +37,11 @@ export function handleBatchTransform(state, params) {
   for (const cellRef of cells) {
     switch (params.operation) {
       case 'shift':
+        if (params.dx == null || params.dy == null) throw new Error('dx and dy are required for shift');
         state.project.cells.shiftCell(cellRef, params.dx, params.dy);
         break;
       case 'mirror':
+        if (!params.axis) throw new Error('axis is required for mirror');
         state.project.cells.mirrorCell(cellRef, params.axis);
         break;
       case 'clear': {

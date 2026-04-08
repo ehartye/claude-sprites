@@ -56,6 +56,18 @@ describe('Group tools', () => {
     expect(s2.params.x).toBe(2);
   });
 
+  it('throws on batch shift without dx/dy', () => {
+    handleCreateGroup(state, { name: 'walk', cells: ['0,0'] });
+    expect(() => handleBatchTransform(state, { group: 'walk', operation: 'shift' }))
+      .toThrow('dx and dy are required');
+  });
+
+  it('throws on batch mirror without axis', () => {
+    handleCreateGroup(state, { name: 'walk', cells: ['0,0'] });
+    expect(() => handleBatchTransform(state, { group: 'walk', operation: 'mirror' }))
+      .toThrow('axis is required');
+  });
+
   it('throws without project', () => {
     state.project = null;
     expect(() => handleCreateGroup(state, { name: 'walk', cells: [] })).toThrow('No project');
