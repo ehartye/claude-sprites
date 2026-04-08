@@ -7,6 +7,7 @@ import { WebSocketClient } from './websocket.js';
 import { ToolManager } from './tools.js';
 import { ShapePanel, GroupPanel } from './panels.js';
 import { CellNavigator } from './cell-nav.js';
+import { AnimationPreview } from './animation.js';
 
 /** Application state */
 const state = {
@@ -23,6 +24,7 @@ const tools = new ToolManager();
 const shapePanel = new ShapePanel();
 const groupPanel = new GroupPanel();
 const cellNav = new CellNavigator();
+const animPreview = new AnimationPreview();
 
 /* -- Initialization -- */
 
@@ -53,12 +55,17 @@ function init() {
     },
   });
 
+  animPreview.init();
+
   groupPanel.init({
     onSelect: (groupName) => {
       if (groupName && state.project?.groups?.[groupName]) {
-        cellNav.setFilter(state.project.groups[groupName]);
+        const frames = state.project.groups[groupName];
+        cellNav.setFilter(frames);
+        animPreview.setFrames(frames);
       } else {
         cellNav.setFilter(null);
+        animPreview.setFrames([]);
       }
     },
     onCreate: () => {
@@ -106,6 +113,9 @@ function onProjectData(data) {
   editor.setBackground(data.background);
   editor.setCellSize(data.cellSize || 16);
   shapePanel.setPalette(state.palette);
+  animPreview.setPalette(state.palette);
+  animPreview.setCellSize(data.cellSize || 16);
+  animPreview.setCells(data.cells || {});
 
   // Auto-zoom to fit nicely
   const container = document.getElementById('canvas-container');
@@ -135,6 +145,7 @@ function onDrawUpdate(data) {
   }
   cellNav.setCells(state.project.cells || {});
   cellNav.render();
+  animPreview.setCells(state.project.cells || {});
 }
 
 function onShapeUpdate(data) {
@@ -160,6 +171,7 @@ function onCellUpdate(data) {
   }
   cellNav.setCells(state.project.cells || {});
   cellNav.render();
+  animPreview.setCells(state.project.cells || {});
 }
 
 function onError(data) {
@@ -216,6 +228,7 @@ function selectCell(ref) {
   updateCellRef();
   refreshShapePanel();
   cellNav.setActive(ref);
+  animPreview.setActiveCell(ref);
 }
 
 function updateCellRef() {
