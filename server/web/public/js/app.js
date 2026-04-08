@@ -4,6 +4,7 @@
 
 import { CanvasEditor } from './canvas-editor.js';
 import { WebSocketClient } from './websocket.js';
+import { ToolManager } from './tools.js';
 
 /** Application state */
 const state = {
@@ -16,6 +17,7 @@ const state = {
 
 const editor = new CanvasEditor();
 const ws = new WebSocketClient();
+const tools = new ToolManager();
 
 /* -- Initialization -- */
 
@@ -31,7 +33,16 @@ function init() {
   ws.on('cell_update', onCellUpdate);
   ws.on('error', onError);
 
-  editor.onPixelClick(onPixelClick);
+  tools.init({
+    send: (msg) => ws.send(msg),
+    getCellRef: () => state.activeCell,
+    getColor: () => state.activeColor,
+  });
+  tools.onToolChange((toolId) => { state.activeTool = toolId; });
+
+  editor.onPixelClick((x, y) => tools.handleClick(x, y));
+  editor.onPixelMove((x, y) => tools.handleMove(x, y));
+  editor.onPixelUp((x, y) => tools.handleUp(x, y));
   editor.onCursorMove((x, y, inBounds) => {
     document.getElementById('cursor-pos').textContent = inBounds ? `${x}, ${y}` : '—';
   });
@@ -111,13 +122,6 @@ function onCellUpdate(data) {
 
 function onError(data) {
   console.error('Server error:', data.message || data);
-}
-
-/* -- Pixel interaction -- */
-
-function onPixelClick(x, y) {
-  // Placeholder: tools will be wired in Task 16
-  console.log(`Click: (${x}, ${y}) tool=${state.activeTool} color=${state.activeColor}`);
 }
 
 /* -- Cell helpers -- */
