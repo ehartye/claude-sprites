@@ -9,8 +9,55 @@ const TOOLS = [
   { id: 'rect',   label: 'Rect',   icon: '#' },
   { id: 'circle', label: 'Circle', icon: 'O' },
   { id: 'fill',   label: 'Fill',   icon: '%' },
+  { id: 'erase',  label: 'Erase',  icon: 'X' },
   { id: 'select', label: 'Select', icon: '+' },
 ];
+
+/** Hit-test: find topmost shape at (x, y) by checking params. */
+function hitTestShapes(shapes, x, y) {
+  if (!shapes) return null;
+  // Iterate in reverse z-order (topmost first)
+  const sorted = [...shapes].sort((a, b) => b.zIndex - a.zIndex);
+  for (const shape of sorted) {
+    if (!shape.visible) continue;
+    const p = shape.params;
+    switch (shape.type) {
+      case 'point':
+        if (p.x === x && p.y === y) return shape;
+        break;
+      case 'rect':
+        if (x >= p.x && x < p.x + p.w && y >= p.y && y < p.y + p.h) return shape;
+        break;
+      case 'circle': {
+        const dx = x - p.cx, dy = y - p.cy;
+        if (p.filled) {
+          if (dx * dx + dy * dy <= p.r * p.r) return shape;
+        } else {
+          const dist = Math.abs(Math.sqrt(dx * dx + dy * dy) - p.r);
+          if (dist < 1.5) return shape;
+        }
+        break;
+      }
+      case 'line': {
+        // Check distance from point to line segment
+        const lx = p.x2 - p.x1, ly = p.y2 - p.y1;
+        const len2 = lx * lx + ly * ly;
+        if (len2 === 0) { if (p.x1 === x && p.y1 === y) return shape; break; }
+        let t = ((x - p.x1) * lx + (y - p.y1) * ly) / len2;
+        t = Math.max(0, Math.min(1, t));
+        const px = p.x1 + t * lx, py = p.y1 + t * ly;
+        const dist = Math.sqrt((x - px) ** 2 + (y - py) ** 2);
+        if (dist < 1.5) return shape;
+        break;
+      }
+      case 'fill':
+        // Flood fills are hard to hit-test; treat as point at origin
+        if (p.x === x && p.y === y) return shape;
+        break;
+    }
+  }
+  return null;
+}
 
 export class ToolManager {
   constructor() {
@@ -18,6 +65,8 @@ export class ToolManager {
     this._sendFn = null;
     this._getCellRef = null;
     this._getColor = null;
+    this._getShapes = null;
+    this._selectedShape = null;
 
     // Multi-click tool state (line, rect, circle)
     this._startX = null;
@@ -35,10 +84,11 @@ export class ToolManager {
    * @param {Function} opts.getCellRef - Returns current active cell ref string
    * @param {Function} opts.getColor - Returns current active color name
    */
-  init({ send, getCellRef, getColor }) {
+  init({ send, getCellRef, getColor, getShapes }) {
     this._sendFn = send;
     this._getCellRef = getCellRef;
     this._getColor = getColor;
+    this._getShapes = getShapes || (() => []);
     this._renderButtons();
   }
 
@@ -97,11 +147,26 @@ export class ToolManager {
         }
         break;
 
-      case 'select':
-        this._send({ action: 'select', params: { cell, x, y } });
-        this._startX = x;
-        this._startY = y;
+      case 'erase': {
+        const eraseHit = hitTestShapes(this._getShapes(), x, y);
+        if (eraseHit) {
+          const ref = eraseHit.name || eraseHit.id;
+          this._send({ action: 'delete_shape', params: { cell, name: ref } });
+        }
         break;
+      }
+
+      case 'select': {
+        const selectHit = hitTestShapes(this._getShapes(), x, y);
+        if (selectHit) {
+          this._selectedShape = selectHit.name || selectHit.id;
+          this._startX = x;
+          this._startY = y;
+        } else {
+          this._selectedShape = null;
+        }
+        break;
+      }
     }
   }
 
@@ -142,12 +207,13 @@ export class ToolManager {
       this._resetDrag();
     }
 
-    if (tool === 'select' && this._startX !== null) {
+    if (tool === 'select' && this._startX !== null && this._selectedShape) {
       const dx = x - this._startX;
       const dy = y - this._startY;
       if (dx !== 0 || dy !== 0) {
-        this._send({ action: 'move_shape', params: { cell, dx, dy } });
+        this._send({ action: 'move_shape', params: { cell, name: this._selectedShape, dx, dy } });
       }
+      this._selectedShape = null;
       this._resetDrag();
     }
   }

@@ -57,6 +57,7 @@ function init() {
     send: (msg) => ws.send(msg),
     getCellRef: () => state.activeCell,
     getColor: () => state.activeColor,
+    getShapes: () => findCell(state.activeCell)?.shapes || [],
   });
   tools.onToolChange((toolId) => { state.activeTool = toolId; });
 
