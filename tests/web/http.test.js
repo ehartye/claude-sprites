@@ -37,4 +37,15 @@ describe('Web Server Bootstrap', () => {
     expect(info.httpServer).toBeDefined();
     expect(info.wss).toBeDefined();
   });
+
+  it('GET /health returns { ok: true }', async () => {
+    const state = { project: null };
+    const info = await startWebServer(state, 0);
+    servers.push(info);
+
+    const res = await fetch(`http://localhost:${info.port}/health`);
+    const body = await res.json();
+    expect(res.status).toBe(200);
+    expect(body).toEqual({ ok: true });
+  });
 });

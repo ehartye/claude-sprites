@@ -4,7 +4,7 @@ import { WebSocketServer } from 'ws';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { handleDraw } from '../mcp/drawing-tools.js';
-import { handleNameShape, handleMoveShape, handleRecolorShape, handleDeleteShape, handleSetZ } from '../mcp/shape-tools.js';
+import { handleNameShape, handleMoveShape, handleRecolorShape, handleDeleteShape, handleSetZ, handleShapeZDirection, handleCloneShape, handleResizeShape, handleMoveShapeTo } from '../mcp/shape-tools.js';
 import { handleShiftCell, handleMirrorCell, handleCopyCell, handleClearCell, handleNameCell } from '../mcp/cell-tools.js';
 import { handleCreateGroup, handleAddCells, handleRemoveCells } from '../mcp/group-tools.js';
 import { handleUndo, handleRedo } from '../mcp/history-tools.js';
@@ -18,6 +18,10 @@ const DISPATCH = {
   recolor_shape:      (state, msg) => handleRecolorShape(state, msg.params),
   delete_shape:       (state, msg) => handleDeleteShape(state, msg.params),
   set_z:              (state, msg) => handleSetZ(state, msg.params),
+  shape_z:            (state, msg) => handleShapeZDirection(state, msg.params),
+  clone_shape:        (state, msg) => handleCloneShape(state, msg.params),
+  resize_shape:       (state, msg) => handleResizeShape(state, msg.params),
+  move_shape_to:      (state, msg) => handleMoveShapeTo(state, msg.params),
   undo:               (state, msg) => handleUndo(state, msg.params),
   redo:               (state, msg) => handleRedo(state, msg.params),
   shift_cell:         (state, msg) => handleShiftCell(state, msg.params),
@@ -38,6 +42,7 @@ export function dispatchWebMessage(state, msg) {
 
 export async function startWebServer(state, port) {
   const app = express();
+  app.get('/health', (_req, res) => res.json({ ok: true }));
   app.use(express.static(path.join(__dirname, 'public')));
 
   const httpServer = http.createServer(app);
