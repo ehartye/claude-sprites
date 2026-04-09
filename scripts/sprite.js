@@ -113,10 +113,10 @@ async function run() {
       result = await api('POST', '/api/shape/move', { cell: args.cell, name: sub, dx: num(args.dx), dy: num(args.dy) });
       break;
     case 'move-to':
-      result = await api('POST', '/api/shape/move-to', { cell: args.cell, name: sub, x: num(args.x), y: num(args.y) });
+      result = await api('POST', '/api/shape/move-to', { cell: args.cell, shape: sub, x: num(args.x), y: num(args.y) });
       break;
     case 'resize':
-      result = await api('POST', '/api/shape/resize', { cell: args.cell, name: sub, updates: JSON.parse(args.updates) });
+      result = await api('POST', '/api/shape/resize', { cell: args.cell, shape: sub, updates: JSON.parse(args.updates) });
       break;
     case 'recolor':
       result = await api('POST', '/api/shape/recolor', { cell: args.cell, name: sub, color: args.color });
@@ -125,7 +125,7 @@ async function run() {
       result = await api('POST', '/api/shape/delete', { cell: args.cell, name: sub });
       break;
     case 'clone':
-      result = await api('POST', '/api/shape/clone', { from_cell: args.from, to_cell: args.to, name: sub, as: args.as });
+      result = await api('POST', '/api/shape/clone', { from_cell: args.from, to_cell: args.to, shape: sub, new_name: args.as });
       break;
 
     case 'copy':
