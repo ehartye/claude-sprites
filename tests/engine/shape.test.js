@@ -35,7 +35,7 @@ describe('Shape', () => {
     expect(clone.type).toBe(original.type);
     expect(clone.params).toEqual(original.params);
     expect(clone.params).not.toBe(original.params); // deep copy
-    expect(clone.name).toBeNull(); // clones don't inherit names
+    expect(clone.name).toBe('box'); // clones inherit name (needed for sprite_copy_cell)
   });
 
   it('serializes to JSON and deserializes', () => {
