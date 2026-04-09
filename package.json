@@ -1,6 +1,6 @@
 {
   "name": "claude-sprites",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Collaborative pixel art sprite sheet editor — Claude Code plugin",
   "type": "module",
   "main": "server/index.js",
