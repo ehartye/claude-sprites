@@ -9,6 +9,10 @@ import { handleShiftCell, handleMirrorCell, handleCopyCell, handleClearCell, han
 import { handleCreateGroup, handleAddCells, handleRemoveCells } from '../mcp/group-tools.js';
 import { handleUndo, handleRedo } from '../mcp/history-tools.js';
 import { sessionRoutes } from './api/session-routes.js';
+import { drawRoutes } from './api/draw-routes.js';
+import { shapeRoutes } from './api/shape-routes.js';
+import { cellRoutes } from './api/cell-routes.js';
+import { groupRoutes } from './api/group-routes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -52,6 +56,10 @@ export async function startWebServer(state, port) {
   app.use(express.json());
   app.get('/health', (_req, res) => res.json({ ok: true }));
   app.use('/api/session', sessionRoutes(state));
+  app.use('/api', drawRoutes(state));
+  app.use('/api', shapeRoutes(state));
+  app.use('/api', cellRoutes(state));
+  app.use('/api', groupRoutes(state));
   app.use(express.static(path.join(__dirname, 'public')));
 
   const httpServer = http.createServer(app);
