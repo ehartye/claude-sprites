@@ -1,0 +1,94 @@
+import { describe, test, expect, beforeAll, afterAll, beforeEach } from 'vitest';
+import { startWebServer } from '../../server/web/http.js';
+import { execFile } from 'child_process';
+import { promisify } from 'util';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const exec = promisify(execFile);
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const SPRITE_JS = join(__dirname, '..', '..', 'scripts', 'sprite.js');
+
+describe('CLI Script', () => {
+  let serverInfo;
+  let state;
+  let port;
+
+  beforeAll(async () => {
+    const sessions = new Map();
+    let lastId = 0;
+    const mockDb = {
+      getLastSession() {
+        const all = [...sessions.values()].sort((a, b) => b.updated_at - a.updated_at);
+        return all[0] ?? undefined;
+      },
+      getSession(id) { return sessions.get(id); },
+      createSession(fields) {
+        const id = `s_${++lastId}`;
+        const session = { id, ...fields, created_at: Date.now(), updated_at: Date.now() };
+        sessions.set(id, session);
+        return session;
+      },
+      updateDraft(id, json) {
+        const s = sessions.get(id);
+        if (s) { s.draft_json = json; s.updated_at = Date.now(); }
+      },
+      getCellGroups() { return {}; },
+      setCellGroup() {},
+    };
+    state = { project: null, sessionId: null, db: mockDb };
+    serverInfo = await startWebServer(state, 0);
+    port = serverInfo.port;
+  });
+
+  afterAll(async () => {
+    serverInfo.wss.close();
+    await new Promise(r => serverInfo.httpServer.close(r));
+  });
+
+  async function cli(...args) {
+    const { stdout, stderr } = await exec(process.execPath, [SPRITE_JS, ...args], {
+      env: { ...process.env, SPRITE_PORT: String(port) },
+      timeout: 10000,
+    });
+    return { stdout: stdout.trim(), stderr: stderr.trim() };
+  }
+
+  test('status with no project', async () => {
+    const { stdout } = await cli('status');
+    const data = JSON.parse(stdout);
+    expect(data.active).toBe(false);
+  });
+
+  test('new creates a project', async () => {
+    const { stdout } = await cli('new', 'clitest', '--size', '16', '--rows', '2', '--cols', '4');
+    expect(stdout).toContain('Created "clitest"');
+  });
+
+  test('status after new shows active', async () => {
+    const { stdout } = await cli('status');
+    const data = JSON.parse(stdout);
+    expect(data.active).toBe(true);
+    expect(data.project_name).toBe('clitest');
+  });
+
+  test('draw circle adds a shape', async () => {
+    const { stdout } = await cli('draw', 'circle', '--cell', '0,0', '--cx', '8', '--cy', '3', '--r', '3', '--color', '#ff004d', '--name', 'ball');
+    expect(stdout).toBeTruthy();
+  });
+
+  test('shapes lists shapes in cell', async () => {
+    const { stdout } = await cli('shapes', '--cell', '0,0');
+    expect(stdout).toContain('ball');
+    expect(stdout).toContain('circle');
+  });
+
+  test('unknown command exits with error', async () => {
+    try {
+      await cli('nonexistent');
+      expect.unreachable('Should have thrown');
+    } catch (e) {
+      expect(e.stderr).toContain('Unknown command');
+    }
+  });
+});
