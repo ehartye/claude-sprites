@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { handleDraw } from '../../mcp/drawing-tools.js';
+import { handleDraw } from '../../handlers/draw.js';
 import { saveDraft } from '../http.js';
 
 export function drawRoutes(state) {

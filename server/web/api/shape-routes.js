@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { handleMoveShape, handleMoveShapeTo, handleResizeShape,
          handleRecolorShape, handleDeleteShape, handleCloneShape,
-         handleSetZ, handleShapeZDirection } from '../../mcp/shape-tools.js';
+         handleSetZ, handleShapeZDirection } from '../../handlers/shape.js';
 import { saveDraft } from '../http.js';
 
 export function shapeRoutes(state) {

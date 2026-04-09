@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { Project } from '../../server/engine/project.js';
-import { handleDraw } from '../../server/mcp/drawing-tools.js';
+import { handleDraw } from '../../server/handlers/draw.js';
 
 describe('Drawing tools', () => {
   let state;

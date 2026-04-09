@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { Project } from '../../server/engine/project.js';
-import { handleDraw } from '../../server/mcp/drawing-tools.js';
-import { handleViewCell, handleViewCells, handleViewSheet, handleExportPng, handleExportJson } from '../../server/mcp/view-tools.js';
+import { handleDraw } from '../../server/handlers/draw.js';
+import { handleViewCell, handleViewCells, handleViewSheet, handleExportPng, handleExportJson } from '../../server/handlers/view.js';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';

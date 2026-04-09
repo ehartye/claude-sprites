@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import fs from 'fs';
 import path from 'path';
 import { CanvasRenderer } from '../engine/canvas-renderer.js';
@@ -65,60 +64,4 @@ export function handleExportJson(state, params) {
   const atlas = state.project.exportAtlas();
   fs.writeFileSync(params.path, JSON.stringify(atlas, null, 2));
   return { path: params.path };
-}
-
-export function registerViewTools(server, state) {
-  const tmpDir = path.join(process.cwd(), '.tmp');
-
-  server.tool('sprite_view_cell', 'Render a cell as PNG for viewing', {
-    cell: z.string().describe('Cell ref (e.g. "0,0" or name)'),
-  }, (params) => {
-    const result = handleViewCell(state, params, tmpDir);
-    return {
-      content: [{
-        type: 'image',
-        data: fs.readFileSync(result.path).toString('base64'),
-        mimeType: 'image/png',
-      }],
-    };
-  });
-
-  server.tool('sprite_view_cells', 'Render multiple cells side by side as PNG', {
-    cells: z.array(z.string()).describe('Array of cell refs'),
-  }, (params) => {
-    const result = handleViewCells(state, params, tmpDir);
-    return {
-      content: [{
-        type: 'image',
-        data: fs.readFileSync(result.path).toString('base64'),
-        mimeType: 'image/png',
-      }],
-    };
-  });
-
-  server.tool('sprite_view_sheet', 'Render the full sprite sheet as PNG', {}, () => {
-    const result = handleViewSheet(state, {}, tmpDir);
-    return {
-      content: [{
-        type: 'image',
-        data: fs.readFileSync(result.path).toString('base64'),
-        mimeType: 'image/png',
-      }],
-    };
-  });
-
-  server.tool('sprite_export_png', 'Export cell, group, or sheet to a PNG file', {
-    target: z.string().describe('"sheet", cell ref, or group name'),
-    path: z.string().describe('Output file path'),
-  }, (params) => {
-    handleExportPng(state, params);
-    return { content: [{ type: 'text', text: `Exported to ${params.path}` }] };
-  });
-
-  server.tool('sprite_export_json', 'Export texture atlas metadata as JSON', {
-    path: z.string().describe('Output file path'),
-  }, (params) => {
-    handleExportJson(state, params);
-    return { content: [{ type: 'text', text: `Atlas exported to ${params.path}` }] };
-  });
 }

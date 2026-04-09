@@ -164,31 +164,6 @@ describe('WebSocket sync', () => {
     expect(state.project.cells.getCell('0,0').name).toBe('idle_1');
   });
 
-  it('dispatches create_group', () => {
-    dispatchWebMessage(state, {
-      action: 'create_group',
-      params: { name: 'walk', cells: ['0,0', '0,1'] },
-    });
-    expect(state.project.groups.get('walk')).toEqual(['0,0', '0,1']);
-  });
-
-  it('dispatches add_to_group and remove_from_group', () => {
-    dispatchWebMessage(state, {
-      action: 'create_group',
-      params: { name: 'walk', cells: ['0,0'] },
-    });
-    dispatchWebMessage(state, {
-      action: 'add_to_group',
-      params: { name: 'walk', cells: ['0,1'] },
-    });
-    expect(state.project.groups.get('walk')).toEqual(['0,0', '0,1']);
-    dispatchWebMessage(state, {
-      action: 'remove_from_group',
-      params: { name: 'walk', cells: ['0,0'] },
-    });
-    expect(state.project.groups.get('walk')).toEqual(['0,1']);
-  });
-
   it('throws on unknown action', () => {
     expect(() => dispatchWebMessage(state, { action: 'fly', params: {} }))
       .toThrow('Unknown action');

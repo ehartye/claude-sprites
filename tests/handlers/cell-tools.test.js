@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { Project } from '../../server/engine/project.js';
-import { handleDraw } from '../../server/mcp/drawing-tools.js';
+import { handleDraw } from '../../server/handlers/draw.js';
 import {
   handleShiftCell, handleMirrorCell, handleCopyCell,
   handleClearCell, handleNameCell, handleListCells,
-} from '../../server/mcp/cell-tools.js';
+} from '../../server/handlers/cell.js';
 
 describe('Cell tools', () => {
   let state;

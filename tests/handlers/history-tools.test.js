@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { Project } from '../../server/engine/project.js';
-import { handleDraw } from '../../server/mcp/drawing-tools.js';
-import { handleUndo, handleRedo } from '../../server/mcp/history-tools.js';
+import { handleDraw } from '../../server/handlers/draw.js';
+import { handleUndo, handleRedo } from '../../server/handlers/history.js';
 
 describe('History tools', () => {
   let state;

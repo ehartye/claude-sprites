@@ -3,11 +3,10 @@ import express from 'express';
 import { WebSocketServer } from 'ws';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { handleDraw } from '../mcp/drawing-tools.js';
-import { handleNameShape, handleMoveShape, handleRecolorShape, handleDeleteShape, handleSetZ, handleShapeZDirection, handleCloneShape, handleResizeShape, handleMoveShapeTo } from '../mcp/shape-tools.js';
-import { handleShiftCell, handleMirrorCell, handleCopyCell, handleClearCell, handleNameCell } from '../mcp/cell-tools.js';
-import { handleCreateGroup, handleAddCells, handleRemoveCells } from '../mcp/group-tools.js';
-import { handleUndo, handleRedo } from '../mcp/history-tools.js';
+import { handleDraw } from '../handlers/draw.js';
+import { handleNameShape, handleMoveShape, handleRecolorShape, handleDeleteShape, handleSetZ, handleShapeZDirection, handleCloneShape, handleResizeShape, handleMoveShapeTo } from '../handlers/shape.js';
+import { handleShiftCell, handleMirrorCell, handleCopyCell, handleClearCell, handleNameCell } from '../handlers/cell.js';
+import { handleUndo, handleRedo } from '../handlers/history.js';
 import { sessionRoutes } from './api/session-routes.js';
 import { drawRoutes } from './api/draw-routes.js';
 import { shapeRoutes } from './api/shape-routes.js';
@@ -34,9 +33,6 @@ const DISPATCH = {
   copy_cell:          (state, msg) => handleCopyCell(state, msg.params),
   clear_cell:         (state, msg) => handleClearCell(state, msg.params),
   name_cell:          (state, msg) => handleNameCell(state, msg.params),
-  create_group:       (state, msg) => handleCreateGroup(state, msg.params),
-  add_to_group:       (state, msg) => handleAddCells(state, msg.params),
-  remove_from_group:  (state, msg) => handleRemoveCells(state, msg.params),
 };
 
 export function saveDraft(state) {

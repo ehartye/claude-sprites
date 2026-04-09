@@ -1,6 +1,6 @@
 {
   "name": "claude-sprites",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "description": "Collaborative pixel art sprite sheet editor",
   "author": {
     "name": "Eric Hart"

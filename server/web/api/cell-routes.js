@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { handleShiftCell, handleMirrorCell, handleCopyCell,
-         handleClearCell, handleNameCell, handleListCells } from '../../mcp/cell-tools.js';
-import { handleUndo, handleRedo } from '../../mcp/history-tools.js';
-import { handleViewCell } from '../../mcp/view-tools.js';
+         handleClearCell, handleNameCell, handleListCells } from '../../handlers/cell.js';
+import { handleUndo, handleRedo } from '../../handlers/history.js';
+import { handleViewCell } from '../../handlers/view.js';
 import { saveDraft } from '../http.js';
 
 export function cellRoutes(state) {

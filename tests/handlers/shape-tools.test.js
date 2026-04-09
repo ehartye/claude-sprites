@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { Project } from '../../server/engine/project.js';
-import { handleDraw } from '../../server/mcp/drawing-tools.js';
+import { handleDraw } from '../../server/handlers/draw.js';
 import {
   handleNameShape, handleMoveShape, handleRecolorShape,
   handleDeleteShape, handleListShapes, handleSetZ,
-} from '../../server/mcp/shape-tools.js';
+} from '../../server/handlers/shape.js';
 
 describe('Shape tools', () => {
   let state;
