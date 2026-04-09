@@ -75,6 +75,13 @@ export async function startWebServer(state, port) {
     ws.on('message', (raw) => {
       try {
         const msg = JSON.parse(raw);
+        // Handle project state request (for resync after MCP mutations)
+        if (msg.action === 'get_project') {
+          if (state.project) {
+            ws.send(JSON.stringify({ type: 'project', data: state.project.toJSON() }));
+          }
+          return;
+        }
         const result = dispatchWebMessage(state, msg);
         ws.send(JSON.stringify({ type: 'result', action: msg.action, data: result }));
       } catch (e) {

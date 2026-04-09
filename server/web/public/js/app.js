@@ -39,6 +39,20 @@ function init() {
   ws.on('cell_update', onCellUpdate);
   ws.on('error', onError);
 
+  // MCP tool broadcasts use specific event types — request full state refresh
+  const refreshEvents = [
+    'shape_named', 'shape_moved', 'shape_recolored', 'shape_deleted', 'shape_z',
+    'cell_shifted', 'cell_mirrored', 'cell_copied', 'cell_cleared', 'cell_named',
+    'group_created', 'group_cells_added', 'group_cells_removed', 'group_deleted',
+    'palette', 'undo', 'redo',
+  ];
+  for (const evt of refreshEvents) {
+    ws.on(evt, () => {
+      // Request full project state to resync after MCP mutation
+      ws.send({ action: 'get_project' });
+    });
+  }
+
   tools.init({
     send: (msg) => ws.send(msg),
     getCellRef: () => state.activeCell,
@@ -137,31 +151,42 @@ function onProjectData(data) {
 
 function onDrawUpdate(data) {
   if (!state.project) return;
-  const cell = findCell(data.cell);
-  if (cell && data.shape) {
+  // Ensure cell exists in local state (empty cells aren't in project JSON)
+  if (!state.project.cells) state.project.cells = {};
+  if (!state.project.cells[data.cell]) {
+    state.project.cells[data.cell] = { shapes: [] };
+  }
+  const cell = state.project.cells[data.cell];
+  if (data.shape) {
     if (!cell.shapes) cell.shapes = [];
     cell.shapes.push(data.shape);
     cell.shapes.sort((a, b) => a.zIndex - b.zIndex);
   }
   if (data.cell === state.activeCell) {
-    editor.setCell(findCell(state.activeCell));
+    editor.setCell(cell);
     refreshShapePanel();
   }
-  cellNav.setCells(state.project.cells || {});
+  cellNav.setCells(state.project.cells);
   cellNav.render();
-  animPreview.setCells(state.project.cells || {});
+  animPreview.setCells(state.project.cells);
 }
 
 function onShapeUpdate(data) {
   if (!state.project) return;
-  if (data.cell === state.activeCell) {
-    const cell = findCell(state.activeCell);
-    if (cell && data.shapes) {
-      cell.shapes = data.shapes;
+  if (!state.project.cells) state.project.cells = {};
+  if (data.cell && data.shapes) {
+    if (!state.project.cells[data.cell]) {
+      state.project.cells[data.cell] = { shapes: [] };
     }
-    editor.setCell(cell);
+    state.project.cells[data.cell].shapes = data.shapes;
+  }
+  if (data.cell === state.activeCell) {
+    editor.setCell(state.project.cells[data.cell]);
     refreshShapePanel();
   }
+  cellNav.setCells(state.project.cells);
+  cellNav.render();
+  animPreview.setCells(state.project.cells);
 }
 
 function onCellUpdate(data) {
