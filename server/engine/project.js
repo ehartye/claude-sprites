@@ -45,9 +45,8 @@ export class Project {
     this.path = p;
   }
 
-  static load(filePath) {
-    const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-    const proj = new Project({
+  static fromJSON(data) {
+    return new Project({
       name: data.name,
       cellSize: data.cellSize,
       cells: CellManager.fromJSON({ rows: data.grid.rows, cols: data.grid.cols, cells: data.cells }, data.cellSize),
@@ -55,6 +54,11 @@ export class Project {
       groups: GroupManager.fromJSON(data.groups),
       background: data.background,
     });
+  }
+
+  static load(filePath) {
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    const proj = Project.fromJSON(data);
     proj.path = filePath;
     return proj;
   }

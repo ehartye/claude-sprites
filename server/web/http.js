@@ -8,6 +8,7 @@ import { handleNameShape, handleMoveShape, handleRecolorShape, handleDeleteShape
 import { handleShiftCell, handleMirrorCell, handleCopyCell, handleClearCell, handleNameCell } from '../mcp/cell-tools.js';
 import { handleCreateGroup, handleAddCells, handleRemoveCells } from '../mcp/group-tools.js';
 import { handleUndo, handleRedo } from '../mcp/history-tools.js';
+import { sessionRoutes } from './api/session-routes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -34,6 +35,12 @@ const DISPATCH = {
   remove_from_group:  (state, msg) => handleRemoveCells(state, msg.params),
 };
 
+export function saveDraft(state) {
+  if (state.sessionId && state.project) {
+    state.db.updateDraft(state.sessionId, JSON.stringify(state.project.toJSON()));
+  }
+}
+
 export function dispatchWebMessage(state, msg) {
   const handler = DISPATCH[msg.action];
   if (!handler) throw new Error(`Unknown action: ${msg.action}`);
@@ -42,7 +49,9 @@ export function dispatchWebMessage(state, msg) {
 
 export async function startWebServer(state, port) {
   const app = express();
+  app.use(express.json());
   app.get('/health', (_req, res) => res.json({ ok: true }));
+  app.use('/api/session', sessionRoutes(state));
   app.use(express.static(path.join(__dirname, 'public')));
 
   const httpServer = http.createServer(app);
