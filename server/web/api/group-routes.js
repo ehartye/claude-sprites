@@ -1,0 +1,137 @@
+import { Router } from 'express';
+import { saveDraft } from '../http.js';
+
+export function groupRoutes(state) {
+  const r = Router();
+
+  // --- Cell groups (animation frame sets) ---
+  r.post('/group/cell/create', (req, res) => {
+    try {
+      const { name, cells } = req.body;
+      state.db.setCellGroup(state.sessionId, name, cells);
+      res.json({ ok: true, data: `Created cell group "${name}"` });
+    } catch (e) { res.json({ ok: false, error: e.message }); }
+  });
+
+  r.get('/group/cell/list', (_req, res) => {
+    try {
+      res.json({ ok: true, data: state.db.getCellGroups(state.sessionId) });
+    } catch (e) { res.json({ ok: false, error: e.message }); }
+  });
+
+  r.post('/group/cell/add', (req, res) => {
+    try {
+      const { name, cells: newCells } = req.body;
+      const groups = state.db.getCellGroups(state.sessionId);
+      const existing = groups[name] ?? [];
+      state.db.setCellGroup(state.sessionId, name, [...new Set([...existing, ...newCells])]);
+      res.json({ ok: true, data: `Added to group "${name}"` });
+    } catch (e) { res.json({ ok: false, error: e.message }); }
+  });
+
+  r.post('/group/cell/remove', (req, res) => {
+    try {
+      const { name, cells: remove } = req.body;
+      const groups = state.db.getCellGroups(state.sessionId);
+      const updated = (groups[name] ?? []).filter(c => !remove.includes(c));
+      state.db.setCellGroup(state.sessionId, name, updated);
+      res.json({ ok: true, data: `Removed from group "${name}"` });
+    } catch (e) { res.json({ ok: false, error: e.message }); }
+  });
+
+  r.post('/group/cell/delete', (req, res) => {
+    try {
+      state.db.deleteCellGroup(state.sessionId, req.body.name);
+      res.json({ ok: true, data: `Deleted group "${req.body.name}"` });
+    } catch (e) { res.json({ ok: false, error: e.message }); }
+  });
+
+  // --- Shape groups (per-cell, move as unit) ---
+  r.post('/group/shape/create', (req, res) => {
+    try {
+      const { cell, name, shapes } = req.body;
+      state.db.setShapeGroup(state.sessionId, cell, name, shapes);
+      res.json({ ok: true, data: `Created shape group "${name}" in ${cell}` });
+    } catch (e) { res.json({ ok: false, error: e.message }); }
+  });
+
+  r.get('/group/shape/list', (req, res) => {
+    try {
+      res.json({ ok: true, data: state.db.getShapeGroups(state.sessionId, req.query.cell) });
+    } catch (e) { res.json({ ok: false, error: e.message }); }
+  });
+
+  r.post('/group/shape/add', (req, res) => {
+    try {
+      const { cell, name, shapes: newShapes } = req.body;
+      const groups = state.db.getShapeGroups(state.sessionId, cell);
+      const existing = groups[name] ?? [];
+      state.db.setShapeGroup(state.sessionId, cell, name, [...new Set([...existing, ...newShapes])]);
+      res.json({ ok: true, data: `Added shapes to group "${name}"` });
+    } catch (e) { res.json({ ok: false, error: e.message }); }
+  });
+
+  r.post('/group/shape/remove', (req, res) => {
+    try {
+      const { cell, name, shapes: remove } = req.body;
+      const groups = state.db.getShapeGroups(state.sessionId, cell);
+      const updated = (groups[name] ?? []).filter(s => !remove.includes(s));
+      state.db.setShapeGroup(state.sessionId, cell, name, updated);
+      res.json({ ok: true, data: `Removed shapes from group "${name}"` });
+    } catch (e) { res.json({ ok: false, error: e.message }); }
+  });
+
+  r.post('/group/shape/delete', (req, res) => {
+    try {
+      state.db.deleteShapeGroup(state.sessionId, req.body.cell, req.body.name);
+      res.json({ ok: true, data: `Deleted shape group "${req.body.name}"` });
+    } catch (e) { res.json({ ok: false, error: e.message }); }
+  });
+
+  r.post('/group/shape/move', (req, res) => {
+    try {
+      const { name, cell, all_cells, dx, dy } = req.body;
+      const cellsToUpdate = all_cells
+        ? Object.keys(state.db.getAllShapeGroups(state.sessionId)).filter(c => {
+            const groups = state.db.getShapeGroups(state.sessionId, c);
+            return name in groups;
+          })
+        : [cell];
+      for (const c of cellsToUpdate) {
+        const groups = state.db.getShapeGroups(state.sessionId, c);
+        const shapes = groups[name] ?? [];
+        const cellObj = state.project.cells.getCell(c);
+        for (const shapeName of shapes) {
+          cellObj.moveShape(shapeName, dx, dy);
+        }
+        state.broadcast?.({ type: 'shape_moved', cell: c });
+      }
+      saveDraft(state);
+      res.json({ ok: true, data: `Moved group "${name}" by (${dx},${dy})` });
+    } catch (e) { res.json({ ok: false, error: e.message }); }
+  });
+
+  r.post('/group/shape/recolor', (req, res) => {
+    try {
+      const { name, cell, all_cells, color } = req.body;
+      const cellsToUpdate = all_cells
+        ? Object.keys(state.db.getAllShapeGroups(state.sessionId)).filter(c => {
+            return name in state.db.getShapeGroups(state.sessionId, c);
+          })
+        : [cell];
+      for (const c of cellsToUpdate) {
+        const groups = state.db.getShapeGroups(state.sessionId, c);
+        const shapes = groups[name] ?? [];
+        const cellObj = state.project.cells.getCell(c);
+        for (const shapeName of shapes) {
+          cellObj.recolorShape(shapeName, color);
+        }
+        state.broadcast?.({ type: 'shape_recolored', cell: c });
+      }
+      saveDraft(state);
+      res.json({ ok: true, data: `Recolored group "${name}" to ${color}` });
+    } catch (e) { res.json({ ok: false, error: e.message }); }
+  });
+
+  return r;
+}
