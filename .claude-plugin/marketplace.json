@@ -1,0 +1,16 @@
+{
+  "name": "claude-sprites",
+  "description": "Local marketplace for claude-sprites plugin",
+  "owner": {
+    "name": "ehart"
+  },
+  "plugins": [
+    {
+      "name": "claude-sprites",
+      "description": "Collaborative pixel art sprite sheet editor",
+      "version": "0.1.0",
+      "source": "./",
+      "license": "MIT"
+    }
+  ]
+}
