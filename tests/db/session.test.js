@@ -1,9 +1,6 @@
-import { createRequire } from 'module';
 import { tmpdir } from 'os';
 import { join } from 'path';
 import { SessionDB } from '../../server/db/session.js';
-
-const require = createRequire(import.meta.url);
 
 let db;
 beforeEach(() => {
