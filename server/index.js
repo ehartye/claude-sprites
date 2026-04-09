@@ -26,10 +26,12 @@ registerViewTools(server, state);
 
 const WEB_PORT = parseInt(process.env.SPRITE_PORT ?? '3377', 10);
 
-// Start web server (non-blocking)
+// Start web server (non-blocking, won't crash MCP if port is busy)
 startWebServer(state, WEB_PORT).then((info) => {
-  // Log to stderr so it doesn't interfere with MCP stdio
   console.error(`Sprite editor web UI: http://localhost:${info.port}`);
+}).catch((err) => {
+  console.error(`Web server failed to start: ${err.message}`);
+  console.error('MCP tools still available — web UI will not be accessible.');
 });
 
 // Start MCP server (blocks on stdio)

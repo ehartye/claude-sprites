@@ -41,7 +41,17 @@ export async function startWebServer(state, port) {
   app.use(express.static(path.join(__dirname, 'public')));
 
   const httpServer = http.createServer(app);
-  await new Promise((resolve) => httpServer.listen(port, resolve));
+  await new Promise((resolve, reject) => {
+    httpServer.on('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        console.error(`Port ${port} in use, trying ${port + 1}`);
+        httpServer.listen(port + 1, resolve);
+      } else {
+        reject(err);
+      }
+    });
+    httpServer.listen(port, resolve);
+  });
 
   const actualPort = httpServer.address().port;
 
