@@ -68,6 +68,16 @@ export class Cell {
     });
   }
 
+  updateShapeParams(ref, updates) {
+    const shape = this.shapes.get(ref);
+    if (!shape) throw new Error(`Shape "${ref}" not found`);
+    const oldParams = { ...shape.params };
+    this._exec({
+      execute: () => { Object.assign(shape.params, updates); },
+      undo: () => { Object.assign(shape.params, oldParams); },
+    });
+  }
+
   setZ(ref, z) {
     const shape = this.shapes.get(ref);
     if (!shape) throw new Error(`Shape "${ref}" not found`);

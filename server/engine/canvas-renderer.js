@@ -46,6 +46,9 @@ export class CanvasRenderer {
       case 'circle':
         this._drawCircle(ctx, p.cx, p.cy, p.r, p.filled);
         break;
+      case 'ellipse':
+        this._drawEllipse(ctx, p.cx, p.cy, p.rx, p.ry, p.filled);
+        break;
       case 'fill':
         this._floodFill(ctx, p.x, p.y, color);
         break;
@@ -97,6 +100,29 @@ export class CanvasRenderer {
           x--;
           err += 2 * (y - x) + 1;
         }
+      }
+    }
+  }
+
+  _drawEllipse(ctx, cx, cy, rx, ry, filled) {
+    if (rx <= 0 || ry <= 0) return;
+    if (filled) {
+      for (let y = -ry; y <= ry; y++) {
+        for (let x = -rx; x <= rx; x++) {
+          if ((x * x) / (rx * rx) + (y * y) / (ry * ry) <= 1) {
+            ctx.fillRect(cx + x, cy + y, 1, 1);
+          }
+        }
+      }
+    } else {
+      const steps = Math.max(rx, ry) * 4;
+      const drawn = new Set();
+      for (let i = 0; i < steps; i++) {
+        const angle = (2 * Math.PI * i) / steps;
+        const px = Math.round(cx + rx * Math.cos(angle));
+        const py = Math.round(cy + ry * Math.sin(angle));
+        const key = `${px},${py}`;
+        if (!drawn.has(key)) { drawn.add(key); ctx.fillRect(px, py, 1, 1); }
       }
     }
   }

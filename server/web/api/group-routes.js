@@ -1,5 +1,13 @@
 import { Router } from 'express';
 import { saveDraft } from '../http.js';
+import { GroupManager } from '../../engine/group-manager.js';
+
+// Rebuild state.project.groups from SQLite and notify the browser.
+function syncCellGroups(state) {
+  const groups = state.db.getCellGroups(state.sessionId);
+  state.project.groups = GroupManager.fromJSON(groups);
+  state.broadcast?.({ type: 'group_created' }); // triggers get_project resync in UI
+}
 
 export function groupRoutes(state) {
   const r = Router();
@@ -9,6 +17,7 @@ export function groupRoutes(state) {
     try {
       const { name, cells } = req.body;
       state.db.setCellGroup(state.sessionId, name, cells);
+      syncCellGroups(state);
       res.json({ ok: true, data: `Created cell group "${name}"` });
     } catch (e) { res.json({ ok: false, error: e.message }); }
   });
@@ -25,6 +34,7 @@ export function groupRoutes(state) {
       const groups = state.db.getCellGroups(state.sessionId);
       const existing = groups[name] ?? [];
       state.db.setCellGroup(state.sessionId, name, [...new Set([...existing, ...newCells])]);
+      syncCellGroups(state);
       res.json({ ok: true, data: `Added to group "${name}"` });
     } catch (e) { res.json({ ok: false, error: e.message }); }
   });
@@ -35,6 +45,7 @@ export function groupRoutes(state) {
       const groups = state.db.getCellGroups(state.sessionId);
       const updated = (groups[name] ?? []).filter(c => !remove.includes(c));
       state.db.setCellGroup(state.sessionId, name, updated);
+      syncCellGroups(state);
       res.json({ ok: true, data: `Removed from group "${name}"` });
     } catch (e) { res.json({ ok: false, error: e.message }); }
   });
@@ -42,6 +53,7 @@ export function groupRoutes(state) {
   r.post('/group/cell/delete', (req, res) => {
     try {
       state.db.deleteCellGroup(state.sessionId, req.body.name);
+      syncCellGroups(state);
       res.json({ ok: true, data: `Deleted group "${req.body.name}"` });
     } catch (e) { res.json({ ok: false, error: e.message }); }
   });

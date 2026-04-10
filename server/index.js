@@ -1,6 +1,7 @@
 import { startWebServer } from './web/http.js';
 import { SessionDB } from './db/session.js';
 import { Project } from './engine/project.js';
+import { GroupManager } from './engine/group-manager.js';
 
 const db = new SessionDB();
 
@@ -16,6 +17,9 @@ if (lastSession?.draft_json) {
   try {
     state.project = Project.fromJSON(JSON.parse(lastSession.draft_json));
     state.sessionId = lastSession.id;
+    // Restore cell groups from SQLite (not stored in draft_json)
+    const savedGroups = db.getCellGroups(lastSession.id);
+    state.project.groups = GroupManager.fromJSON(savedGroups);
   } catch (e) {
     console.error('Failed to restore last session:', e.message);
   }

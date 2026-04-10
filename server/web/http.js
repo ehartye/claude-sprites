@@ -56,7 +56,7 @@ export async function startWebServer(state, port) {
   app.use('/api', shapeRoutes(state));
   app.use('/api', cellRoutes(state));
   app.use('/api', groupRoutes(state));
-  app.use(express.static(path.join(__dirname, 'public')));
+  app.use(express.static(path.join(__dirname, 'public'), { etag: false, lastModified: false, setHeaders: (res) => res.setHeader('Cache-Control', 'no-store') }));
 
   const httpServer = http.createServer(app);
   await new Promise((resolve, reject) => {

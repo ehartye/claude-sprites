@@ -12,11 +12,11 @@ export class Shape {
   }
 
   clone() {
-    const clone = new Shape(this.type, { ...this.params }, this.color, {
+    return new Shape(this.type, { ...this.params }, this.color, {
+      name: this.name,
       zIndex: this.zIndex,
       visible: this.visible,
     });
-    return clone;
   }
 
   toJSON() {
