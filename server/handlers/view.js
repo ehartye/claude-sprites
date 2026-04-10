@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { CanvasRenderer } from '../engine/canvas-renderer.js';
+import { TerminalRenderer } from '../engine/terminal-renderer.js';
 
 function getRenderer(state) {
   return new CanvasRenderer(state.project.palette, { background: state.project.background });
@@ -14,6 +15,12 @@ function tmpPath(tmpDir, name) {
 export function handleViewCell(state, params, tmpDir) {
   if (!state.project) throw new Error('No project open');
   const cell = state.project.cells.getCell(params.cell);
+
+  if (params.format === 'terminal') {
+    const termRenderer = new TerminalRenderer(state.project.palette);
+    return { terminal: termRenderer.renderCell(cell) };
+  }
+
   const renderer = getRenderer(state);
   const buf = renderer.renderCell(cell);
   const p = tmpPath(tmpDir, `cell-${params.cell.replace(',', '-')}`);

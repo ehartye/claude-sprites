@@ -137,9 +137,15 @@ async function run() {
     case 'name':
       result = await api('POST', '/api/cell/name', { cell: args.cell, name: args.as });
       break;
-    case 'view':
-      result = await api('POST', '/api/cell/view', { cell: args.cell });
+    case 'view': {
+      const format = args.png ? 'png' : 'terminal';
+      result = await api('POST', '/api/cell/view', { cell: args.cell, format });
+      if (result.ok && result.data?.terminal) {
+        console.log(result.data.terminal);
+        return;
+      }
       break;
+    }
     case 'undo':
       result = await api('POST', '/api/cell/undo', { cell: args.cell });
       break;

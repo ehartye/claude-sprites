@@ -26,8 +26,10 @@ export function cellRoutes(state) {
     catch (e) { res.json({ ok: false, error: e.message }); }
   });
   r.post('/cell/view',   (req, res) => {
-    try { res.json({ ok: true, data: handleViewCell(state, req.body) }); }
-    catch (e) { res.json({ ok: false, error: e.message }); }
+    try {
+      const result = handleViewCell(state, req.body, state.tmpDir);
+      res.json({ ok: true, data: result });
+    } catch (e) { res.json({ ok: false, error: e.message }); }
   });
   return r;
 }

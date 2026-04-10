@@ -77,6 +77,21 @@ describe('View tools', () => {
     expect(Object.keys(atlas.frames).length).toBe(4); // 2x2
   });
 
+  it('renders terminal format when format=terminal', () => {
+    handleDraw(state, 'rect', { cell: '0,0', x: 0, y: 0, w: 4, h: 4, color: '#ff0000' });
+    const result = handleViewCell(state, { cell: '0,0', format: 'terminal' }, tmpDir);
+    expect(typeof result.terminal).toBe('string');
+    expect(result.terminal).toContain('██');
+    expect(result.terminal).toContain('·');
+  });
+
+  it('renders png format when format=png', () => {
+    handleDraw(state, 'rect', { cell: '0,0', x: 0, y: 0, w: 4, h: 4, color: '#ff0000' });
+    const result = handleViewCell(state, { cell: '0,0', format: 'png' }, tmpDir);
+    expect(result.path).toBeDefined();
+    expect(fs.existsSync(result.path)).toBe(true);
+  });
+
   it('throws without project', () => {
     state.project = null;
     expect(() => handleViewCell(state, { cell: '0,0' }, tmpDir)).toThrow('No project');
