@@ -148,6 +148,36 @@ describe('Palette', () => {
       }
     });
 
+    it('db-16 loads with 16 colors', () => {
+      const p = Palette.fromPreset('db-16');
+      expect(p.list().length).toBe(16);
+      expect(p.getColor('peach')).toBe('#d2aa99');
+    });
+
+    it('db-16 full ramp coverage', () => {
+      const p = Palette.fromPreset('db-16');
+      const names = p.list().map(c => c.name);
+      for (const name of names) {
+        expect(p.lighter(name)).not.toBeNull();
+        expect(p.darker(name)).not.toBeNull();
+      }
+    });
+
+    it('db-32 loads with 32 colors', () => {
+      const p = Palette.fromPreset('db-32');
+      expect(p.list().length).toBe(32);
+      expect(p.getColor('pancho')).toBe('#eec39a');
+    });
+
+    it('db-32 full ramp coverage', () => {
+      const p = Palette.fromPreset('db-32');
+      const names = p.list().map(c => c.name);
+      for (const name of names) {
+        expect(p.lighter(name)).not.toBeNull();
+        expect(p.darker(name)).not.toBeNull();
+      }
+    });
+
     it('palette without ramps returns null gracefully', () => {
       const p = new Palette([{ name: 'custom', color: '#aabbcc' }]);
       expect(p.lighter('custom')).toBeNull();
