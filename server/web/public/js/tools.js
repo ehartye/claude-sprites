@@ -4,13 +4,14 @@
  */
 
 const TOOLS = [
-  { id: 'point',  label: 'Point',  icon: '.' },
-  { id: 'line',   label: 'Line',   icon: '/' },
-  { id: 'rect',   label: 'Rect',   icon: '#' },
-  { id: 'circle', label: 'Circle', icon: 'O' },
-  { id: 'fill',   label: 'Fill',   icon: '%' },
-  { id: 'erase',  label: 'Erase',  icon: 'X' },
-  { id: 'select', label: 'Select', icon: '+' },
+  { id: 'point',   label: 'Point',   icon: '.' },
+  { id: 'line',    label: 'Line',    icon: '/' },
+  { id: 'rect',    label: 'Rect',    icon: '#' },
+  { id: 'circle',  label: 'Circle',  icon: 'O' },
+  { id: 'ellipse', label: 'Ellipse', icon: 'E' },
+  { id: 'fill',    label: 'Fill',    icon: '%' },
+  { id: 'erase',   label: 'Erase',   icon: 'X' },
+  { id: 'select',  label: 'Select',  icon: '+' },
 ];
 
 /** Hit-test: find topmost shape at (x, y) by checking params. */
@@ -50,6 +51,16 @@ function hitTestShapes(shapes, x, y) {
         if (dist < 1.5) return shape;
         break;
       }
+      case 'ellipse': {
+        const ex = x - p.cx, ey = y - p.cy;
+        if (p.filled) {
+          if ((ex * ex) / (p.rx * p.rx) + (ey * ey) / (p.ry * p.ry) <= 1) return shape;
+        } else {
+          const val = (ex * ex) / (p.rx * p.rx) + (ey * ey) / (p.ry * p.ry);
+          if (Math.abs(val - 1) < 0.3) return shape;
+        }
+        break;
+      }
       case 'fill':
         // Flood fills are hard to hit-test; treat as point at origin
         if (p.x === x && p.y === y) return shape;
@@ -75,6 +86,9 @@ export class ToolManager {
 
     this._toolChangeCb = null;
     this._previewCb = null;
+    this._selectionChangeCb = null;
+    this._dragPreviewCb = null;
+    this._selectedShapeData = null;
   }
 
   /**
@@ -96,6 +110,10 @@ export class ToolManager {
 
   setTool(toolId) {
     this._activeTool = toolId;
+    this._selectedShape = null;
+    this._selectedShapeData = null;
+    if (this._selectionChangeCb) this._selectionChangeCb(null);
+    if (this._dragPreviewCb) this._dragPreviewCb(null, 0, 0);
     this._resetDrag();
     this._updateButtonHighlight();
     if (this._toolChangeCb) this._toolChangeCb(toolId);
@@ -103,6 +121,8 @@ export class ToolManager {
 
   onToolChange(cb) { this._toolChangeCb = cb; }
   onPreview(cb) { this._previewCb = cb; }
+  onSelectionChange(cb) { this._selectionChangeCb = cb; }
+  onDragPreview(cb) { this._dragPreviewCb = cb; }
 
   /* -- Mouse event handlers (called by canvas-editor via app.js) -- */
 
@@ -147,6 +167,13 @@ export class ToolManager {
         }
         break;
 
+      case 'ellipse':
+        if (this._startX === null) {
+          this._startX = x;
+          this._startY = y;
+        }
+        break;
+
       case 'erase': {
         const eraseHit = hitTestShapes(this._getShapes(), x, y);
         if (eraseHit) {
@@ -160,10 +187,15 @@ export class ToolManager {
         const selectHit = hitTestShapes(this._getShapes(), x, y);
         if (selectHit) {
           this._selectedShape = selectHit.name || selectHit.id;
+          this._selectedShapeData = selectHit;
           this._startX = x;
           this._startY = y;
+          if (this._selectionChangeCb) this._selectionChangeCb(selectHit);
         } else {
           this._selectedShape = null;
+          this._selectedShapeData = null;
+          if (this._selectionChangeCb) this._selectionChangeCb(null);
+          if (this._dragPreviewCb) this._dragPreviewCb(null, 0, 0);
         }
         break;
       }
@@ -174,8 +206,12 @@ export class ToolManager {
     if (this._startX === null) return;
 
     const tool = this._activeTool;
-    if (tool === 'line' || tool === 'rect' || tool === 'circle') {
+    if (tool === 'line' || tool === 'rect' || tool === 'circle' || tool === 'ellipse') {
       this._emitPreview(tool, x, y);
+    } else if (tool === 'select' && this._selectedShapeData) {
+      const dx = x - this._startX;
+      const dy = y - this._startY;
+      if (this._dragPreviewCb) this._dragPreviewCb(this._selectedShapeData, dx, dy);
     }
   }
 
@@ -207,6 +243,16 @@ export class ToolManager {
       this._resetDrag();
     }
 
+    if (tool === 'ellipse' && this._startX !== null) {
+      const rx = Math.abs(x - this._startX);
+      const ry = Math.abs(y - this._startY);
+      this._send({
+        action: 'draw', type: 'ellipse',
+        params: { cell, cx: this._startX, cy: this._startY, rx, ry, filled: true, color },
+      });
+      this._resetDrag();
+    }
+
     if (tool === 'select' && this._startX !== null && this._selectedShape) {
       const dx = x - this._startX;
       const dy = y - this._startY;
@@ -214,6 +260,9 @@ export class ToolManager {
         this._send({ action: 'move_shape', params: { cell, name: this._selectedShape, dx, dy } });
       }
       this._selectedShape = null;
+      this._selectedShapeData = null;
+      if (this._selectionChangeCb) this._selectionChangeCb(null);
+      if (this._dragPreviewCb) this._dragPreviewCb(null, 0, 0);
       this._resetDrag();
     }
   }
@@ -262,6 +311,16 @@ export class ToolManager {
         this._previewCb({
           type: 'circle',
           params: { cx: this._startX, cy: this._startY, r, filled: true },
+          color,
+        });
+        break;
+      }
+      case 'ellipse': {
+        const rx = Math.abs(x - this._startX);
+        const ry = Math.abs(y - this._startY);
+        this._previewCb({
+          type: 'ellipse',
+          params: { cx: this._startX, cy: this._startY, rx, ry, filled: true },
           color,
         });
         break;

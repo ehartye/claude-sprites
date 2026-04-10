@@ -41,7 +41,7 @@ export class ShapePanel {
     const ul = document.getElementById('shape-items');
     ul.innerHTML = '';
 
-    const sorted = [...this._shapes].sort((a, b) => a.zIndex - b.zIndex);
+    const sorted = [...this._shapes].sort((a, b) => b.zIndex - a.zIndex);
 
     for (const shape of sorted) {
       const li = document.createElement('li');

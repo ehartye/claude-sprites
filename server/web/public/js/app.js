@@ -41,7 +41,7 @@ function init() {
 
   // MCP tool broadcasts use specific event types — request full state refresh
   const refreshEvents = [
-    'shape_named', 'shape_moved', 'shape_recolored', 'shape_deleted', 'shape_z',
+    'shape_named', 'shape_moved', 'shape_recolored', 'shape_deleted', 'shape_z', 'shape_resized',
     'cell_shifted', 'cell_mirrored', 'cell_copied', 'cell_cleared', 'cell_named',
     'group_created', 'group_cells_added', 'group_cells_removed', 'group_deleted',
     'palette', 'undo', 'redo',
@@ -60,6 +60,8 @@ function init() {
     getShapes: () => findCell(state.activeCell)?.shapes || [],
   });
   tools.onToolChange((toolId) => { state.activeTool = toolId; });
+  tools.onSelectionChange((shape) => { editor.setSelectedShape(shape); });
+  tools.onDragPreview((shape, dx, dy) => { editor.setDragPreview(shape, dx, dy); });
 
   shapePanel.init({
     onSelect: (shapeId) => {
@@ -306,6 +308,33 @@ function setActiveColor(name, color) {
   });
 }
 
+/* -- Theme -- */
+
+function initTheme() {
+  const saved = localStorage.getItem('sprites-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  updateThemeButton(saved);
+  document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'dark';
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('sprites-theme', next);
+  updateThemeButton(next);
+  editor.render();
+  cellNav.render();
+}
+
+function updateThemeButton(theme) {
+  const btn = document.getElementById('theme-toggle');
+  if (btn) btn.textContent = theme === 'dark' ? '☀' : '◑';
+}
+
 /* -- Boot -- */
 
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  init();
+});

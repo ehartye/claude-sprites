@@ -5,8 +5,6 @@
 
 const MIN_ZOOM = 2;
 const MAX_ZOOM = 40;
-const GRID_COLOR = 'rgba(255, 255, 255, 0.12)';
-const GRID_HIGHLIGHT = 'rgba(255, 255, 255, 0.25)';
 
 export class CanvasEditor {
   constructor() {
@@ -35,6 +33,9 @@ export class CanvasEditor {
     this._cursorMoveCb = null;
     this._zoomChangeCb = null;
     this._onionSkinData = null;
+    this._selectedShape = null;
+    this._dragPreview = null;
+    this._isMouseDown = false;
 
     this._abortController = null;
   }
@@ -59,10 +60,9 @@ export class CanvasEditor {
   /* -- Public API -- */
 
   setCell(cellData) {
-    if (!cellData) return;
-    this._shapes = (cellData.shapes || [])
-      .filter(s => s.visible !== false)
-      .sort((a, b) => a.zIndex - b.zIndex);
+    this._shapes = cellData
+      ? (cellData.shapes || []).filter(s => s.visible !== false).sort((a, b) => a.zIndex - b.zIndex)
+      : [];
     this.render();
   }
 
@@ -90,6 +90,16 @@ export class CanvasEditor {
   onPixelUp(cb) { this._pixelUpCb = cb; }
   onCursorMove(cb) { this._cursorMoveCb = cb; }
   onZoomChange(cb) { this._zoomChangeCb = cb; }
+
+  setSelectedShape(shape) {
+    this._selectedShape = shape;
+    this.render();
+  }
+
+  setDragPreview(shape, dx, dy) {
+    this._dragPreview = shape ? { shape, dx, dy } : null;
+    this.render();
+  }
 
   /**
    * Set onion skin overlay data. Pass null to clear.
@@ -123,8 +133,25 @@ export class CanvasEditor {
       this._renderOnionSkin(ctx, ox, oy, z);
     }
 
-    // Shapes
+    // Shapes — pass 1: full extent at reduced opacity (shows overhang dimmed)
+    ctx.save();
+    ctx.globalAlpha = 0.35;
     this._renderShapes(ctx, ox, oy, z);
+    ctx.restore();
+
+    // Shapes — pass 2: clipped to grid at full opacity (overwrites in-bounds pixels)
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(ox, oy, gridPx, gridPx);
+    ctx.clip();
+    this._renderShapes(ctx, ox, oy, z);
+    ctx.restore();
+
+    // Drag preview ghost
+    if (this._dragPreview) this._renderDragPreview(ctx, ox, oy, z);
+
+    // Selection highlight
+    if (this._selectedShape) this._renderSelectionHighlight(ctx, ox, oy, z);
 
     // Grid
     this._renderGrid(ctx, ox, oy, z);
@@ -135,12 +162,15 @@ export class CanvasEditor {
       ctx.fillStyle = this._background.color;
       ctx.fillRect(ox, oy, gridPx, gridPx);
     } else {
-      // Checkerboard for transparent
+      // Checkerboard for transparent — read colors from CSS theme variables
+      const style = getComputedStyle(document.documentElement);
+      const colorA = style.getPropertyValue('--checker-a').trim();
+      const colorB = style.getPropertyValue('--checker-b').trim();
       const tileSize = Math.max(4, this.zoom);
       for (let y = 0; y < gridPx; y += tileSize) {
         for (let x = 0; x < gridPx; x += tileSize) {
           const dark = ((Math.floor(x / tileSize) + Math.floor(y / tileSize)) % 2) === 0;
-          ctx.fillStyle = dark ? '#2a2a3e' : '#323248';
+          ctx.fillStyle = dark ? colorA : colorB;
           const w = Math.min(tileSize, gridPx - x);
           const h = Math.min(tileSize, gridPx - y);
           ctx.fillRect(ox + x, oy + y, w, h);
@@ -202,6 +232,9 @@ export class CanvasEditor {
           }
         }
         break;
+      case 'ellipse':
+        this._drawEllipse(ctx, ox, oy, z, p.cx, p.cy, p.rx, p.ry, p.filled);
+        break;
     }
   }
 
@@ -230,6 +263,9 @@ export class CanvasEditor {
           break;
         case 'circle':
           this._drawCircle(ctx, ox, oy, z, p.cx, p.cy, p.r, p.filled);
+          break;
+        case 'ellipse':
+          this._drawEllipse(ctx, ox, oy, z, p.cx, p.cy, p.rx, p.ry, p.filled);
           break;
         case 'fill':
           // Fill is computed server-side; we just render the resulting pixel data
@@ -290,16 +326,41 @@ export class CanvasEditor {
     }
   }
 
+  _drawEllipse(ctx, ox, oy, z, cx, cy, rx, ry, filled) {
+    if (rx <= 0 || ry <= 0) return;
+    if (filled) {
+      for (let y = -ry; y <= ry; y++) {
+        for (let x = -rx; x <= rx; x++) {
+          if ((x * x) / (rx * rx) + (y * y) / (ry * ry) <= 1) {
+            ctx.fillRect(ox + (cx + x) * z, oy + (cy + y) * z, z, z);
+          }
+        }
+      }
+    } else {
+      const steps = Math.max(rx, ry) * 4;
+      const drawn = new Set();
+      for (let i = 0; i < steps; i++) {
+        const angle = (2 * Math.PI * i) / steps;
+        const px = Math.round(cx + rx * Math.cos(angle));
+        const py = Math.round(cy + ry * Math.sin(angle));
+        const key = `${px},${py}`;
+        if (!drawn.has(key)) { drawn.add(key); ctx.fillRect(ox + px * z, oy + py * z, z, z); }
+      }
+    }
+  }
+
   _renderGrid(ctx, ox, oy, z) {
     const gridPx = this.cellSize * z;
+    const style = getComputedStyle(document.documentElement);
+    const gridColor = style.getPropertyValue('--grid-line').trim();
+    const highlightColor = style.getPropertyValue('--grid-highlight').trim();
 
-    ctx.strokeStyle = GRID_COLOR;
+    ctx.strokeStyle = gridColor;
     ctx.lineWidth = 1;
 
     ctx.beginPath();
     for (let i = 0; i <= this.cellSize; i++) {
       const pos = i * z;
-      // Highlight every 8 pixels
       if (i > 0 && i < this.cellSize && i % 8 === 0) continue;
       ctx.moveTo(ox + pos + 0.5, oy);
       ctx.lineTo(ox + pos + 0.5, oy + gridPx);
@@ -308,8 +369,8 @@ export class CanvasEditor {
     }
     ctx.stroke();
 
-    // Highlight lines every 8 pixels
-    ctx.strokeStyle = GRID_HIGHLIGHT;
+    // Quadrant boundaries every 8 pixels
+    ctx.strokeStyle = highlightColor;
     ctx.beginPath();
     for (let i = 8; i < this.cellSize; i += 8) {
       const pos = i * z;
@@ -319,6 +380,73 @@ export class CanvasEditor {
       ctx.lineTo(ox + gridPx, oy + pos + 0.5);
     }
     ctx.stroke();
+  }
+
+  _renderDragPreview(ctx, ox, oy, z) {
+    const { shape, dx, dy } = this._dragPreview;
+    const p = shape.params;
+    ctx.save();
+    ctx.globalAlpha = 0.5;
+    ctx.fillStyle = this._resolveColor(shape.color);
+    switch (shape.type) {
+      case 'point':
+        ctx.fillRect(ox + (p.x + dx) * z, oy + (p.y + dy) * z, z, z);
+        break;
+      case 'rect':
+        if (p.filled) {
+          ctx.fillRect(ox + (p.x + dx) * z, oy + (p.y + dy) * z, p.w * z, p.h * z);
+        } else {
+          ctx.fillRect(ox + (p.x + dx) * z, oy + (p.y + dy) * z, p.w * z, z);
+          ctx.fillRect(ox + (p.x + dx) * z, oy + (p.y + p.h - 1 + dy) * z, p.w * z, z);
+          ctx.fillRect(ox + (p.x + dx) * z, oy + (p.y + dy) * z, z, p.h * z);
+          ctx.fillRect(ox + (p.x + p.w - 1 + dx) * z, oy + (p.y + dy) * z, z, p.h * z);
+        }
+        break;
+      case 'circle':
+        this._drawCircle(ctx, ox, oy, z, p.cx + dx, p.cy + dy, p.r, p.filled);
+        break;
+      case 'ellipse':
+        this._drawEllipse(ctx, ox, oy, z, p.cx + dx, p.cy + dy, p.rx, p.ry, p.filled);
+        break;
+      case 'line':
+        this._drawLine(ctx, ox, oy, z, p.x1 + dx, p.y1 + dy, p.x2 + dx, p.y2 + dy);
+        break;
+    }
+    ctx.restore();
+  }
+
+  _renderSelectionHighlight(ctx, ox, oy, z) {
+    const s = this._selectedShape;
+    const p = s.params;
+    let bx, by, bw, bh;
+    switch (s.type) {
+      case 'point':
+        bx = p.x; by = p.y; bw = 1; bh = 1;
+        break;
+      case 'rect':
+        bx = p.x; by = p.y; bw = p.w; bh = p.h;
+        break;
+      case 'circle':
+        bx = p.cx - p.r; by = p.cy - p.r;
+        bw = p.r * 2 + 1; bh = p.r * 2 + 1;
+        break;
+      case 'ellipse':
+        bx = p.cx - p.rx; by = p.cy - p.ry;
+        bw = p.rx * 2 + 1; bh = p.ry * 2 + 1;
+        break;
+      case 'line':
+        bx = Math.min(p.x1, p.x2); by = Math.min(p.y1, p.y2);
+        bw = Math.abs(p.x2 - p.x1) + 1; bh = Math.abs(p.y2 - p.y1) + 1;
+        break;
+      default:
+        return;
+    }
+    ctx.save();
+    ctx.strokeStyle = 'rgba(255, 255, 80, 0.9)';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([4, 3]);
+    ctx.strokeRect(ox + bx * z - 1, oy + by * z - 1, bw * z + 2, bh * z + 2);
+    ctx.restore();
   }
 
   /* -- Color resolution -- */
@@ -372,6 +500,7 @@ export class CanvasEditor {
       if (e.button === 0 && !this._spaceHeld) {
         const px = this._canvasToPixel(e.clientX, e.clientY);
         if (px.inBounds && this._pixelClickCb) {
+          this._isMouseDown = true;
           this._pixelClickCb(px.x, px.y, e);
         }
       }
@@ -389,15 +518,19 @@ export class CanvasEditor {
       if (px.inBounds && this._pixelMoveCb) this._pixelMoveCb(px.x, px.y, e);
     }, sig);
 
-    this.canvas.addEventListener('mouseup', (e) => {
+    // Window-level mouseup so drag-release outside canvas is captured
+    window.addEventListener('mouseup', (e) => {
       if (this._isPanning) {
         this._isPanning = false;
         return;
       }
-      if (e.button === 0) {
-        const px = this._canvasToPixel(e.clientX, e.clientY);
-        if (px.inBounds && this._pixelUpCb) {
-          this._pixelUpCb(px.x, px.y, e);
+      if (e.button === 0 && this._isMouseDown) {
+        this._isMouseDown = false;
+        if (this._pixelUpCb) {
+          const px = this._canvasToPixel(e.clientX, e.clientY);
+          const x = Math.max(0, Math.min(this.cellSize - 1, px.x));
+          const y = Math.max(0, Math.min(this.cellSize - 1, px.y));
+          this._pixelUpCb(x, y, e);
         }
       }
     }, sig);

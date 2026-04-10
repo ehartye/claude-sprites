@@ -108,21 +108,23 @@ export class CellNavigator {
    */
   _renderThumb(canvas, ref) {
     const ctx = canvas.getContext('2d');
-    const cell = this._cells[ref];
-    if (!cell || !cell.shapes || cell.shapes.length === 0) {
-      // Empty cell — draw subtle grid hint
-      ctx.fillStyle = '#2a2a3e';
-      ctx.fillRect(0, 0, 48, 48);
-      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
-      ctx.strokeRect(0.5, 0.5, 47, 47);
-      return;
+    const cellSize = this._cellSize;
+    const size = canvas.width;
+    const scale = size / cellSize;
+
+    // Checkerboard background — one square per pixel, theme-aware
+    const style = getComputedStyle(document.documentElement);
+    const colorA = style.getPropertyValue('--checker-a').trim();
+    const colorB = style.getPropertyValue('--checker-b').trim();
+    for (let row = 0; row < cellSize; row++) {
+      for (let col = 0; col < cellSize; col++) {
+        ctx.fillStyle = ((row + col) % 2 === 0) ? colorA : colorB;
+        ctx.fillRect(col * scale, row * scale, scale, scale);
+      }
     }
 
-    const cellSize = this._cellSize;
-    const scale = 48 / cellSize;
-
-    ctx.fillStyle = '#2a2a3e';
-    ctx.fillRect(0, 0, 48, 48);
+    const cell = this._cells[ref];
+    if (!cell || !cell.shapes || cell.shapes.length === 0) return;
 
     const sorted = [...cell.shapes]
       .filter(s => s.visible !== false)

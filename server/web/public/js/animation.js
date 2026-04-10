@@ -29,7 +29,7 @@ export class AnimationPreview {
 
   init() {
     this._container = this._createUI();
-    document.body.appendChild(this._container);
+    document.getElementById('anim-panel').appendChild(this._container);
   }
 
   setPalette(paletteMap) { this._palette = paletteMap; }
@@ -106,7 +106,6 @@ export class AnimationPreview {
   _createUI() {
     const container = document.createElement('div');
     container.id = 'animation-preview';
-    container.className = 'animation-preview';
 
     const header = document.createElement('div');
     header.className = 'anim-header';
@@ -151,6 +150,7 @@ export class AnimationPreview {
     fpsRow.className = 'anim-fps-row';
 
     const fpsLabel = document.createElement('span');
+    fpsLabel.className = 'anim-fps-label';
     fpsLabel.textContent = `${this._fps} FPS`;
     this._fpsLabel = fpsLabel;
 
@@ -169,8 +169,8 @@ export class AnimationPreview {
       }
     });
 
-    fpsRow.appendChild(fpsSlider);
     fpsRow.appendChild(fpsLabel);
+    fpsRow.appendChild(fpsSlider);
     container.appendChild(fpsRow);
 
     // Onion skin toggle
@@ -202,9 +202,17 @@ export class AnimationPreview {
     const ctx = this._ctx;
     ctx.clearRect(0, 0, PREVIEW_SIZE, PREVIEW_SIZE);
 
-    // Background
-    ctx.fillStyle = '#2a2a3e';
-    ctx.fillRect(0, 0, PREVIEW_SIZE, PREVIEW_SIZE);
+    // Checkerboard background — one square per pixel, matching the cell grid
+    const style = getComputedStyle(document.documentElement);
+    const colorA = style.getPropertyValue('--checker-a').trim();
+    const colorB = style.getPropertyValue('--checker-b').trim();
+    const tileSize = PREVIEW_SIZE / this._cellSize;
+    for (let row = 0; row < this._cellSize; row++) {
+      for (let col = 0; col < this._cellSize; col++) {
+        ctx.fillStyle = ((row + col) % 2 === 0) ? colorA : colorB;
+        ctx.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
+      }
+    }
 
     if (this._frames.length === 0) return;
 
@@ -238,6 +246,17 @@ export class AnimationPreview {
             for (let y = -p.r; y <= p.r; y++) {
               for (let x = -p.r; x <= p.r; x++) {
                 if (x * x + y * y <= p.r * p.r) {
+                  ctx.fillRect((p.cx + x) * scale, (p.cy + y) * scale, scale, scale);
+                }
+              }
+            }
+          }
+          break;
+        case 'ellipse':
+          if (p.filled) {
+            for (let y = -p.ry; y <= p.ry; y++) {
+              for (let x = -p.rx; x <= p.rx; x++) {
+                if ((x * x) / (p.rx * p.rx) + (y * y) / (p.ry * p.ry) <= 1) {
                   ctx.fillRect((p.cx + x) * scale, (p.cy + y) * scale, scale, scale);
                 }
               }
