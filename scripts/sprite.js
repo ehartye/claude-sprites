@@ -3,6 +3,7 @@
 import { spawn } from 'child_process';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { readFileSync } from 'fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const BASE_URL = `http://localhost:${process.env.SPRITE_PORT ?? 3377}`;
@@ -56,6 +57,83 @@ function parseArgs(argv) {
 
 function num(v) { return v !== undefined ? Number(v) : undefined; }
 function bool(v) { return v === 'true' || v === true; }
+
+function mapCommandToApi(cmd) {
+  const { command, ...params } = cmd;
+  switch (command) {
+    case 'draw':
+      return { method: 'POST', path: '/api/draw', body: {
+        type: params.type, cell: params.cell, color: params.color, shape_name: params.name,
+        x: params.x, y: params.y,
+        x1: params.x1, y1: params.y1, x2: params.x2, y2: params.y2,
+        cx: params.cx, cy: params.cy,
+        r: params.r, rx: params.rx, ry: params.ry,
+        w: params.w, h: params.h,
+        filled: params.filled,
+        shape: params.shape, direction: params.direction, strength: params.strength,
+      }};
+    case 'move':
+      return { method: 'POST', path: '/api/shape/move', body: {
+        cell: params.cell, name: params.shape, dx: params.dx, dy: params.dy,
+      }};
+    case 'move-to':
+      return { method: 'POST', path: '/api/shape/move-to', body: {
+        cell: params.cell, shape: params.shape, x: params.x, y: params.y,
+      }};
+    case 'resize':
+      return { method: 'POST', path: '/api/shape/resize', body: {
+        cell: params.cell, shape: params.shape, updates: params.updates ?? params,
+      }};
+    case 'recolor':
+      return { method: 'POST', path: '/api/shape/recolor', body: {
+        cell: params.cell, name: params.shape, color: params.color,
+      }};
+    case 'delete':
+      return { method: 'POST', path: '/api/shape/delete', body: {
+        cell: params.cell, name: params.shape,
+      }};
+    case 'clone':
+      return { method: 'POST', path: '/api/shape/clone', body: {
+        from_cell: params.from, to_cell: params.to, shape: params.shape, new_name: params.as,
+      }};
+    case 'copy':
+      return { method: 'POST', path: '/api/cell/copy', body: {
+        from: params.from, to: params.to,
+      }};
+    case 'clear':
+      return { method: 'POST', path: '/api/cell/clear', body: { cell: params.cell } };
+    case 'group': {
+      const sub = params.sub;
+      const name = params.name;
+      switch (sub) {
+        case 'create': return { method: 'POST', path: '/api/group/cell/create', body: { name, cells: params.cells } };
+        case 'add':    return { method: 'POST', path: '/api/group/cell/add', body: { name, cells: params.cells } };
+        case 'remove': return { method: 'POST', path: '/api/group/cell/remove', body: { name, cells: params.cells } };
+        case 'delete': return { method: 'POST', path: '/api/group/cell/delete', body: { name } };
+        case 'list':   return { method: 'GET', path: '/api/group/cell/list', body: undefined };
+        default: throw new Error(`Unknown group sub-command: ${sub}`);
+      }
+    }
+    default:
+      throw new Error(`Unknown batch command: ${command}`);
+  }
+}
+
+function describeBatchCommand(cmd) {
+  switch (cmd.command) {
+    case 'draw': return `draw ${cmd.type}${cmd.name ? ` -> ${cmd.name}` : ''} (${cmd.cell})`;
+    case 'move': return `move ${cmd.shape} (${cmd.cell})`;
+    case 'move-to': return `move-to ${cmd.shape} (${cmd.cell})`;
+    case 'resize': return `resize ${cmd.shape} (${cmd.cell})`;
+    case 'recolor': return `recolor ${cmd.shape} (${cmd.cell})`;
+    case 'delete': return `delete ${cmd.shape} (${cmd.cell})`;
+    case 'clone': return `clone ${cmd.shape} ${cmd.from} -> ${cmd.to}`;
+    case 'copy': return `copy ${cmd.from} -> ${cmd.to}`;
+    case 'clear': return `clear (${cmd.cell})`;
+    case 'group': return `group ${cmd.sub} ${cmd.name}`;
+    default: return `${cmd.command}`;
+  }
+}
 
 async function run() {
   await ensureServer();
@@ -203,6 +281,98 @@ async function run() {
         name: sub, cell: args.cell, all_cells: bool(args['all-cells']), color: args.color,
       });
       break;
+
+    case 'view-anim': {
+      const groupName = sub;
+      const groupResult = await api('GET', '/api/group/cell/list');
+      if (!groupResult.ok) { console.error(groupResult.error); process.exit(1); }
+      const cellRefs = groupResult.data[groupName];
+      if (!cellRefs || cellRefs.length === 0) {
+        console.error(`Group "${groupName}" not found or empty`);
+        process.exit(1);
+      }
+
+      const frames = [];
+      for (const cellRef of cellRefs) {
+        const viewResult = await api('POST', '/api/cell/view', { cell: cellRef, format: 'terminal' });
+        if (!viewResult.ok) { console.error(viewResult.error); process.exit(1); }
+        frames.push(viewResult.data.terminal);
+      }
+
+      const fps = num(args.fps) ?? 8;
+      const loops = num(args.loops) ?? 3;
+      const totalFrames = frames.length;
+      const delay = Math.round(1000 / fps);
+
+      let loopsPlayed = 0;
+      while (loops === 0 || loopsPlayed < loops) {
+        for (let i = 0; i < totalFrames; i++) {
+          if (loopsPlayed > 0 || i > 0) {
+            process.stdout.write('\x1b[H\x1b[2J');
+          }
+          process.stdout.write(frames[i]);
+          process.stdout.write(`\nFrame ${i + 1}/${totalFrames} — ${groupName} @ ${fps}fps\n`);
+          await new Promise(r => setTimeout(r, delay));
+        }
+        loopsPlayed++;
+      }
+      return;
+    }
+
+    case 'batch': {
+      const continueOnError = bool(args['continue-on-error']);
+      let commands;
+
+      if (args.stdin) {
+        // Read from stdin
+        const data = await new Promise((resolve, reject) => {
+          const chunks = [];
+          process.stdin.on('data', chunk => chunks.push(chunk));
+          process.stdin.on('end', () => resolve(Buffer.concat(chunks).toString('utf-8')));
+          process.stdin.on('error', reject);
+        });
+        commands = JSON.parse(data);
+      } else {
+        // Read from file (first positional arg)
+        const filePath = sub;
+        if (!filePath) { console.error('Usage: sprite batch <file.json> or sprite batch --stdin'); process.exit(1); }
+        commands = JSON.parse(readFileSync(filePath, 'utf-8'));
+      }
+
+      if (!Array.isArray(commands)) { console.error('Batch input must be a JSON array'); process.exit(1); }
+
+      const total = commands.length;
+      let succeeded = 0;
+      let failed = 0;
+
+      for (let i = 0; i < total; i++) {
+        const cmd = commands[i];
+        const label = describeBatchCommand(cmd);
+        process.stdout.write(`[${i + 1}/${total}] ${label}`);
+
+        try {
+          const { method, path, body } = mapCommandToApi(cmd);
+          const res = await api(method, path, body);
+          if (!res.ok) throw new Error(res.error);
+          console.log(` -> ok`);
+          succeeded++;
+        } catch (e) {
+          console.log(` -> ERROR: ${e.message}`);
+          failed++;
+          if (!continueOnError) {
+            console.error(`Error at command ${i + 1}/${total}: ${e.message}`);
+            process.exit(1);
+          }
+        }
+      }
+
+      if (failed > 0) {
+        console.log(`Done: ${succeeded}/${total} succeeded, ${failed} failed`);
+      } else {
+        console.log(`Done: ${succeeded}/${total} succeeded`);
+      }
+      return;
+    }
 
     default:
       console.error(`Unknown command: ${cmd}`);
