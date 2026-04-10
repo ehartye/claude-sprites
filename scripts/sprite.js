@@ -95,6 +95,9 @@ async function run() {
         r: num(args.r), rx: num(args.rx), ry: num(args.ry),
         w: num(args.w), h: num(args.h),
         filled: args.filled !== undefined ? bool(args.filled) : undefined,
+        // highlight/shadow params
+        shape: args.shape, direction: args.direction,
+        strength: num(args.strength),
       });
       break;
 
@@ -115,9 +118,24 @@ async function run() {
     case 'move-to':
       result = await api('POST', '/api/shape/move-to', { cell: args.cell, shape: sub, x: num(args.x), y: num(args.y) });
       break;
-    case 'resize':
-      result = await api('POST', '/api/shape/resize', { cell: args.cell, shape: sub, updates: JSON.parse(args.updates) });
+    case 'resize': {
+      // Collect individual shape-param flags into an updates object
+      const individualFlags = {};
+      for (const key of ['r', 'rx', 'ry', 'w', 'h', 'x1', 'y1', 'x2', 'y2']) {
+        if (args[key] !== undefined) individualFlags[key] = num(args[key]);
+      }
+      if (args.filled !== undefined) individualFlags.filled = bool(args.filled);
+
+      // Parse --updates JSON fallback, then merge individual flags on top (individual wins)
+      let base = {};
+      if (args.updates) {
+        try { base = JSON.parse(args.updates); } catch { base = {}; }
+      }
+      const updates = { ...base, ...individualFlags };
+
+      result = await api('POST', '/api/shape/resize', { cell: args.cell, shape: sub, updates });
       break;
+    }
     case 'recolor':
       result = await api('POST', '/api/shape/recolor', { cell: args.cell, name: sub, color: args.color });
       break;
