@@ -185,6 +185,59 @@ function handleHighlightShadow(state, type, params) {
 }
 
 /**
+ * Compound sphere-shading: layers 2–5 highlight/shadow tiers in a single call.
+ * Tier count is driven by `intensity` (low|med|high|auto). Auto picks by the
+ * target's sizeMetric so tiny sprites don't get over-shaded.
+ *
+ * Each tier row: [label, type, strength, direction, span_deg, radius_factor].
+ */
+const SPHERE_TIERS_BY_INTENSITY = {
+  low:  [['hl',   'highlight', 1, 'top-left',     30, 0.55],
+         ['core', 'shadow',    2, 'bottom-right', 35, 0.72]],
+  med:  [['mid',  'shadow',    1, 'bottom-right', 110, 0.78],
+         ['core', 'shadow',    2, 'bottom-right', 35, 0.72],
+         ['hl',   'highlight', 1, 'top-left',     30, 0.55]],
+  high: [['mid',  'shadow',    1, 'bottom-right', 110, 0.78],
+         ['core', 'shadow',    2, 'bottom-right', 35, 0.72],
+         ['rim',  'highlight', 1, 'bottom-right', 30, 0.92],
+         ['hl',   'highlight', 1, 'top-left',     30, 0.55],
+         ['spec', 'highlight', 3, 'top-left',     20, 0.45]],
+};
+
+function pickSphereIntensity(target) {
+  const p = target.params;
+  const sz = target.type === 'circle' ? p.r : Math.max(p.rx, p.ry);
+  if (sz <= 6) return 'low';
+  if (sz <= 12) return 'med';
+  return 'high';
+}
+
+function handleSphereShade(state, params) {
+  const cell = state.project.cells.getCell(params.cell);
+  const target = cell.shapes.get(params.shape);
+  if (!target) throw new Error(`Shape "${params.shape}" not found`);
+  if (target.type !== 'circle' && target.type !== 'ellipse') {
+    throw new Error(`sphere-shade requires a circle or ellipse target`);
+  }
+  const intensity = (!params.intensity || params.intensity === 'auto')
+    ? pickSphereIntensity(target) : params.intensity;
+  const tiers = SPHERE_TIERS_BY_INTENSITY[intensity];
+  if (!tiers) throw new Error(`intensity must be low|med|high|auto`);
+  const base = params.shape_name ?? `${params.shape}_shade`;
+  const allNames = [];
+  for (const [label, type, strength, dir, span, rf] of tiers) {
+    const extra = label === 'spec' ? { count: 2 } : {};
+    const r = handleHighlightShadow(state, type, {
+      cell: params.cell, shape: params.shape,
+      direction: dir, strength, span_deg: span, radius_factor: rf,
+      shape_name: `${base}_${label}`, ...extra,
+    });
+    allNames.push(...r.shapeNames);
+  }
+  return { shapeNames: allNames };
+}
+
+/**
  * Test whether (px, py) falls inside a mask shape's filled area.
  * Supports circle, ellipse, rect. Points/lines are treated as zero-area.
  */
@@ -279,6 +332,52 @@ function rasterizeEllipseOutline(cx, cy, rx, ry) {
 }
 
 /**
+ * Rasterize a partial ellipse outline between angles (CW, y-down:
+ * 0=east, 90=south, 180=west, 270=north). Walks from fromDeg to toDeg;
+ * if span is zero or negative, wraps a full 360° in the positive direction.
+ */
+function rasterizeEllipseArc(cx, cy, rx, ry, fromDeg, toDeg) {
+  const steps = Math.max(rx, ry) * 4;
+  const drawn = new Set();
+  const pixels = [];
+  const fromRad = (fromDeg * Math.PI) / 180;
+  const toRad = (toDeg * Math.PI) / 180;
+  let span = toRad - fromRad;
+  if (span <= 0) span += 2 * Math.PI;
+  const n = Math.max(8, Math.round((span / (2 * Math.PI)) * steps));
+  for (let i = 0; i <= n; i++) {
+    const a = fromRad + (span * i) / n;
+    const px = Math.round(cx + rx * Math.cos(a));
+    const py = Math.round(cy + ry * Math.sin(a));
+    const key = `${px},${py}`;
+    if (!drawn.has(key)) { drawn.add(key); pixels.push({ x: px, y: py }); }
+  }
+  return pixels;
+}
+
+function handleArc(state, params, cell) {
+  const rx = params.rx ?? params.r;
+  const ry = params.ry ?? params.r;
+  if (!rx || !ry) throw new Error('arc requires rx/ry or r');
+  const pixels = rasterizeEllipseArc(params.cx, params.cy, rx, ry, params.from_deg, params.to_deg);
+  let filtered = pixels;
+  if (params.clip_to) {
+    const mask = cell.shapes.get(params.clip_to);
+    if (!mask) throw new Error(`Clip-to shape "${params.clip_to}" not found`);
+    filtered = pixels.filter(pt => isInsideShape(mask, pt.x, pt.y));
+  }
+  const base = params.shape_name ?? 'arc';
+  const shapeNames = [];
+  for (let i = 0; i < filtered.length; i++) {
+    const name = `${base}_${i}`;
+    const shape = cell.draw('point', filtered[i], params.color, name);
+    state.broadcast?.({ type: 'draw', cell: params.cell, shape: shape.toJSON() });
+    shapeNames.push(name);
+  }
+  return { shapeNames };
+}
+
+/**
  * Handle a `draw ellipse --clip-to <mask>` by rasterizing the outline,
  * filtering pixels to those inside the mask, and emitting them as points.
  * Keeps the original shape out of the registry entirely — only the clipped
@@ -363,6 +462,10 @@ function handleBorder(state, params, cell) {
 export function handleDraw(state, type, params) {
   if (!state.project) throw new Error('No project open');
 
+  if (type === 'sphere-shade') {
+    return handleSphereShade(state, params);
+  }
+
   if (type === 'highlight' || type === 'shadow') {
     return handleHighlightShadow(state, type, params);
   }
@@ -371,6 +474,19 @@ export function handleDraw(state, type, params) {
 
   if (type === 'border') {
     return handleBorder(state, params, cell);
+  }
+
+  if (type === 'arc') {
+    return handleArc(state, params, cell);
+  }
+
+  if (type === 'ring') {
+    // Single-target sugar over border.
+    return handleBorder(state, {
+      ...params,
+      shapes: params.shape,
+      shape_name: params.shape_name ?? `${params.shape}_ring`,
+    }, cell);
   }
 
   // Clip-to path: rasterize the outline, filter by mask, emit pixels as points.

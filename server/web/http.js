@@ -12,6 +12,7 @@ import { drawRoutes } from './api/draw-routes.js';
 import { shapeRoutes } from './api/shape-routes.js';
 import { cellRoutes } from './api/cell-routes.js';
 import { groupRoutes } from './api/group-routes.js';
+import { controlRoutes } from './api/control-routes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -56,6 +57,7 @@ export async function startWebServer(state, port) {
   app.use('/api', shapeRoutes(state));
   app.use('/api', cellRoutes(state));
   app.use('/api', groupRoutes(state));
+  app.use('/api/control', controlRoutes(state));
   app.use(express.static(path.join(__dirname, 'public'), { etag: false, lastModified: false, setHeaders: (res) => res.setHeader('Cache-Control', 'no-store') }));
 
   const httpServer = http.createServer(app);

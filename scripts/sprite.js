@@ -58,6 +58,55 @@ function parseArgs(argv) {
 function num(v) { return v !== undefined ? Number(v) : undefined; }
 function bool(v) { return v === 'true' || v === true; }
 
+function parseVarsFlag(s) {
+  // Split on commas that precede "<ident>=", so values like "0,0" are preserved.
+  // Null-prototype object so keys like __proto__ become own data, not silent no-ops.
+  const out = Object.create(null);
+  const str = String(s);
+  const parts = [];
+  const re = /,(?=\w+=)/g;
+  let last = 0;
+  let m;
+  while ((m = re.exec(str)) !== null) {
+    parts.push(str.slice(last, m.index));
+    last = m.index + 1;
+  }
+  parts.push(str.slice(last));
+  for (const kv of parts) {
+    if (!kv) continue;
+    const eq = kv.indexOf('=');
+    if (eq < 0) continue;
+    const k = kv.slice(0, eq).trim();
+    const v = kv.slice(eq + 1);
+    if (!k) continue;
+    const n = Number(v);
+    out[k] = (v !== '' && !Number.isNaN(n)) ? n : v;
+  }
+  return out;
+}
+
+function substituteVars(value, vars) {
+  if (value == null) return value;
+  if (typeof value === 'string') {
+    const whole = value.match(/^\{\{(\w+)\}\}$/);
+    if (whole) {
+      if (!(whole[1] in vars)) throw new Error(`variable "${whole[1]}" not defined`);
+      return vars[whole[1]];
+    }
+    return value.replace(/\{\{(\w+)\}\}/g, (_, k) => {
+      if (!(k in vars)) throw new Error(`variable "${k}" not defined`);
+      return String(vars[k]);
+    });
+  }
+  if (Array.isArray(value)) return value.map(v => substituteVars(v, vars));
+  if (typeof value === 'object') {
+    const o = {};
+    for (const k of Object.keys(value)) o[k] = substituteVars(value[k], vars);
+    return o;
+  }
+  return value;
+}
+
 function mapCommandToApi(cmd) {
   const { command, ...params } = cmd;
   switch (command) {
@@ -157,6 +206,7 @@ SESSION
   save                   persist project to SQLite
   export                 export PNG + JSON atlas to cwd
   status                 show active project info
+  restart                graceful shutdown + respawn of sprite server
 
 DRAWING  (draw <type> --cell R,C --color <hex|name> [--name <shape_name>])
   draw point     --x --y
@@ -170,6 +220,13 @@ DRAWING  (draw <type> --cell R,C --color <hex|name> [--name <shape_name>])
     highlight/shadow auto-compute lighter/darker color from palette ramps
     and place pixels along the target shape's bounding box edge.
     Requires target color to be in palette ramps (pico8, db-16, db-32).
+  draw sphere-shade --shape <target> [--intensity low|med|high|auto] [--name <base>]
+    compound 2–5 tier highlight+shadow lighting on a circle/ellipse in one call.
+    auto picks by target size (r<=6 low, 7-12 med, >12 high).
+  draw arc     --cx --cy (--r | --rx --ry) --from-deg --to-deg --color [--clip-to <mask>] [--name <base>]
+    partial ellipse outline (CW, y-down: 0=east, 90=south). emits one point shape per pixel.
+  draw ring    --shape <target> --color [--clip-to <mask>] [--name <base>]
+    single-target sugar over border — 4-neighbor halo around the target shape.
 
 SHAPES
   shapes      --cell                                list shapes z-ordered
@@ -182,6 +239,7 @@ SHAPES
 
 CELLS
   copy  --from R,C --to R,C        clear --cell         name --cell --as <name>
+  clone-cell --from R,C --to "R,C R,C ..."  (atomic fan-out; all-or-nothing)
   view  --cell                     view-anim <group>    undo/redo --cell
 
 GROUPS (cells)
@@ -190,12 +248,19 @@ GROUPS (cells)
 
 SHAPE GROUPS (within a cell)
   shape-group create <name> <shapes...> --cell
+  shape-group create <name> --all-cells true --pattern <regex>
+                              bulk-group matching shape names across every cell
   shape-group add/remove/delete <name> [--cell]      shape-group list --cell
   move-group    <name> --cell --dx --dy [--all-cells true]
   recolor-group <name> --cell --color [--all-cells true]
 
 BATCH
-  batch --file <path.json>    execute an array of commands atomically
+  batch <path.json>           execute an array of commands; fails fast on first error
+                              (stderr: "ERROR at op N/M: <label> — <message>", exit 1)
+                              add --continue-on-error true to run all ops and summarize
+                              --vars k=v,k2=v2  substitute {{k}} placeholders in ops
+                                                (numeric when value parses as a number)
+                              --vars-file <json>  array of var dicts; ops replay once per dict
 
 Full reference: skills/sprite-editing/references/tool-reference.md
 `;
@@ -218,6 +283,17 @@ async function run() {
     case 'status':
       result = await api('GET', '/api/session/status');
       break;
+    case 'restart': {
+      try { await api('POST', '/api/control/shutdown'); } catch {}
+      const deadline = Date.now() + 3000;
+      while (Date.now() < deadline) {
+        await new Promise(r => setTimeout(r, 200));
+        if (!(await health())) break;
+      }
+      await ensureServer();
+      console.log('restarted');
+      return;
+    }
     case 'new':
       result = await api('POST', '/api/session/new', {
         name: sub, size: num(args.size), rows: num(args.rows),
@@ -249,6 +325,9 @@ async function run() {
         count: num(args.count),
         span_deg: num(args['span-deg']),
         radius_factor: num(args['radius-factor']),
+        intensity: args.intensity,
+        from_deg: num(args['from-deg']),
+        to_deg: num(args['to-deg']),
         clip_to: args['clip-to'],
         shape_prefix: args['shape-prefix'],
         shapes: args.shapes,
@@ -306,6 +385,11 @@ async function run() {
     case 'copy':
       result = await api('POST', '/api/cell/copy', { from: args.from, to: args.to });
       break;
+    case 'clone-cell': {
+      const to = args.to?.split(/\s+/).filter(Boolean) ?? [];
+      result = await api('POST', '/api/cell/clone-fanout', { from: args.from, to });
+      break;
+    }
     case 'clear':
       result = await api('POST', '/api/cell/clear', { cell: args.cell });
       break;
@@ -340,7 +424,12 @@ async function run() {
 
     case 'shape-group':
       switch (sub) {
-        case 'create': result = await api('POST', '/api/group/shape/create', { cell: args.cell, name: name, shapes: args.shapes?.split(' ') ?? positional.slice(2) }); break;
+        case 'create': result = await api('POST', '/api/group/shape/create', {
+          cell: args.cell, name: name,
+          shapes: args.shapes?.split(' ') ?? positional.slice(2),
+          all_cells: bool(args['all-cells']) || undefined,
+          pattern: args.pattern,
+        }); break;
         case 'list':   result = await api('GET', `/api/group/shape/list?cell=${args.cell}`); break;
         case 'add':    result = await api('POST', '/api/group/shape/add', { cell: args.cell, name: name, shapes: args.shapes?.split(' ') ?? positional.slice(2) }); break;
         case 'remove': result = await api('POST', '/api/group/shape/remove', { cell: args.cell, name: name, shapes: args.shapes?.split(' ') ?? positional.slice(2) }); break;
@@ -401,10 +490,20 @@ async function run() {
 
     case 'batch': {
       const continueOnError = bool(args['continue-on-error']);
+      const inlineVars = args.vars ? parseVarsFlag(args.vars) : null;
+      let frames = null;
+      if (args['vars-file']) {
+        const framesJson = JSON.parse(readFileSync(args['vars-file'], 'utf-8'));
+        if (!Array.isArray(framesJson)) {
+          console.error('--vars-file must contain a JSON array of variable dicts');
+          process.exitCode = 1;
+          return;
+        }
+        frames = framesJson;
+      }
       let commands;
 
       if (args.stdin) {
-        // Read from stdin
         const data = await new Promise((resolve, reject) => {
           const chunks = [];
           process.stdin.on('data', chunk => chunks.push(chunk));
@@ -413,7 +512,6 @@ async function run() {
         });
         commands = JSON.parse(data);
       } else {
-        // Read from file (first positional arg)
         const filePath = sub;
         if (!filePath) { console.error('Usage: sprite batch <file.json> or sprite batch --stdin'); process.exitCode = 1; return; }
         commands = JSON.parse(readFileSync(filePath, 'utf-8'));
@@ -421,28 +519,48 @@ async function run() {
 
       if (!Array.isArray(commands)) { console.error('Batch input must be a JSON array'); process.exitCode = 1; return; }
 
-      const total = commands.length;
+      const runs = frames ?? [inlineVars];
+      const total = commands.length * runs.length;
       let succeeded = 0;
       let failed = 0;
+      let opIndex = 0;
 
-      for (let i = 0; i < total; i++) {
-        const cmd = commands[i];
-        const label = describeBatchCommand(cmd);
-        process.stdout.write(`[${i + 1}/${total}] ${label}`);
+      for (const frameVars of runs) {
+        for (let i = 0; i < commands.length; i++) {
+          opIndex++;
+          let cmd = commands[i];
+          if (frameVars) {
+            try { cmd = substituteVars(cmd, frameVars); }
+            catch (e) {
+              const label = describeBatchCommand(commands[i]);
+              process.stdout.write(`[${opIndex}/${total}] ${label}`);
+              console.log(` -> ERROR: ${e.message}`);
+              failed++;
+              if (!continueOnError) {
+                console.error(`ERROR at op ${opIndex}/${total}: ${label} \u2014 ${e.message}`);
+                process.exitCode = 1;
+                return;
+              }
+              continue;
+            }
+          }
+          const label = describeBatchCommand(cmd);
+          process.stdout.write(`[${opIndex}/${total}] ${label}`);
 
-        try {
-          const { method, path, body } = mapCommandToApi(cmd);
-          const res = await api(method, path, body);
-          if (!res.ok) throw new Error(res.error);
-          console.log(` -> ok`);
-          succeeded++;
-        } catch (e) {
-          console.log(` -> ERROR: ${e.message}`);
-          failed++;
-          if (!continueOnError) {
-            console.error(`Error at command ${i + 1}/${total}: ${e.message}`);
-            process.exitCode = 1;
-            return;
+          try {
+            const { method, path, body } = mapCommandToApi(cmd);
+            const res = await api(method, path, body);
+            if (!res.ok) throw new Error(res.error);
+            console.log(` -> ok`);
+            succeeded++;
+          } catch (e) {
+            console.log(` -> ERROR: ${e.message}`);
+            failed++;
+            if (!continueOnError) {
+              console.error(`ERROR at op ${opIndex}/${total}: ${label} \u2014 ${e.message}`);
+              process.exitCode = 1;
+              return;
+            }
           }
         }
       }

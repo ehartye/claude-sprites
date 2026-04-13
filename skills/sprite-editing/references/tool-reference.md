@@ -28,6 +28,9 @@ All draw commands: `draw <type> --cell <coord> --color <hex> [--name <shape_name
 | `fill` | `--x --y` | Flood-fills contiguous same-color region |
 | `highlight` | `--shape <target> [--direction <dir>] [--strength N] [--name <base>] [--count N --span-deg N --radius-factor F]` | Auto-places lighter pixels using palette ramp |
 | `shadow` | `--shape <target> [--direction <dir>] [--strength N] [--name <base>] [--count N --span-deg N --radius-factor F]` | Auto-places darker pixels using palette ramp |
+| `sphere-shade` | `--shape <target> [--direction <dir>] [--intensity low\|med\|high\|auto] [--name <base>]` | Compound 2–5 tier lighting on a circle/ellipse in one call |
+| `arc` | `--cx --cy (--r \| --rx --ry) --from-deg <A> --to-deg <B> --color <c> [--clip-to <mask>] [--name <base>]` | Partial ellipse outline (CW, y-down: 0=east, 90=south) |
+| `ring` | `--shape <target> --color <c> [--clip-to <mask>] [--name <base>]` | Single-target 4-neighbor halo (sugar over `border`) |
 
 ### Clipping (masking pixels to another shape)
 
@@ -63,6 +66,28 @@ Flags:
 - `--radius-factor F` — fraction of radius from center (0–1). Default: 0.55 (highlight), 0.70 (shadow). Lower = deeper into shape. Higher = closer to silhouette.
 - `--name <base>` — override the auto-generated `<target>_hl_<i>` / `<target>_sh_<i>` naming.
 
+### Sphere shading (compound)
+
+`draw sphere-shade` is the preferred way to light a circle/ellipse. It composes 2–5 highlight/shadow tiers in a single call.
+
+- `--intensity auto` (default) picks tiers by target size: `r<=6` → low (2 tiers), `7–12` → med (3 tiers), `>12` → high (5 tiers). Ellipse uses `max(rx, ry)`.
+- `--direction` rotates all tiers consistently (highlight/spec toward, shadow/rim opposite).
+- Target must be circle or ellipse; target color must resolve in a palette ramp.
+- Emits shapes named `<base>_<tier>_<i>` (default base `<target>_shade`).
+
+### Arc primitive
+
+`draw arc` rasterizes just the outline portion of an ellipse between two angles. Replaces the "draw oversized ellipse + clip-to" workaround for surface curves.
+
+- Angles use CW, y-down convention: 0°=east, 90°=south, 180°=west, 270°=north.
+- `--r N` is shorthand for `--rx N --ry N` (circular arc).
+- `--clip-to <mask>` still applies as a secondary filter.
+- Emits one named point per pixel (`<name>_<i>`).
+
+### Ring
+
+`draw ring` is single-target sugar over `draw border` — a 4-neighbor halo around one target shape.
+
 ### Shading technique
 
 For the craft of multi-tier lighting (form shadow, core shadow, rim light, specular peak) and the anti-patterns to avoid, see the `sprite-shading` skill. This reference documents flags only.
@@ -95,6 +120,7 @@ sprite.js resize ball --cell 0,1 --updates '{"rx":4,"ry":5}'   # stretch mid-air
 | Command | Flags | Notes |
 |---------|-------|-------|
 | `copy` | `--from --to` | Deep copy all shapes between cells |
+| `clone-cell` | `--from R,C --to "R1,C1 R2,C2 ..."` | Atomic fan-out copy of one cell into many destinations (space-separated list, quoted) |
 | `clear` | `--cell` | Remove all shapes from cell |
 | `name` | `--cell --as <name>` | Give cell a readable name |
 | `view` | `--cell` | Render cell preview |
@@ -119,7 +145,7 @@ Shape groups let you move or recolor multiple shapes within a cell at once (stor
 
 | Command | Positional | Flags | Notes |
 |---------|-----------|-------|-------|
-| `shape-group create <name> <shapes...>` | group name + shape names | `--cell` | Create shape group |
+| `shape-group create <name> <shapes...>` | group name + shape names | `--cell` \| `--all-cells --pattern <regex>` | Create shape group (across all cells via regex match) |
 | `shape-group list` | | `--cell` | List shape groups in cell |
 | `shape-group add <name> <shapes...>` | group name + shape names | `--cell` | Add shapes to group |
 | `shape-group remove <name> <shapes...>` | group name + shape names | `--cell` | Remove shapes from group |
@@ -151,3 +177,24 @@ The `--updates` flag takes a JSON object with keys matching the shape's paramete
 | `circle` | `r` |
 | `ellipse` | `rx`, `ry` |
 | `line` | `x1`, `y1`, `x2`, `y2` |
+
+## Batch Mode
+
+Run a JSON array of operations in one CLI call. Collapses per-frame bash loops into a single deterministic call.
+
+```
+sprite.js batch ops.json [--vars-file frames.json | --vars k=v,k=v] [--continue-on-error]
+```
+
+- `ops.json` — array of `{ command, args }` objects. String values may contain `{{var}}` placeholders.
+- `--vars-file frames.json` — JSON array of per-iteration variable dicts. The whole op list replays once per dict.
+- `--vars k=v,k=v` — single-iteration inline shortcut.
+- **Type preservation:** a string exactly equal to `"{{foo}}"` becomes the raw value (number stays number). Embedded placeholders (`"0,{{i}}"`) stay strings.
+- **Fail-fast by default:** stops on first error with structured stderr (`ERROR at op 4/12: ...`). Use `--continue-on-error` for legacy best-effort behavior.
+- No arithmetic, no conditionals, no nested interpolation. Pre-compute numeric values in the vars file.
+
+## Server Control
+
+| Command | Notes |
+|---------|-------|
+| `restart` | Clean server restart via `POST /api/control/shutdown`. Flushes pending writes, closes DB, respawns. Prefer over `Stop-Process -Force`. |

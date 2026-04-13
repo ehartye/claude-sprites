@@ -63,7 +63,9 @@ export class SessionDB {
   }
 
   getLastSession() {
-    return this.db.prepare('SELECT * FROM sessions ORDER BY updated_at DESC LIMIT 1').get();
+    // rowid is strictly monotonic per-insert — reliable tiebreak for
+    // same-millisecond updated_at values.
+    return this.db.prepare('SELECT * FROM sessions ORDER BY updated_at DESC, rowid DESC LIMIT 1').get();
   }
 
   updateDraft(id, draft_json) {
