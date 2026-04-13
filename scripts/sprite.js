@@ -60,7 +60,8 @@ function bool(v) { return v === 'true' || v === true; }
 
 function parseVarsFlag(s) {
   // Split on commas that precede "<ident>=", so values like "0,0" are preserved.
-  const out = {};
+  // Null-prototype object so keys like __proto__ become own data, not silent no-ops.
+  const out = Object.create(null);
   const str = String(s);
   const parts = [];
   const re = /,(?=\w+=)/g;
