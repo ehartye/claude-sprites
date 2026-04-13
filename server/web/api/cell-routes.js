@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { handleShiftCell, handleMirrorCell, handleCopyCell,
-         handleClearCell, handleNameCell, handleListCells } from '../../handlers/cell.js';
+         handleClearCell, handleNameCell, handleListCells,
+         handleCloneFanout } from '../../handlers/cell.js';
 import { handleUndo, handleRedo } from '../../handlers/history.js';
 import { handleViewCell } from '../../handlers/view.js';
 import { saveDraft } from '../http.js';
@@ -15,6 +16,7 @@ export function cellRoutes(state) {
     } catch (e) { res.json({ ok: false, error: e.message }); }
   };
   r.post('/cell/copy',   wrap(handleCopyCell));
+  r.post('/cell/clone-fanout', wrap(handleCloneFanout));
   r.post('/cell/clear',  wrap(handleClearCell));
   r.post('/cell/name',   wrap(handleNameCell));
   r.post('/cell/shift',  wrap(handleShiftCell));
