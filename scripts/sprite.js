@@ -239,6 +239,8 @@ GROUPS (cells)
 
 SHAPE GROUPS (within a cell)
   shape-group create <name> <shapes...> --cell
+  shape-group create <name> --all-cells true --pattern <regex>
+                              bulk-group matching shape names across every cell
   shape-group add/remove/delete <name> [--cell]      shape-group list --cell
   move-group    <name> --cell --dx --dy [--all-cells true]
   recolor-group <name> --cell --color [--all-cells true]
@@ -406,7 +408,12 @@ async function run() {
 
     case 'shape-group':
       switch (sub) {
-        case 'create': result = await api('POST', '/api/group/shape/create', { cell: args.cell, name: name, shapes: args.shapes?.split(' ') ?? positional.slice(2) }); break;
+        case 'create': result = await api('POST', '/api/group/shape/create', {
+          cell: args.cell, name: name,
+          shapes: args.shapes?.split(' ') ?? positional.slice(2),
+          all_cells: bool(args['all-cells']) || undefined,
+          pattern: args.pattern,
+        }); break;
         case 'list':   result = await api('GET', `/api/group/shape/list?cell=${args.cell}`); break;
         case 'add':    result = await api('POST', '/api/group/shape/add', { cell: args.cell, name: name, shapes: args.shapes?.split(' ') ?? positional.slice(2) }); break;
         case 'remove': result = await api('POST', '/api/group/shape/remove', { cell: args.cell, name: name, shapes: args.shapes?.split(' ') ?? positional.slice(2) }); break;

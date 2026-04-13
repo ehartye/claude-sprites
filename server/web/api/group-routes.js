@@ -61,7 +61,28 @@ export function groupRoutes(state) {
   // --- Shape groups (per-cell, move as unit) ---
   r.post('/group/shape/create', (req, res) => {
     try {
-      const { cell, name, shapes } = req.body;
+      const { cell, name, shapes, all_cells, pattern } = req.body;
+      if (all_cells && pattern) {
+        let re;
+        try { re = new RegExp(pattern); }
+        catch (e) { throw new Error(`Invalid pattern "${pattern}": ${e.message}`); }
+        const { rows, cols } = state.project.cells;
+        const matched = [];
+        for (let r2 = 0; r2 < rows; r2++) {
+          for (let c2 = 0; c2 < cols; c2++) {
+            const ref = `${r2},${c2}`;
+            const cellObj = state.project.cells.getCell(ref);
+            const names = cellObj.shapes.listByZ()
+              .map(s => s.name)
+              .filter(n => n && re.test(n));
+            if (names.length) {
+              state.db.setShapeGroup(state.sessionId, ref, name, names);
+              matched.push(ref);
+            }
+          }
+        }
+        return res.json({ ok: true, data: `Created shape group "${name}" in ${matched.length} cells` });
+      }
       state.db.setShapeGroup(state.sessionId, cell, name, shapes);
       res.json({ ok: true, data: `Created shape group "${name}" in ${cell}` });
     } catch (e) { res.json({ ok: false, error: e.message }); }
