@@ -3,11 +3,11 @@
  * with onion skin overlay for editing context.
  */
 
-const PREVIEW_SIZE = 128;
+const DEFAULT_PREVIEW_SIZE = 128;
 const DEFAULT_FPS = 8;
 
 export class AnimationPreview {
-  constructor() {
+  constructor(opts = {}) {
     this._canvas = null;
     this._ctx = null;
     this._container = null;
@@ -15,21 +15,58 @@ export class AnimationPreview {
     this._cells = {};
     this._cellSize = 16;
     this._palette = {};
-    this._frames = [];       // array of cell refs in the group
+    this._frames = [];
     this._currentFrame = 0;
     this._fps = DEFAULT_FPS;
     this._playing = false;
     this._intervalId = null;
 
     this._onionSkin = false;
-    this._activeCell = null;  // ref of the cell being edited
+    this._activeCell = null;
 
-    this._onionCb = null;     // callback to get onion skin shapes for editor
+    this._onionCb = null;
+
+    this._mountId = opts.mountId ?? 'anim-panel';
+    this._size = opts.size ?? DEFAULT_this._size;
+    this._showOnionSkin = opts.showOnionSkin ?? true;
+    this._responsive = opts.responsive ?? false;
+    this._title = opts.title ?? 'Animation';
   }
 
   init() {
     this._container = this._createUI();
-    document.getElementById('anim-panel').appendChild(this._container);
+    const mount = document.getElementById(this._mountId);
+    if (!mount) return;
+    mount.appendChild(this._container);
+    if (this._responsive) this._attachResize();
+  }
+
+  /** Resize the canvas to fit the current mount (when responsive). */
+  fitToMount() {
+    if (!this._canvas) return;
+    const mount = document.getElementById(this._mountId);
+    if (!mount) return;
+    const rect = mount.getBoundingClientRect();
+    const reserved = 80; // rough space for controls + header
+    const available = Math.max(64, Math.min(rect.width, rect.height - reserved));
+    // Snap to integer multiple of cellSize so pixels stay crisp.
+    const target = Math.max(this._cellSize, Math.floor(available / this._cellSize) * this._cellSize);
+    if (target !== this._size) {
+      this._size = target;
+      this._canvas.width = target;
+      this._canvas.height = target;
+      this._canvas.style.width = `${target}px`;
+      this._canvas.style.height = `${target}px`;
+      this._renderFrame();
+    }
+  }
+
+  _attachResize() {
+    const ro = new ResizeObserver(() => this.fitToMount());
+    const mount = document.getElementById(this._mountId);
+    if (mount) ro.observe(mount);
+    // Initial fit once layout settles.
+    requestAnimationFrame(() => this.fitToMount());
   }
 
   setPalette(paletteMap) { this._palette = paletteMap; }
@@ -109,12 +146,12 @@ export class AnimationPreview {
 
     const header = document.createElement('div');
     header.className = 'anim-header';
-    header.textContent = 'Animation';
+    header.textContent = this._title;
     container.appendChild(header);
 
     this._canvas = document.createElement('canvas');
-    this._canvas.width = PREVIEW_SIZE;
-    this._canvas.height = PREVIEW_SIZE;
+    this._canvas.width = this._size;
+    this._canvas.height = this._size;
     this._canvas.className = 'anim-canvas';
     this._ctx = this._canvas.getContext('2d');
     container.appendChild(this._canvas);
@@ -173,7 +210,8 @@ export class AnimationPreview {
     fpsRow.appendChild(fpsSlider);
     container.appendChild(fpsRow);
 
-    // Onion skin toggle
+    // Onion skin toggle (optional)
+    if (!this._showOnionSkin) return container;
     const onionRow = document.createElement('div');
     onionRow.className = 'anim-onion-row';
 
@@ -200,13 +238,13 @@ export class AnimationPreview {
 
   _renderFrame() {
     const ctx = this._ctx;
-    ctx.clearRect(0, 0, PREVIEW_SIZE, PREVIEW_SIZE);
+    ctx.clearRect(0, 0, this._size, this._size);
 
     // Checkerboard background — one square per pixel, matching the cell grid
     const style = getComputedStyle(document.documentElement);
     const colorA = style.getPropertyValue('--checker-a').trim();
     const colorB = style.getPropertyValue('--checker-b').trim();
-    const tileSize = PREVIEW_SIZE / this._cellSize;
+    const tileSize = this._size / this._cellSize;
     for (let row = 0; row < this._cellSize; row++) {
       for (let col = 0; col < this._cellSize; col++) {
         ctx.fillStyle = ((row + col) % 2 === 0) ? colorA : colorB;
@@ -218,7 +256,7 @@ export class AnimationPreview {
 
     const ref = this._frames[this._currentFrame];
     const shapes = this._getCellShapes(ref);
-    const scale = PREVIEW_SIZE / this._cellSize;
+    const scale = this._size / this._cellSize;
 
     for (const shape of shapes) {
       ctx.fillStyle = this._resolveColor(shape.color);

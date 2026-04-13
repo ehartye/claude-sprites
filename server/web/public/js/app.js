@@ -24,7 +24,14 @@ const tools = new ToolManager();
 const shapePanel = new ShapePanel();
 const groupPanel = new GroupPanel();
 const cellNav = new CellNavigator();
-const animPreview = new AnimationPreview();
+const animPreview = new AnimationPreview({ mountId: 'anim-panel', size: 128, showOnionSkin: true });
+const fullPreview = new AnimationPreview({
+  mountId: 'full-preview-mount',
+  size: 512,
+  showOnionSkin: false,
+  responsive: true,
+  title: 'Full Preview',
+});
 
 /* -- Initialization -- */
 
@@ -76,6 +83,8 @@ function init() {
   animPreview.onOnionSkin((data) => {
     editor.setOnionSkin(data);
   });
+  fullPreview.init();
+  initTabs();
 
   groupPanel.init({
     onSelect: (groupName) => {
@@ -83,9 +92,11 @@ function init() {
         const frames = state.project.groups[groupName];
         cellNav.setFilter(frames);
         animPreview.setFrames(frames);
+        fullPreview.setFrames(frames);
       } else {
         cellNav.setFilter(null);
         animPreview.setFrames([]);
+        fullPreview.setFrames([]);
       }
     },
     onCreate: () => {
@@ -137,6 +148,9 @@ function onProjectData(data) {
   animPreview.setPalette(state.palette);
   animPreview.setCellSize(data.cellSize || 16);
   animPreview.setCells(data.cells || {});
+  fullPreview.setPalette(state.palette);
+  fullPreview.setCellSize(data.cellSize || 16);
+  fullPreview.setCells(data.cells || {});
 
   // Auto-zoom to fit nicely
   const container = document.getElementById('canvas-container');
@@ -330,6 +344,25 @@ function toggleTheme() {
 function updateThemeButton(theme) {
   const btn = document.getElementById('theme-toggle');
   if (btn) btn.textContent = theme === 'dark' ? '☀' : '◑';
+}
+
+/* -- Tabs -- */
+
+function initTabs() {
+  const buttons = document.querySelectorAll('#center-tabs .tab-btn');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+      buttons.forEach(b => b.classList.toggle('active', b === btn));
+      document.querySelectorAll('#center-panel .tab-content').forEach(el => {
+        el.classList.toggle('active', el.id === `center-tab-${target}`);
+      });
+      if (target === 'preview') {
+        // Canvas may have laid out at 0 width while hidden — refit now.
+        fullPreview.fitToMount();
+      }
+    });
+  });
 }
 
 /* -- Boot -- */

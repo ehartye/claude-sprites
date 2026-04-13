@@ -253,6 +253,55 @@ body {
   min-width: 0;
 }
 
+#center-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  background-color: var(--bg-raised, var(--bg));
+  flex-shrink: 0;
+}
+
+#center-tabs .tab-btn {
+  padding: 6px 16px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--fg-muted, var(--fg));
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+#center-tabs .tab-btn:hover {
+  color: var(--fg);
+}
+
+#center-tabs .tab-btn.active {
+  color: var(--fg);
+  border-bottom-color: var(--accent, var(--fg));
+}
+
+#center-panel .tab-content {
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  min-height: 0;
+}
+
+#center-panel .tab-content.active {
+  display: flex;
+}
+
+#full-preview-mount {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow: hidden;
+}
+
 #canvas-container {
   flex: 1;
   display: flex;

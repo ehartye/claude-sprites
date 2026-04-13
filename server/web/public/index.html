@@ -36,13 +36,22 @@
     </aside>
 
     <main id="center-panel">
-      <div id="canvas-container">
-        <canvas id="editor-canvas"></canvas>
+      <div id="center-tabs">
+        <button class="tab-btn active" data-tab="editor">Editor</button>
+        <button class="tab-btn" data-tab="preview">Preview</button>
       </div>
-      <div id="canvas-info">
-        <span id="cursor-pos">—</span>
-        <span id="zoom-level">1x</span>
-        <span id="cell-ref">—</span>
+      <div id="center-tab-editor" class="tab-content active">
+        <div id="canvas-container">
+          <canvas id="editor-canvas"></canvas>
+        </div>
+        <div id="canvas-info">
+          <span id="cursor-pos">—</span>
+          <span id="zoom-level">1x</span>
+          <span id="cell-ref">—</span>
+        </div>
+      </div>
+      <div id="center-tab-preview" class="tab-content">
+        <div id="full-preview-mount"></div>
       </div>
     </main>
 
