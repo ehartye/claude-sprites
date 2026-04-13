@@ -301,6 +301,7 @@ async function run() {
         count: num(args.count),
         span_deg: num(args['span-deg']),
         radius_factor: num(args['radius-factor']),
+        intensity: args.intensity,
         clip_to: args['clip-to'],
         shape_prefix: args['shape-prefix'],
         shapes: args.shapes,
@@ -453,11 +454,20 @@ async function run() {
 
     case 'batch': {
       const continueOnError = bool(args['continue-on-error']);
-      const vars = args.vars ? parseVarsFlag(args.vars) : null;
+      const inlineVars = args.vars ? parseVarsFlag(args.vars) : null;
+      let frames = null;
+      if (args['vars-file']) {
+        const framesJson = JSON.parse(readFileSync(args['vars-file'], 'utf-8'));
+        if (!Array.isArray(framesJson)) {
+          console.error('--vars-file must contain a JSON array of variable dicts');
+          process.exitCode = 1;
+          return;
+        }
+        frames = framesJson;
+      }
       let commands;
 
       if (args.stdin) {
-        // Read from stdin
         const data = await new Promise((resolve, reject) => {
           const chunks = [];
           process.stdin.on('data', chunk => chunks.push(chunk));
@@ -466,7 +476,6 @@ async function run() {
         });
         commands = JSON.parse(data);
       } else {
-        // Read from file (first positional arg)
         const filePath = sub;
         if (!filePath) { console.error('Usage: sprite batch <file.json> or sprite batch --stdin'); process.exitCode = 1; return; }
         commands = JSON.parse(readFileSync(filePath, 'utf-8'));
@@ -474,43 +483,49 @@ async function run() {
 
       if (!Array.isArray(commands)) { console.error('Batch input must be a JSON array'); process.exitCode = 1; return; }
 
-      const total = commands.length;
+      const runs = frames ?? [inlineVars];
+      const total = commands.length * runs.length;
       let succeeded = 0;
       let failed = 0;
+      let opIndex = 0;
 
-      for (let i = 0; i < total; i++) {
-        let cmd = commands[i];
-        if (vars) {
-          try { cmd = substituteVars(cmd, vars); }
-          catch (e) {
-            const label = describeBatchCommand(commands[i]);
-            process.stdout.write(`[${i + 1}/${total}] ${label}`);
+      outer:
+      for (const frameVars of runs) {
+        for (let i = 0; i < commands.length; i++) {
+          opIndex++;
+          let cmd = commands[i];
+          if (frameVars) {
+            try { cmd = substituteVars(cmd, frameVars); }
+            catch (e) {
+              const label = describeBatchCommand(commands[i]);
+              process.stdout.write(`[${opIndex}/${total}] ${label}`);
+              console.log(` -> ERROR: ${e.message}`);
+              failed++;
+              if (!continueOnError) {
+                console.error(`ERROR at op ${opIndex}/${total}: ${label} \u2014 ${e.message}`);
+                process.exitCode = 1;
+                return;
+              }
+              continue;
+            }
+          }
+          const label = describeBatchCommand(cmd);
+          process.stdout.write(`[${opIndex}/${total}] ${label}`);
+
+          try {
+            const { method, path, body } = mapCommandToApi(cmd);
+            const res = await api(method, path, body);
+            if (!res.ok) throw new Error(res.error);
+            console.log(` -> ok`);
+            succeeded++;
+          } catch (e) {
             console.log(` -> ERROR: ${e.message}`);
             failed++;
             if (!continueOnError) {
-              console.error(`ERROR at op ${i + 1}/${total}: ${label} \u2014 ${e.message}`);
+              console.error(`ERROR at op ${opIndex}/${total}: ${label} \u2014 ${e.message}`);
               process.exitCode = 1;
               return;
             }
-            continue;
-          }
-        }
-        const label = describeBatchCommand(cmd);
-        process.stdout.write(`[${i + 1}/${total}] ${label}`);
-
-        try {
-          const { method, path, body } = mapCommandToApi(cmd);
-          const res = await api(method, path, body);
-          if (!res.ok) throw new Error(res.error);
-          console.log(` -> ok`);
-          succeeded++;
-        } catch (e) {
-          console.log(` -> ERROR: ${e.message}`);
-          failed++;
-          if (!continueOnError) {
-            console.error(`ERROR at op ${i + 1}/${total}: ${label} \u2014 ${e.message}`);
-            process.exitCode = 1;
-            return;
           }
         }
       }

@@ -185,6 +185,59 @@ function handleHighlightShadow(state, type, params) {
 }
 
 /**
+ * Compound sphere-shading: layers 2–5 highlight/shadow tiers in a single call.
+ * Tier count is driven by `intensity` (low|med|high|auto). Auto picks by the
+ * target's sizeMetric so tiny sprites don't get over-shaded.
+ *
+ * Each tier row: [label, type, strength, direction, span_deg, radius_factor].
+ */
+const SPHERE_TIERS_BY_INTENSITY = {
+  low:  [['hl',   'highlight', 1, 'top-left',     30, 0.55],
+         ['core', 'shadow',    2, 'bottom-right', 35, 0.72]],
+  med:  [['mid',  'shadow',    1, 'bottom-right', 110, 0.78],
+         ['core', 'shadow',    2, 'bottom-right', 35, 0.72],
+         ['hl',   'highlight', 1, 'top-left',     30, 0.55]],
+  high: [['mid',  'shadow',    1, 'bottom-right', 110, 0.78],
+         ['core', 'shadow',    2, 'bottom-right', 35, 0.72],
+         ['rim',  'highlight', 1, 'bottom-right', 30, 0.92],
+         ['hl',   'highlight', 1, 'top-left',     30, 0.55],
+         ['spec', 'highlight', 3, 'top-left',     20, 0.45]],
+};
+
+function pickSphereIntensity(target) {
+  const p = target.params;
+  const sz = target.type === 'circle' ? p.r : Math.max(p.rx, p.ry);
+  if (sz <= 6) return 'low';
+  if (sz <= 12) return 'med';
+  return 'high';
+}
+
+function handleSphereShade(state, params) {
+  const cell = state.project.cells.getCell(params.cell);
+  const target = cell.shapes.get(params.shape);
+  if (!target) throw new Error(`Shape "${params.shape}" not found`);
+  if (target.type !== 'circle' && target.type !== 'ellipse') {
+    throw new Error(`sphere-shade requires a circle or ellipse target`);
+  }
+  const intensity = (!params.intensity || params.intensity === 'auto')
+    ? pickSphereIntensity(target) : params.intensity;
+  const tiers = SPHERE_TIERS_BY_INTENSITY[intensity];
+  if (!tiers) throw new Error(`intensity must be low|med|high|auto`);
+  const base = params.shape_name ?? `${params.shape}_shade`;
+  const allNames = [];
+  for (const [label, type, strength, dir, span, rf] of tiers) {
+    const extra = label === 'spec' ? { count: 2 } : {};
+    const r = handleHighlightShadow(state, type, {
+      cell: params.cell, shape: params.shape,
+      direction: dir, strength, span_deg: span, radius_factor: rf,
+      shape_name: `${base}_${label}`, ...extra,
+    });
+    allNames.push(...r.shapeNames);
+  }
+  return { shapeNames: allNames };
+}
+
+/**
  * Test whether (px, py) falls inside a mask shape's filled area.
  * Supports circle, ellipse, rect. Points/lines are treated as zero-area.
  */
@@ -362,6 +415,10 @@ function handleBorder(state, params, cell) {
  */
 export function handleDraw(state, type, params) {
   if (!state.project) throw new Error('No project open');
+
+  if (type === 'sphere-shade') {
+    return handleSphereShade(state, params);
+  }
 
   if (type === 'highlight' || type === 'shadow') {
     return handleHighlightShadow(state, type, params);
