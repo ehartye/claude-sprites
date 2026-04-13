@@ -63,7 +63,8 @@ export class SessionDB {
   }
 
   getLastSession() {
-    return this.db.prepare('SELECT * FROM sessions ORDER BY updated_at DESC LIMIT 1').get();
+    // Tie-break on id (monotonic) so same-millisecond inserts have stable order.
+    return this.db.prepare('SELECT * FROM sessions ORDER BY updated_at DESC, id DESC LIMIT 1').get();
   }
 
   updateDraft(id, draft_json) {

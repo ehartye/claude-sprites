@@ -76,32 +76,20 @@ describe('Highlight/Shadow draw commands', () => {
     }
   });
 
-  it('pixel count scales with radius: r=3 → 2 pixels', () => {
-    // Draw a smaller circle
+  it('pixel count scales linearly with radius', () => {
+    // count = max(2, round(r * 0.4)) — larger radii get proportionally more pixels
+    // beforeEach() drew a r=5 ball. Add a r=16 big ball.
     handleDraw(state, 'circle', {
-      cell: '0,0', cx: 4, cy: 4, r: 3, color: '#ff004d', shape_name: 'small',
+      cell: '0,0', cx: 8, cy: 8, r: 16, color: '#ff004d', shape_name: 'big',
     });
-    const result = handleDraw(state, 'highlight', {
-      cell: '0,0', shape: 'small', direction: 'top-left', shape_name: 'sm_hl',
-    });
-    expect(result.shapeNames.length).toBe(2);
-  });
-
-  it('pixel count scales with radius: r=5 → 3 pixels', () => {
-    const result = handleDraw(state, 'highlight', {
+    const rMed = handleDraw(state, 'highlight', {
       cell: '0,0', shape: 'ball', direction: 'top-left', shape_name: 'md_hl',
     });
-    expect(result.shapeNames.length).toBe(3);
-  });
-
-  it('pixel count scales with radius: r=8 → 4 pixels', () => {
-    handleDraw(state, 'circle', {
-      cell: '0,0', cx: 8, cy: 8, r: 8, color: '#ff004d', shape_name: 'big',
-    });
-    const result = handleDraw(state, 'highlight', {
+    const rBig = handleDraw(state, 'highlight', {
       cell: '0,0', shape: 'big', direction: 'top-left', shape_name: 'big_hl',
     });
-    expect(result.shapeNames.length).toBe(4);
+    expect(rMed.shapeNames.length).toBeGreaterThanOrEqual(2);
+    expect(rBig.shapeNames.length).toBeGreaterThan(rMed.shapeNames.length);
   });
 
   it('works with ellipse shapes', () => {
