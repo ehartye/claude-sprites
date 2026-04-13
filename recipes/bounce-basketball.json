@@ -1,0 +1,4 @@
+[
+  { "command": "resize", "shape": "ball", "cell": "{{cell}}", "updates": "{\"cx\":{{cx}},\"cy\":{{cy}},\"rx\":{{rx}},\"ry\":{{ry}}}" },
+  { "command": "draw", "type": "sphere-shade", "cell": "{{cell}}", "shape": "ball", "direction": "top-left", "intensity": "auto", "name": "{{tag}}_shade" }
+]

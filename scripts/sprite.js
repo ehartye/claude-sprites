@@ -220,6 +220,13 @@ DRAWING  (draw <type> --cell R,C --color <hex|name> [--name <shape_name>])
     highlight/shadow auto-compute lighter/darker color from palette ramps
     and place pixels along the target shape's bounding box edge.
     Requires target color to be in palette ramps (pico8, db-16, db-32).
+  draw sphere-shade --shape <target> [--intensity low|med|high|auto] [--name <base>]
+    compound 2–5 tier highlight+shadow lighting on a circle/ellipse in one call.
+    auto picks by target size (r<=6 low, 7-12 med, >12 high).
+  draw arc     --cx --cy (--r | --rx --ry) --from-deg --to-deg --color [--clip-to <mask>] [--name <base>]
+    partial ellipse outline (CW, y-down: 0=east, 90=south). emits one point shape per pixel.
+  draw ring    --shape <target> --color [--clip-to <mask>] [--name <base>]
+    single-target sugar over border — 4-neighbor halo around the target shape.
 
 SHAPES
   shapes      --cell                                list shapes z-ordered

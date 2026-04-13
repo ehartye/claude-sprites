@@ -116,9 +116,30 @@ Limitations: the clip source must be an unfilled outline (`--filled false` on el
 ## Copy / Clone Patterns
 
 - **`copy --from --to`** — deep-copies *all shapes* in a cell. Use when building animation frames from a base frame.
+- **`clone-cell --from R,C --to R1,C1 R2,C2 ...`** — atomic fan-out: copy one source cell into many destinations in a single call. Replaces the bash loop pattern for initializing a full animation strip from a base frame. Either all destinations succeed or nothing changes.
 - **`clone <name> --from --to [--as]`** — copies a *single named shape* across cells. Use when only one element moves across frames (e.g., eye blink — clone `eye_l` from "open" frame to "closed" frame, adjust).
 
-Rule of thumb: `copy` first (full scene), then `move-to` / `resize` per-frame. Only `clone` for single-shape changes on an otherwise-unchanged scene.
+Rule of thumb: `clone-cell` first (seed every frame from the base), then `move-to` / `resize` per-frame. Only `clone` for single-shape changes on an otherwise-unchanged scene.
+
+## Pattern-Matched Shape Groups Across Cells
+
+Creating a shape group across every cell that contains matching shapes:
+
+```
+sprite.js shape-group create seams --all-cells --pattern '^seam_'
+```
+
+This scans every cell, finds shapes whose names match the regex, and creates (or overwrites) a `seams` shape group per cell. Replaces the `shapes --cell | grep -oE 'seam_*' | sort -u` bash pattern used for refresh/delete workflows.
+
+## Batch Mode for Per-Frame Work
+
+For per-frame parameterized work (8 animation frames with different ball positions), use `batch` with `--vars-file`:
+
+```
+sprite.js batch --file frame-ops.json --vars-file frames.json
+```
+
+`frame-ops.json` contains placeholders like `"cx": "{{cx}}"`, and `frames.json` is an array of dicts — one per frame — that get substituted in. Fail-fast by default; pass `--continue-on-error` only when best-effort is what you want. See `sprite-editing/references/tool-reference.md` for DSL details.
 
 ## Common Mistakes
 

@@ -7,6 +7,17 @@ description: Use when shading pixel art to add depth, lighting, or volume — tr
 
 Give flat shapes visible form. Works with the `draw highlight` and `draw shadow` commands from `sprite-editing`.
 
+## Prefer `draw sphere-shade` for circles/ellipses
+
+For spheres (circle/ellipse targets), `draw sphere-shade` composes all the tiers below in one call. It's the default path — reach for explicit per-tier `draw highlight` / `draw shadow` only when you need non-standard spans, per-tier clipping, or surfaces that aren't spheres (rects, composite shapes).
+
+```
+sprite.js draw sphere-shade --cell 0,0 --shape ball --direction top-left
+# --intensity auto picks low/med/high by size. Override with --intensity high for extra tiers.
+```
+
+The tier table below documents what `sphere-shade` emits and why — read it before overriding defaults.
+
 ## The Rule
 
 Before placing any lighting pixel, answer:
