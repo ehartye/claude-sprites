@@ -41,6 +41,9 @@ describe('sprite restart CLI', () => {
       timeout: 15000,
     });
 
-    expect(stdout + stderr).toMatch(/restart|shutting down/i);
+    // Tight assertion: "restarted" is the literal token emitted only after
+    // respawn completes. Matching shutdown-path tokens alone would hide a
+    // regression where shutdown succeeds but ensureServer() silently fails.
+    expect(stdout).toMatch(/^restarted$/m);
   }, 20000);
 });
