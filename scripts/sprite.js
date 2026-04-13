@@ -28,7 +28,7 @@ async function ensureServer() {
     if (await health()) return;
   }
   console.error('Server failed to start');
-  process.exit(1);
+  (process.exitCode = 1);
 }
 
 async function api(method, path, body) {
@@ -72,6 +72,10 @@ function mapCommandToApi(cmd) {
         filled: params.filled,
         shape: params.shape, direction: params.direction, strength: params.strength,
       }};
+    case 'rename':
+      return { method: 'POST', path: '/api/shape/name', body: {
+        cell: params.cell, shape_id: params.shape_id, name: params.name,
+      }};
     case 'move':
       return { method: 'POST', path: '/api/shape/move', body: {
         cell: params.cell, name: params.shape, dx: params.dx, dy: params.dy,
@@ -102,6 +106,12 @@ function mapCommandToApi(cmd) {
       }};
     case 'clear':
       return { method: 'POST', path: '/api/cell/clear', body: { cell: params.cell } };
+    case 'name':
+      return { method: 'POST', path: '/api/cell/name', body: { cell: params.cell, name: params.as } };
+    case 'undo':
+      return { method: 'POST', path: '/api/cell/undo', body: { cell: params.cell } };
+    case 'redo':
+      return { method: 'POST', path: '/api/cell/redo', body: { cell: params.cell } };
     case 'group': {
       const sub = params.sub;
       const name = params.name;
@@ -130,15 +140,75 @@ function describeBatchCommand(cmd) {
     case 'clone': return `clone ${cmd.shape} ${cmd.from} -> ${cmd.to}`;
     case 'copy': return `copy ${cmd.from} -> ${cmd.to}`;
     case 'clear': return `clear (${cmd.cell})`;
+    case 'rename': return `rename ${cmd.shape_id} -> ${cmd.name} (${cmd.cell})`;
+    case 'name': return `name ${cmd.cell} -> ${cmd.as}`;
+    case 'undo': return `undo (${cmd.cell})`;
+    case 'redo': return `redo (${cmd.cell})`;
     case 'group': return `group ${cmd.sub} ${cmd.name}`;
     default: return `${cmd.command}`;
   }
 }
 
+const HELP_TEXT = `sprite — CLI for claude-sprites (server at ${BASE_URL})
+
+SESSION
+  new <name> [--size N --rows N --cols N --palette pico8|gameboy|nes|cga|db-16|db-32]
+  open <path>            open saved project file
+  save                   persist project to SQLite
+  export                 export PNG + JSON atlas to cwd
+  status                 show active project info
+
+DRAWING  (draw <type> --cell R,C --color <hex|name> [--name <shape_name>])
+  draw point     --x --y
+  draw line      --x1 --y1 --x2 --y2
+  draw rect      --x --y --w --h [--filled true]
+  draw circle    --cx --cy --r [--filled true]
+  draw ellipse   --cx --cy --rx --ry [--filled true]
+  draw fill      --x --y                                       flood-fill
+  draw highlight --shape <target> [--direction top-left|top|top-right|left|right|bottom-left|bottom|bottom-right] [--strength N] [--name <base>]
+  draw shadow    --shape <target> [--direction ...] [--strength N] [--name <base>]
+    highlight/shadow auto-compute lighter/darker color from palette ramps
+    and place pixels along the target shape's bounding box edge.
+    Requires target color to be in palette ramps (pico8, db-16, db-32).
+
+SHAPES
+  shapes      --cell                                list shapes z-ordered
+  move    <name> --cell --dx --dy                   relative offset
+  move-to <name> --cell --x --y                     absolute (anchor-dependent)
+  resize  <name> --cell --updates '{"rx":5,"ry":3}' or --rx --ry --r --w --h
+  recolor <name> --cell --color
+  clone   <name> --from R,C --to R,C [--as new]
+  delete  <name> --cell
+
+CELLS
+  copy  --from R,C --to R,C        clear --cell         name --cell --as <name>
+  view  --cell                     view-anim <group>    undo/redo --cell
+
+GROUPS (cells)
+  group create <name> R,C R,C ...     group add/remove <name> R,C ...
+  group delete <name>                 group list
+
+SHAPE GROUPS (within a cell)
+  shape-group create <name> <shapes...> --cell
+  shape-group add/remove/delete <name> [--cell]      shape-group list --cell
+  move-group    <name> --cell --dx --dy [--all-cells true]
+  recolor-group <name> --cell --color [--all-cells true]
+
+BATCH
+  batch --file <path.json>    execute an array of commands atomically
+
+Full reference: skills/sprite-editing/references/tool-reference.md
+`;
+
 async function run() {
+  const cmd = process.argv[2];
+  if (!cmd || cmd === '--help' || cmd === '-h' || cmd === 'help') {
+    console.log(HELP_TEXT);
+    return;
+  }
+
   await ensureServer();
 
-  const cmd = process.argv[2];
   const { args, positional } = parseArgs(process.argv.slice(3));
   const sub = positional[0];
   const name = positional[1];
@@ -176,6 +246,12 @@ async function run() {
         // highlight/shadow params
         shape: args.shape, direction: args.direction,
         strength: num(args.strength),
+        count: num(args.count),
+        span_deg: num(args['span-deg']),
+        radius_factor: num(args['radius-factor']),
+        clip_to: args['clip-to'],
+        shape_prefix: args['shape-prefix'],
+        shapes: args.shapes,
       });
       break;
 
@@ -190,6 +266,9 @@ async function run() {
       }
       break;
 
+    case 'rename':
+      result = await api('POST', '/api/shape/name', { cell: args.cell, shape_id: sub, name: args.as });
+      break;
     case 'move':
       result = await api('POST', '/api/shape/move', { cell: args.cell, name: sub, dx: num(args.dx), dy: num(args.dy) });
       break;
@@ -285,17 +364,18 @@ async function run() {
     case 'view-anim': {
       const groupName = sub;
       const groupResult = await api('GET', '/api/group/cell/list');
-      if (!groupResult.ok) { console.error(groupResult.error); process.exit(1); }
+      if (!groupResult.ok) { console.error(groupResult.error); process.exitCode = 1; return; }
       const cellRefs = groupResult.data[groupName];
       if (!cellRefs || cellRefs.length === 0) {
         console.error(`Group "${groupName}" not found or empty`);
-        process.exit(1);
+        process.exitCode = 1;
+        return;
       }
 
       const frames = [];
       for (const cellRef of cellRefs) {
         const viewResult = await api('POST', '/api/cell/view', { cell: cellRef, format: 'terminal' });
-        if (!viewResult.ok) { console.error(viewResult.error); process.exit(1); }
+        if (!viewResult.ok) { console.error(viewResult.error); process.exitCode = 1; return; }
         frames.push(viewResult.data.terminal);
       }
 
@@ -335,11 +415,11 @@ async function run() {
       } else {
         // Read from file (first positional arg)
         const filePath = sub;
-        if (!filePath) { console.error('Usage: sprite batch <file.json> or sprite batch --stdin'); process.exit(1); }
+        if (!filePath) { console.error('Usage: sprite batch <file.json> or sprite batch --stdin'); process.exitCode = 1; return; }
         commands = JSON.parse(readFileSync(filePath, 'utf-8'));
       }
 
-      if (!Array.isArray(commands)) { console.error('Batch input must be a JSON array'); process.exit(1); }
+      if (!Array.isArray(commands)) { console.error('Batch input must be a JSON array'); process.exitCode = 1; return; }
 
       const total = commands.length;
       let succeeded = 0;
@@ -361,7 +441,8 @@ async function run() {
           failed++;
           if (!continueOnError) {
             console.error(`Error at command ${i + 1}/${total}: ${e.message}`);
-            process.exit(1);
+            process.exitCode = 1;
+            return;
           }
         }
       }
@@ -376,13 +457,13 @@ async function run() {
 
     default:
       console.error(`Unknown command: ${cmd}`);
-      process.exit(1);
+      (process.exitCode = 1);
   }
 
   if (result) {
     if (result.ok) console.log(typeof result.data === 'string' ? result.data : JSON.stringify(result.data, null, 2));
-    else { console.error(result.error); process.exit(1); }
+    else { console.error(result.error); (process.exitCode = 1); }
   }
 }
 
-run().catch(e => { console.error(e.message); process.exit(1); });
+run().catch(e => { console.error(e.message); (process.exitCode = 1); });

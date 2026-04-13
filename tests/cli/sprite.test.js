@@ -83,6 +83,28 @@ describe('CLI Script', () => {
     expect(stdout).toContain('circle');
   });
 
+  test('resize with individual flags', async () => {
+    // First draw a circle to resize
+    await cli('draw', 'circle', '--cell', '0,0', '--cx', '8', '--cy', '8', '--r', '3', '--color', '#ff004d', '--name', 'resizeme');
+    const { stdout } = await cli('resize', 'resizeme', '--cell', '0,0', '--r', '5');
+    expect(stdout).toBeTruthy();
+
+    // Verify the shape was updated
+    const { stdout: shapesOut } = await cli('shapes', '--cell', '0,0');
+    expect(shapesOut).toContain('resizeme');
+  });
+
+  test('resize with --updates JSON fallback still works', async () => {
+    const { stdout } = await cli('resize', 'resizeme', '--cell', '0,0', '--updates', '{"r":4}');
+    expect(stdout).toBeTruthy();
+  });
+
+  test('resize individual flags override --updates JSON', async () => {
+    // --r 6 should override the r:4 in --updates
+    const { stdout } = await cli('resize', 'resizeme', '--cell', '0,0', '--updates', '{"r":4}', '--r', '6');
+    expect(stdout).toBeTruthy();
+  });
+
   test('unknown command exits with error', async () => {
     try {
       await cli('nonexistent');

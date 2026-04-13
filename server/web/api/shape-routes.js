@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { handleMoveShape, handleMoveShapeTo, handleResizeShape,
          handleRecolorShape, handleDeleteShape, handleCloneShape,
-         handleSetZ, handleShapeZDirection } from '../../handlers/shape.js';
+         handleSetZ, handleShapeZDirection, handleNameShape } from '../../handlers/shape.js';
 import { saveDraft } from '../http.js';
 
 export function shapeRoutes(state) {
@@ -13,6 +13,7 @@ export function shapeRoutes(state) {
       res.json({ ok: true, data: result ?? 'ok' });
     } catch (e) { res.json({ ok: false, error: e.message }); }
   };
+  r.post('/shape/name',    wrap(handleNameShape));
   r.post('/shape/move',    wrap(handleMoveShape));
   r.post('/shape/move-to', wrap(handleMoveShapeTo));
   r.post('/shape/resize',  wrap(handleResizeShape));
