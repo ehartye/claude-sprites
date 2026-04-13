@@ -130,6 +130,8 @@ function mapCommandToApi(cmd) {
         clip_to: params.clip_to,
         shape_prefix: params.shape_prefix,
         shapes: params.shapes,
+        group: params.group,
+        cell_group: params.cell_group,
       }};
     case 'rename':
       return { method: 'POST', path: '/api/shape/name', body: {
@@ -341,6 +343,8 @@ async function run() {
         clip_to: args['clip-to'],
         shape_prefix: args['shape-prefix'],
         shapes: args.shapes,
+        group: args.group,
+        cell_group: args['cell-group'],
       });
       break;
 

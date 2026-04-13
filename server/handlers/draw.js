@@ -457,9 +457,43 @@ function handleBorder(state, params, cell) {
 }
 
 /**
+ * Post-draw: append emitted shape names to a per-cell shape-group, and/or
+ * enroll the draw's cell in a cell-group. Idempotent — re-running a recipe
+ * merges shape names into the existing group and skips duplicate cell entries.
+ */
+function _applyAutoGroupings(state, params, result) {
+  if (!state.db || !state.sessionId) return;
+
+  if (params.group && params.cell) {
+    const emitted = result?.shapeNames
+      ?? (result?.shapeName ? [result.shapeName] : []);
+    if (emitted.length) {
+      const existing = (state.db.getShapeGroups(state.sessionId, params.cell) || {})[params.group] ?? [];
+      const merged = [...new Set([...existing, ...emitted])];
+      state.db.setShapeGroup(state.sessionId, params.cell, params.group, merged);
+    }
+  }
+
+  if (params.cell_group && params.cell && state.project?.groups) {
+    const gm = state.project.groups;
+    if (!gm.get(params.cell_group)) gm.create(params.cell_group, []);
+    gm.addCells(params.cell_group, [params.cell]);
+    state.db.setCellGroup(state.sessionId, params.cell_group, gm.get(params.cell_group));
+    state.broadcast?.({ type: 'group_cells_added', name: params.cell_group, cells: [params.cell] });
+  }
+}
+
+/**
  * Shared draw handler — called by REST API and WebSocket dispatch.
+ * Wraps _handleDrawInner and applies any --group / --cell-group auto-enrollments.
  */
 export function handleDraw(state, type, params) {
+  const result = _handleDrawInner(state, type, params);
+  _applyAutoGroupings(state, params, result);
+  return result;
+}
+
+function _handleDrawInner(state, type, params) {
   if (!state.project) throw new Error('No project open');
 
   if (type === 'sphere-shade') {
