@@ -86,6 +86,7 @@ function init() {
   });
   fullPreview.init();
   initTabs();
+  initUndoRedo();
 
   groupPanel.init({
     onSelect: (groupName) => {
@@ -289,7 +290,7 @@ function handleShapeAction(action, shapeId) {
       ws.send({ action: 'shape_z', params: { cell, shape: shapeId, direction: 'down' } });
       break;
     case 'delete':
-      ws.send({ action: 'delete_shape', params: { cell, shape: shapeId } });
+      ws.send({ action: 'delete_shape', params: { cell, name: shapeId } });
       break;
   }
 }
@@ -410,6 +411,35 @@ function toggleTheme() {
 function updateThemeButton(theme) {
   const btn = document.getElementById('theme-toggle');
   if (btn) btn.textContent = theme === 'dark' ? '☀' : '◑';
+}
+
+/* -- Undo / Redo -- */
+
+function initUndoRedo() {
+  const undoBtn = document.getElementById('undo-btn');
+  const redoBtn = document.getElementById('redo-btn');
+  if (undoBtn) undoBtn.addEventListener('click', () => doUndo());
+  if (redoBtn) redoBtn.addEventListener('click', () => doRedo());
+
+  document.addEventListener('keydown', (e) => {
+    const meta = e.ctrlKey || e.metaKey;
+    if (!meta) return;
+    if (e.key === 'z' || e.key === 'Z') {
+      e.preventDefault();
+      if (e.shiftKey) doRedo(); else doUndo();
+    } else if (e.key === 'y' || e.key === 'Y') {
+      e.preventDefault();
+      doRedo();
+    }
+  });
+}
+
+function doUndo() {
+  ws.send({ action: 'undo', params: { cell: state.activeCell } });
+}
+
+function doRedo() {
+  ws.send({ action: 'redo', params: { cell: state.activeCell } });
 }
 
 /* -- Tabs -- */

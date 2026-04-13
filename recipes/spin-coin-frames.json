@@ -9,7 +9,7 @@
     "cell": "0,1", "shadow_rx": 6,
     "rim_rx": 9, "face_rx": 8, "face_color": "#fbf236",
     "em_y": 9, "em_h": 10,
-    "em_hl_x": 14, "em_sh_x": 18
+    "em_hl_x": 14, "em_sh_x": 17
   },
   {
     "cell": "0,2", "shadow_rx": 4,
@@ -45,6 +45,6 @@
     "cell": "0,7", "shadow_rx": 6,
     "rim_rx": 9, "face_rx": 8, "face_color": "#fbf236",
     "em_y": 9, "em_h": 10,
-    "em_hl_x": 14, "em_sh_x": 18
+    "em_hl_x": 14, "em_sh_x": 17
   }
 ]

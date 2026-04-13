@@ -123,9 +123,23 @@ body {
   transition: color 0.15s, border-color 0.15s;
 }
 
-#theme-toggle:hover {
+#theme-toggle:hover,
+.topbar-btn:hover {
   color: var(--accent);
   border-color: var(--accent);
+}
+
+.topbar-btn {
+  font-family: inherit;
+  font-size: 1rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.05rem 0.5rem;
+  line-height: 1.2;
+  transition: color 0.15s, border-color 0.15s;
 }
 
 #workspace {
