@@ -205,6 +205,7 @@ SESSION
   save                   persist project to SQLite
   export                 export PNG + JSON atlas to cwd
   status                 show active project info
+  restart                graceful shutdown + respawn of sprite server
 
 DRAWING  (draw <type> --cell R,C --color <hex|name> [--name <shape_name>])
   draw point     --x --y
@@ -271,6 +272,17 @@ async function run() {
     case 'status':
       result = await api('GET', '/api/session/status');
       break;
+    case 'restart': {
+      try { await api('POST', '/api/control/shutdown'); } catch {}
+      const deadline = Date.now() + 3000;
+      while (Date.now() < deadline) {
+        await new Promise(r => setTimeout(r, 200));
+        if (!(await health())) break;
+      }
+      await ensureServer();
+      console.log('restarted');
+      return;
+    }
     case 'new':
       result = await api('POST', '/api/session/new', {
         name: sub, size: num(args.size), rows: num(args.rows),
