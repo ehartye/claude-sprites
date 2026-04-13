@@ -26,8 +26,57 @@ All draw commands: `draw <type> --cell <coord> --color <hex> [--name <shape_name
 | `circle` | `--cx --cy --r [--filled true]` | Center |
 | `ellipse` | `--cx --cy --rx --ry [--filled true]` | Center |
 | `fill` | `--x --y` | Flood-fills contiguous same-color region |
+| `highlight` | `--shape <target> [--direction <dir>] [--strength N] [--name <base>] [--count N --span-deg N --radius-factor F]` | Auto-places lighter pixels using palette ramp |
+| `shadow` | `--shape <target> [--direction <dir>] [--strength N] [--name <base>] [--count N --span-deg N --radius-factor F]` | Auto-places darker pixels using palette ramp |
+
+### Clipping (masking pixels to another shape)
+
+Any unfilled outline draw (`ellipse`, `circle` with `--filled false`) accepts `--clip-to <shape_name>`. Pixels of the outline that fall **outside** the named mask shape are dropped; the ones inside are persisted as individual named points (`<base>_<i>`).
+
+Use it when you want a stamp, decoration, or construction line that only shows within another shape's silhouette — for example drawing a curved line across the surface of a ball, or a pattern contained within a body.
+
+```
+# only the portion of the big ellipse's outline that falls inside `ball` persists
+sprite.js draw ellipse --cell 0,0 --cx 8 --cy 32 --rx 20 --ry 16 \
+                       --filled false --color "#000000" \
+                       --name arc --clip-to ball
+```
+
+Supported mask shape types: `circle`, `ellipse`, `rect`. Currently applies only to unfilled ellipse/circle outlines; other source shapes don't yet clip.
 
 Colors: hex string like `"#ff0000"` or palette color name.
+
+### Highlight / Shadow details
+
+Prefer these over hand-placed points for lighting. They:
+- Look up the named target shape (rect/circle/ellipse — not point/line).
+- Resolve a lighter (`highlight`) or darker (`shadow`) color from the palette's color ramp. Ramp-aware palettes: `pico8`, `db-16`, `db-32`. Target color must exist in a ramp.
+- For **circles/ellipses**, sample pixels along a curved arc centered on the direction, placed *inside* the shape — this follows the form like proper sphere shading and avoids "pillow shading" (tracing the outline).
+- For **rects**, place pixels along the bbox edge (straight runs are correct for flat-sided shapes).
+
+Directions: `top-left` (default highlight), `top-right`, `bottom-left`, `bottom-right` (default shadow), `top`, `bottom`, `left`, `right`.
+
+Flags:
+- `--strength N` — steps N positions along the palette ramp (default 1). Higher values = more contrast.
+- `--count N` — override pixel count. Default scales with shape size (`round(r × 0.4)`, min 2).
+- `--span-deg N` — arc span in degrees. Default: 30 (highlight), 40 (shadow).
+- `--radius-factor F` — fraction of radius from center (0–1). Default: 0.55 (highlight), 0.70 (shadow). Lower = deeper into shape. Higher = closer to silhouette.
+- `--name <base>` — override the auto-generated `<target>_hl_<i>` / `<target>_sh_<i>` naming.
+
+### Shading technique
+
+For the craft of multi-tier lighting (form shadow, core shadow, rim light, specular peak) and the anti-patterns to avoid, see the `sprite-shading` skill. This reference documents flags only.
+
+### Deformation across frames
+
+There's no dedicated squash/stretch command — use `resize` on a named shape:
+
+```
+sprite.js resize ball --cell 0,3 --updates '{"rx":5,"ry":3}'   # squash on impact
+sprite.js resize ball --cell 0,1 --updates '{"rx":4,"ry":5}'   # stretch mid-air
+```
+
+`resize` also accepts individual flags (`--rx 5 --ry 3`) as a shorthand that's merged into the updates object.
 
 ## Shape Management
 

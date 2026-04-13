@@ -105,3 +105,7 @@ sprite.js save     # persist project to SQLite
 ## Additional Resources
 
 - **`references/tool-reference.md`** — complete flag reference for all CLI commands, anchor points per shape type, group details
+- **`sprite-shading` skill** — multi-tier lighting technique (form shadow, core shadow, rim, spec), pillow-shading anti-pattern
+- **`sprite-motion` skill** — animation principles (squash/stretch, shadow-as-elevation, timing, key poses)
+- **`sprite-palette` skill** — palette selection, ramp-aware base colors, headroom, tradeoffs
+- **`sprite-composition` skill** — draw order / z-index discipline, naming conventions, groups, sheet layout

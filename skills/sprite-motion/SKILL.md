@@ -1,0 +1,114 @@
+---
+name: sprite-motion
+description: Use when animating pixel art — triggers on "animate", "bounce", "walk", "idle", "squash", "stretch", "ease", "loop", "frames", "keyframe", "breakdown", or when planning multi-frame motion. Covers squash/stretch, shadow-as-elevation, frame timing, key-pose planning, and how to lay frames out across cells.
+---
+
+# Sprite Motion
+
+Principles for multi-frame pixel-art animation on top of the cell-based sprite sheet.
+
+## Frame Planning
+
+Lay frames linearly across a row. Name cells or use a cell group so playback order is explicit:
+
+```
+sprite.js group create bounce 0,0 0,1 0,2 0,3 0,4 0,5 0,6 0,7
+```
+
+Build **one frame completely** first (composition, lighting, details), then `copy` to the remaining cells and adjust. Adjusting per-frame is cheaper than composing eight times.
+
+## Key Poses, Breakdowns, In-Betweens
+
+A solid cycle has three layers:
+1. **Key poses** — extremes of the motion. For a bounce: *impact squash* and *apex*.
+2. **Breakdowns** — the "favoring" frame between keys that establishes the arc. For a bounce: *mid-air* (round, neutral).
+3. **In-betweens** — drawn last, fill the gaps between keys and breakdowns.
+
+Draw key poses first, then breakdowns, then in-betweens. This prevents compounding small errors into a broken arc.
+
+## Squash & Stretch
+
+Deform shapes on motion extremes to sell weight and speed. **Base volume must stay constant** — if the ball squashes wider, it must also flatten shorter.
+
+| Moment | Shape |
+|---|---|
+| Impact (ground contact) | Wide + flat (`rx↑ ry↓`) |
+| Rising / falling at speed | Tall + narrow, stretched along motion vector (`ry↑ rx↓`) |
+| Apex (top of arc) | Near-neutral or slightly stretched vertically (gravity slowest here) |
+| Mid-air coasting | Full neutral shape |
+
+Use `resize <name> --updates '{"rx":5,"ry":3}'` — not `delete` + redraw — so the shape keeps its name and accumulated lighting references.
+
+## Shadow as Elevation
+
+The ground shadow is the audience's elevation cue. Scale it inversely to height:
+
+| Height | Shadow rx | Shadow ry |
+|---|---|---|
+| On ground (impact) | largest (~0.75 × ball width) | largest |
+| Mid-air | medium | thin |
+| Apex | smallest (~0.25 × ball width) | thinnest |
+
+Always pin the shadow's `cy` to the ground line — it doesn't move vertically, only scales.
+
+## Timing & Easing
+
+Even frame spacing produces *linear* motion, which reads as mechanical. Real motion eases.
+
+- **Slow in / slow out** — cluster frames near the extremes (apex, impact). For a bounce, spend more frames near the apex (gravity is slowest there) than mid-fall.
+- **Snap on impact** — impact squash lasts 1 frame. Faster → more weight.
+- **Hold the apex** — 1–2 frames at apex reads as gravity turnaround.
+- **Asymmetric frame counts** — 8-frame bounce might split: 1 impact, 2 rising, 1 mid-rise, 2 apex, 1 mid-fall, 1 pre-impact. Avoid perfect symmetry unless the motion is literally symmetric.
+
+## Playback
+
+Inspect a group in the terminal with `view-anim`:
+
+```
+sprite.js view-anim bounce --fps 8 --loops 3
+```
+
+Lower fps (6–10) for weighty/deliberate motion, higher (12–16) for zippy motion. The web UI at `localhost:3377` also previews the sprite sheet.
+
+## Common Cycles
+
+### Bounce (8 frames)
+```
+0: impact squash       (shadow wide,   ball flat-wide)
+1: rising stretch      (shadow medium, ball tall)
+2: mid-rise neutral    (shadow small,  ball round)
+3: apex stretch up     (shadow tiny,   ball slightly tall)
+4: apex peak           (shadow tiny,   ball neutral)
+5: falling stretch     (mirror of 3)
+6: mid-fall neutral    (mirror of 2)
+7: pre-impact stretch  (mirror of 1)
+```
+
+### Idle (4–6 frames)
+Subtle bob — ball moves up 1–2px mid-cycle, shadow shrinks 1px, easing slow-in/slow-out. Avoid large motion; it should be hypnotic.
+
+### Walk (8 frames)
+Contact / down / passing / high-point for each leg (×2 legs = 8 frames). Same squash/stretch principles apply to the body — it should rise/fall 1–2px with each step.
+
+## Naming Conventions for Animation
+
+Use `name` to label each frame semantically:
+
+```
+sprite.js name --cell 0,0 --as impact
+sprite.js name --cell 0,4 --as apex
+```
+
+Names survive edits and make `shapes --cell impact` legible later.
+
+## Anti-Patterns
+
+- **Copying without adjusting** — 8 identical frames is not animation.
+- **Volume-violating squash** — ball grows wider on impact but stays the same height. Reads as inflation, not compression.
+- **Shadow stays the same size** — kills the depth cue; sprite reads as sliding, not bouncing.
+- **Linear timing** — even frame spacing makes motion feel robotic. Plan slow-ins.
+- **Matching highlight across every frame unchanged** — for a bouncing ball the light direction is constant so this is actually *correct*; but for rotating objects, highlights must orbit. Know which case you're in.
+
+## Reference
+
+Use `sprite-shading` for per-frame lighting. Use `sprite-editing` for the raw commands.
