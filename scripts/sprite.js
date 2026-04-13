@@ -248,6 +248,7 @@ BATCH
                               add --continue-on-error true to run all ops and summarize
                               --vars k=v,k2=v2  substitute {{k}} placeholders in ops
                                                 (numeric when value parses as a number)
+                              --vars-file <json>  array of var dicts; ops replay once per dict
 
 Full reference: skills/sprite-editing/references/tool-reference.md
 `;
@@ -489,7 +490,6 @@ async function run() {
       let failed = 0;
       let opIndex = 0;
 
-      outer:
       for (const frameVars of runs) {
         for (let i = 0; i < commands.length; i++) {
           opIndex++;

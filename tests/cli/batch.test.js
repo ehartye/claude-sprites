@@ -204,6 +204,43 @@ describe('CLI batch mode', () => {
     }
   });
 
+  test('batch --vars-file iterates ops per frame dict', async () => {
+    const ops = [
+      { command: 'draw', type: 'rect', cell: '{{cell}}', x: 0, y: 0, w: '{{w}}', h: '{{w}}', color: '#ffffff', name: '{{tag}}' },
+    ];
+    const frames = [
+      { cell: '0,2', w: 3, tag: 'frame_a' },
+      { cell: '0,3', w: 5, tag: 'frame_b' },
+    ];
+    const opsFile = join(tmpDir, 'vf-ops.json');
+    const framesFile = join(tmpDir, 'vf-frames.json');
+    fs.writeFileSync(opsFile, JSON.stringify(ops));
+    fs.writeFileSync(framesFile, JSON.stringify(frames));
+
+    const { stdout } = await cli('batch', opsFile, '--vars-file', framesFile);
+    expect(stdout).toContain('Done: 2/2 succeeded');
+
+    const sA = await cli('shapes', '--cell', '0,2');
+    expect(sA.stdout).toContain('frame_a');
+    const sB = await cli('shapes', '--cell', '0,3');
+    expect(sB.stdout).toContain('frame_b');
+  });
+
+  test('batch --vars-file rejects non-array file', async () => {
+    const opsFile = join(tmpDir, 'vf-ops2.json');
+    const badFile = join(tmpDir, 'vf-bad.json');
+    fs.writeFileSync(opsFile, JSON.stringify([{ command: 'draw', type: 'point', cell: '0,0', x: 0, y: 0, color: '#fff', name: 'p' }]));
+    fs.writeFileSync(badFile, JSON.stringify({ cell: '0,0' }));
+
+    try {
+      await cli('batch', opsFile, '--vars-file', badFile);
+      expect.unreachable('should have failed');
+    } catch (e) {
+      expect(e.code).toBe(1);
+      expect(e.stderr).toMatch(/vars-file.*array/i);
+    }
+  });
+
   test('batch reads from stdin with --stdin flag', async () => {
     const commands = [
       { command: 'draw', type: 'point', cell: '0,0', x: 7, y: 7, color: '#ff004d', name: 'stdin_pt' },
