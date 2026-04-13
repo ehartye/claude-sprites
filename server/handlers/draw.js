@@ -480,6 +480,15 @@ export function handleDraw(state, type, params) {
     return handleArc(state, params, cell);
   }
 
+  if (type === 'ring') {
+    // Single-target sugar over border.
+    return handleBorder(state, {
+      ...params,
+      shapes: params.shape,
+      shape_name: params.shape_name ?? `${params.shape}_ring`,
+    }, cell);
+  }
+
   // Clip-to path: rasterize the outline, filter by mask, emit pixels as points.
   // Currently supports unfilled ellipse/circle outlines (the common need).
   if (params.clip_to && (type === 'ellipse' || type === 'circle') && params.filled === false) {
