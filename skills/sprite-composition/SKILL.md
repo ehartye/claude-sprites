@@ -136,7 +136,7 @@ This scans every cell, finds shapes whose names match the regex, and creates (or
 For per-frame parameterized work (8 animation frames with different ball positions), use `batch` with `--vars-file`:
 
 ```
-sprite.js batch --file frame-ops.json --vars-file frames.json
+sprite.js batch frame-ops.json --vars-file frames.json
 ```
 
 `frame-ops.json` contains placeholders like `"cx": "{{cx}}"`, and `frames.json` is an array of dicts — one per frame — that get substituted in. Fail-fast by default; pass `--continue-on-error` only when best-effort is what you want. See `sprite-editing/references/tool-reference.md` for DSL details.

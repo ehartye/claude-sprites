@@ -68,7 +68,7 @@ Flags:
 
 ### Sphere shading (compound)
 
-`draw sphere-shade` is the preferred way to light a circle/ellipse. It composes 2–5 highlight/shadow tiers in a single call and emits a shape-group `<base>_group` bundling all output shapes.
+`draw sphere-shade` is the preferred way to light a circle/ellipse. It composes 2–5 highlight/shadow tiers in a single call.
 
 - `--intensity auto` (default) picks tiers by target size: `r<=6` → low (2 tiers), `7–12` → med (3 tiers), `>12` → high (5 tiers). Ellipse uses `max(rx, ry)`.
 - `--direction` rotates all tiers consistently (highlight/spec toward, shadow/rim opposite).
@@ -183,7 +183,7 @@ The `--updates` flag takes a JSON object with keys matching the shape's paramete
 Run a JSON array of operations in one CLI call. Collapses per-frame bash loops into a single deterministic call.
 
 ```
-sprite.js batch --file ops.json [--vars-file frames.json | --vars k=v,k=v] [--continue-on-error]
+sprite.js batch ops.json [--vars-file frames.json | --vars k=v,k=v] [--continue-on-error]
 ```
 
 - `ops.json` — array of `{ command, args }` objects. String values may contain `{{var}}` placeholders.
