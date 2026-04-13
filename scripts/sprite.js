@@ -317,6 +317,8 @@ async function run() {
         span_deg: num(args['span-deg']),
         radius_factor: num(args['radius-factor']),
         intensity: args.intensity,
+        from_deg: num(args['from-deg']),
+        to_deg: num(args['to-deg']),
         clip_to: args['clip-to'],
         shape_prefix: args['shape-prefix'],
         shapes: args.shapes,

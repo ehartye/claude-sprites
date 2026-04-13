@@ -332,6 +332,52 @@ function rasterizeEllipseOutline(cx, cy, rx, ry) {
 }
 
 /**
+ * Rasterize a partial ellipse outline between angles (CW, y-down:
+ * 0=east, 90=south, 180=west, 270=north). Walks from fromDeg to toDeg;
+ * if span is zero or negative, wraps a full 360° in the positive direction.
+ */
+function rasterizeEllipseArc(cx, cy, rx, ry, fromDeg, toDeg) {
+  const steps = Math.max(rx, ry) * 4;
+  const drawn = new Set();
+  const pixels = [];
+  const fromRad = (fromDeg * Math.PI) / 180;
+  const toRad = (toDeg * Math.PI) / 180;
+  let span = toRad - fromRad;
+  if (span <= 0) span += 2 * Math.PI;
+  const n = Math.max(8, Math.round((span / (2 * Math.PI)) * steps));
+  for (let i = 0; i <= n; i++) {
+    const a = fromRad + (span * i) / n;
+    const px = Math.round(cx + rx * Math.cos(a));
+    const py = Math.round(cy + ry * Math.sin(a));
+    const key = `${px},${py}`;
+    if (!drawn.has(key)) { drawn.add(key); pixels.push({ x: px, y: py }); }
+  }
+  return pixels;
+}
+
+function handleArc(state, params, cell) {
+  const rx = params.rx ?? params.r;
+  const ry = params.ry ?? params.r;
+  if (!rx || !ry) throw new Error('arc requires rx/ry or r');
+  const pixels = rasterizeEllipseArc(params.cx, params.cy, rx, ry, params.from_deg, params.to_deg);
+  let filtered = pixels;
+  if (params.clip_to) {
+    const mask = cell.shapes.get(params.clip_to);
+    if (!mask) throw new Error(`Clip-to shape "${params.clip_to}" not found`);
+    filtered = pixels.filter(pt => isInsideShape(mask, pt.x, pt.y));
+  }
+  const base = params.shape_name ?? 'arc';
+  const shapeNames = [];
+  for (let i = 0; i < filtered.length; i++) {
+    const name = `${base}_${i}`;
+    const shape = cell.draw('point', filtered[i], params.color, name);
+    state.broadcast?.({ type: 'draw', cell: params.cell, shape: shape.toJSON() });
+    shapeNames.push(name);
+  }
+  return { shapeNames };
+}
+
+/**
  * Handle a `draw ellipse --clip-to <mask>` by rasterizing the outline,
  * filtering pixels to those inside the mask, and emitting them as points.
  * Keeps the original shape out of the registry entirely — only the clipped
@@ -428,6 +474,10 @@ export function handleDraw(state, type, params) {
 
   if (type === 'border') {
     return handleBorder(state, params, cell);
+  }
+
+  if (type === 'arc') {
+    return handleArc(state, params, cell);
   }
 
   // Clip-to path: rasterize the outline, filter by mask, emit pixels as points.
