@@ -303,8 +303,20 @@ function rasterizeShapeToSet(shape) {
       if (p.filled === false) {
         for (const pt of rasterizeEllipseOutline(p.cx, p.cy, rx, ry)) add(pt.x, pt.y);
       } else {
-        for (let y = -ry; y <= ry; y++) for (let x = -rx; x <= rx; x++) {
-          if ((x * x) / (rx * rx) + (y * y) / (ry * ry) <= 1) add(p.cx + x, p.cy + y);
+        // Trim 1px N/S tips on shapes with rx >= 2 and ry >= 2.
+        const trimTips = rx >= 2 && ry >= 2;
+        for (let y = -ry; y <= ry; y++) {
+          let leftX = null, rightX = null;
+          for (let x = -rx; x <= rx; x++) {
+            if ((x * x) / (rx * rx) + (y * y) / (ry * ry) <= 1) {
+              if (leftX === null) leftX = x;
+              rightX = x;
+            }
+          }
+          if (leftX === null) continue;
+          const width = rightX - leftX + 1;
+          if (trimTips && width === 1 && (y === -ry || y === ry)) continue;
+          for (let x = leftX; x <= rightX; x++) add(p.cx + x, p.cy + y);
         }
       }
       break;

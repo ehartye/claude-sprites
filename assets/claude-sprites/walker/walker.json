@@ -1,0 +1,1922 @@
+{
+  "version": 1,
+  "name": "walker",
+  "cellSize": 16,
+  "grid": {
+    "rows": 4,
+    "cols": 4
+  },
+  "background": {
+    "mode": "transparent"
+  },
+  "palette": [
+    {
+      "name": "black",
+      "color": "#000000"
+    },
+    {
+      "name": "dark-blue",
+      "color": "#1d2b53"
+    },
+    {
+      "name": "dark-purple",
+      "color": "#7e2553"
+    },
+    {
+      "name": "dark-green",
+      "color": "#008751"
+    },
+    {
+      "name": "brown",
+      "color": "#ab5236"
+    },
+    {
+      "name": "dark-grey",
+      "color": "#5f574f"
+    },
+    {
+      "name": "light-grey",
+      "color": "#c2c3c7"
+    },
+    {
+      "name": "white",
+      "color": "#fff1e8"
+    },
+    {
+      "name": "red",
+      "color": "#ff004d"
+    },
+    {
+      "name": "orange",
+      "color": "#ffa300"
+    },
+    {
+      "name": "yellow",
+      "color": "#ffec27"
+    },
+    {
+      "name": "green",
+      "color": "#00e436"
+    },
+    {
+      "name": "blue",
+      "color": "#29adff"
+    },
+    {
+      "name": "lavender",
+      "color": "#83769c"
+    },
+    {
+      "name": "pink",
+      "color": "#ff77a8"
+    },
+    {
+      "name": "light-peach",
+      "color": "#ffccaa"
+    }
+  ],
+  "cells": {
+    "0,0": {
+      "name": "down_1",
+      "shapes": [
+        {
+          "id": "s28",
+          "name": "head",
+          "type": "circle",
+          "params": {
+            "cx": 8,
+            "cy": 4,
+            "r": 3,
+            "filled": true
+          },
+          "color": "#ffccaa",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s29",
+          "name": "hair",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 2,
+            "w": 5,
+            "h": 2,
+            "filled": true
+          },
+          "color": "#1d2b53",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s30",
+          "name": "eye_l",
+          "type": "point",
+          "params": {
+            "x": 7,
+            "y": 4
+          },
+          "color": "#1d2b53",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s31",
+          "name": "eye_r",
+          "type": "point",
+          "params": {
+            "x": 9,
+            "y": 4
+          },
+          "color": "#1d2b53",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s32",
+          "name": "tunic",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 7,
+            "w": 5,
+            "h": 5,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s33",
+          "name": "arm_l",
+          "type": "rect",
+          "params": {
+            "x": 4,
+            "y": 8,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s34",
+          "name": "arm_r",
+          "type": "rect",
+          "params": {
+            "x": 11,
+            "y": 8,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 6,
+          "visible": true
+        },
+        {
+          "id": "s35",
+          "name": "boot_l",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 7,
+          "visible": true
+        },
+        {
+          "id": "s36",
+          "name": "boot_r",
+          "type": "rect",
+          "params": {
+            "x": 9,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 8,
+          "visible": true
+        }
+      ]
+    },
+    "0,1": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s37",
+          "name": "head",
+          "type": "circle",
+          "params": {
+            "cx": 8,
+            "cy": 4,
+            "r": 3,
+            "filled": true
+          },
+          "color": "#ffccaa",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s38",
+          "name": "hair",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 2,
+            "w": 5,
+            "h": 2,
+            "filled": true
+          },
+          "color": "#1d2b53",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s39",
+          "name": "eye_l",
+          "type": "point",
+          "params": {
+            "x": 7,
+            "y": 4
+          },
+          "color": "#1d2b53",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s40",
+          "name": "eye_r",
+          "type": "point",
+          "params": {
+            "x": 9,
+            "y": 4
+          },
+          "color": "#1d2b53",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s41",
+          "name": "tunic",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 7,
+            "w": 5,
+            "h": 5,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s42",
+          "name": "arm_l",
+          "type": "rect",
+          "params": {
+            "x": 4,
+            "y": 7,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s43",
+          "name": "arm_r",
+          "type": "rect",
+          "params": {
+            "x": 11,
+            "y": 9,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 6,
+          "visible": true
+        },
+        {
+          "id": "s44",
+          "name": "boot_l",
+          "type": "rect",
+          "params": {
+            "x": 5,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 7,
+          "visible": true
+        },
+        {
+          "id": "s45",
+          "name": "boot_r",
+          "type": "rect",
+          "params": {
+            "x": 10,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 8,
+          "visible": true
+        }
+      ]
+    },
+    "0,2": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s46",
+          "name": "head",
+          "type": "circle",
+          "params": {
+            "cx": 8,
+            "cy": 4,
+            "r": 3,
+            "filled": true
+          },
+          "color": "#ffccaa",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s47",
+          "name": "hair",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 2,
+            "w": 5,
+            "h": 2,
+            "filled": true
+          },
+          "color": "#1d2b53",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s48",
+          "name": "eye_l",
+          "type": "point",
+          "params": {
+            "x": 7,
+            "y": 4
+          },
+          "color": "#1d2b53",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s49",
+          "name": "eye_r",
+          "type": "point",
+          "params": {
+            "x": 9,
+            "y": 4
+          },
+          "color": "#1d2b53",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s50",
+          "name": "tunic",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 7,
+            "w": 5,
+            "h": 5,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s51",
+          "name": "arm_l",
+          "type": "rect",
+          "params": {
+            "x": 4,
+            "y": 8,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s52",
+          "name": "arm_r",
+          "type": "rect",
+          "params": {
+            "x": 11,
+            "y": 8,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 6,
+          "visible": true
+        },
+        {
+          "id": "s53",
+          "name": "boot_l",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 7,
+          "visible": true
+        },
+        {
+          "id": "s54",
+          "name": "boot_r",
+          "type": "rect",
+          "params": {
+            "x": 9,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 8,
+          "visible": true
+        }
+      ]
+    },
+    "0,3": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s55",
+          "name": "head",
+          "type": "circle",
+          "params": {
+            "cx": 8,
+            "cy": 4,
+            "r": 3,
+            "filled": true
+          },
+          "color": "#ffccaa",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s56",
+          "name": "hair",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 2,
+            "w": 5,
+            "h": 2,
+            "filled": true
+          },
+          "color": "#1d2b53",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s57",
+          "name": "eye_l",
+          "type": "point",
+          "params": {
+            "x": 7,
+            "y": 4
+          },
+          "color": "#1d2b53",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s58",
+          "name": "eye_r",
+          "type": "point",
+          "params": {
+            "x": 9,
+            "y": 4
+          },
+          "color": "#1d2b53",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s59",
+          "name": "tunic",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 7,
+            "w": 5,
+            "h": 5,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s60",
+          "name": "arm_l",
+          "type": "rect",
+          "params": {
+            "x": 4,
+            "y": 9,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s61",
+          "name": "arm_r",
+          "type": "rect",
+          "params": {
+            "x": 11,
+            "y": 7,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 6,
+          "visible": true
+        },
+        {
+          "id": "s62",
+          "name": "boot_l",
+          "type": "rect",
+          "params": {
+            "x": 7,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 7,
+          "visible": true
+        },
+        {
+          "id": "s63",
+          "name": "boot_r",
+          "type": "rect",
+          "params": {
+            "x": 8,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 8,
+          "visible": true
+        }
+      ]
+    },
+    "1,0": {
+      "name": "left_1",
+      "shapes": [
+        {
+          "id": "s64",
+          "name": "head",
+          "type": "circle",
+          "params": {
+            "cx": 8,
+            "cy": 4,
+            "r": 3,
+            "filled": true
+          },
+          "color": "#ffccaa",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s65",
+          "name": "hair",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 2,
+            "w": 5,
+            "h": 2,
+            "filled": true
+          },
+          "color": "#1d2b53",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s66",
+          "name": "eye_l",
+          "type": "point",
+          "params": {
+            "x": 6,
+            "y": 4
+          },
+          "color": "#1d2b53",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s67",
+          "name": "tunic",
+          "type": "rect",
+          "params": {
+            "x": 5,
+            "y": 7,
+            "w": 5,
+            "h": 5,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s68",
+          "name": "arm_l",
+          "type": "rect",
+          "params": {
+            "x": 3,
+            "y": 8,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s69",
+          "name": "boot_l",
+          "type": "rect",
+          "params": {
+            "x": 5,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s70",
+          "name": "boot_r",
+          "type": "rect",
+          "params": {
+            "x": 8,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 6,
+          "visible": true
+        }
+      ]
+    },
+    "1,1": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s71",
+          "name": "head",
+          "type": "circle",
+          "params": {
+            "cx": 8,
+            "cy": 4,
+            "r": 3,
+            "filled": true
+          },
+          "color": "#ffccaa",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s72",
+          "name": "hair",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 2,
+            "w": 5,
+            "h": 2,
+            "filled": true
+          },
+          "color": "#1d2b53",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s73",
+          "name": "eye_l",
+          "type": "point",
+          "params": {
+            "x": 6,
+            "y": 4
+          },
+          "color": "#1d2b53",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s74",
+          "name": "tunic",
+          "type": "rect",
+          "params": {
+            "x": 5,
+            "y": 7,
+            "w": 5,
+            "h": 5,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s75",
+          "name": "arm_l",
+          "type": "rect",
+          "params": {
+            "x": 3,
+            "y": 7,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s76",
+          "name": "boot_l",
+          "type": "rect",
+          "params": {
+            "x": 4,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s77",
+          "name": "boot_r",
+          "type": "rect",
+          "params": {
+            "x": 9,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 6,
+          "visible": true
+        }
+      ]
+    },
+    "1,2": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s78",
+          "name": "head",
+          "type": "circle",
+          "params": {
+            "cx": 8,
+            "cy": 4,
+            "r": 3,
+            "filled": true
+          },
+          "color": "#ffccaa",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s79",
+          "name": "hair",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 2,
+            "w": 5,
+            "h": 2,
+            "filled": true
+          },
+          "color": "#1d2b53",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s80",
+          "name": "eye_l",
+          "type": "point",
+          "params": {
+            "x": 6,
+            "y": 4
+          },
+          "color": "#1d2b53",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s81",
+          "name": "tunic",
+          "type": "rect",
+          "params": {
+            "x": 5,
+            "y": 7,
+            "w": 5,
+            "h": 5,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s82",
+          "name": "arm_l",
+          "type": "rect",
+          "params": {
+            "x": 3,
+            "y": 8,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s83",
+          "name": "boot_l",
+          "type": "rect",
+          "params": {
+            "x": 5,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s84",
+          "name": "boot_r",
+          "type": "rect",
+          "params": {
+            "x": 8,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 6,
+          "visible": true
+        }
+      ]
+    },
+    "1,3": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s85",
+          "name": "head",
+          "type": "circle",
+          "params": {
+            "cx": 8,
+            "cy": 4,
+            "r": 3,
+            "filled": true
+          },
+          "color": "#ffccaa",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s86",
+          "name": "hair",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 2,
+            "w": 5,
+            "h": 2,
+            "filled": true
+          },
+          "color": "#1d2b53",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s87",
+          "name": "eye_l",
+          "type": "point",
+          "params": {
+            "x": 6,
+            "y": 4
+          },
+          "color": "#1d2b53",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s88",
+          "name": "tunic",
+          "type": "rect",
+          "params": {
+            "x": 5,
+            "y": 7,
+            "w": 5,
+            "h": 5,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s89",
+          "name": "arm_l",
+          "type": "rect",
+          "params": {
+            "x": 3,
+            "y": 9,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s90",
+          "name": "boot_l",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s91",
+          "name": "boot_r",
+          "type": "rect",
+          "params": {
+            "x": 7,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 6,
+          "visible": true
+        }
+      ]
+    },
+    "2,0": {
+      "name": "right_1",
+      "shapes": [
+        {
+          "id": "s92",
+          "name": "head",
+          "type": "circle",
+          "params": {
+            "cx": 8,
+            "cy": 4,
+            "r": 3,
+            "filled": true
+          },
+          "color": "#ffccaa",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s93",
+          "name": "hair",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 2,
+            "w": 5,
+            "h": 2,
+            "filled": true
+          },
+          "color": "#1d2b53",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s94",
+          "name": "eye_r",
+          "type": "point",
+          "params": {
+            "x": 10,
+            "y": 4
+          },
+          "color": "#1d2b53",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s95",
+          "name": "tunic",
+          "type": "rect",
+          "params": {
+            "x": 7,
+            "y": 7,
+            "w": 5,
+            "h": 5,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s96",
+          "name": "arm_r",
+          "type": "rect",
+          "params": {
+            "x": 12,
+            "y": 8,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s97",
+          "name": "boot_l",
+          "type": "rect",
+          "params": {
+            "x": 7,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s98",
+          "name": "boot_r",
+          "type": "rect",
+          "params": {
+            "x": 10,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 6,
+          "visible": true
+        }
+      ]
+    },
+    "2,1": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s99",
+          "name": "head",
+          "type": "circle",
+          "params": {
+            "cx": 8,
+            "cy": 4,
+            "r": 3,
+            "filled": true
+          },
+          "color": "#ffccaa",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s100",
+          "name": "hair",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 2,
+            "w": 5,
+            "h": 2,
+            "filled": true
+          },
+          "color": "#1d2b53",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s101",
+          "name": "eye_r",
+          "type": "point",
+          "params": {
+            "x": 10,
+            "y": 4
+          },
+          "color": "#1d2b53",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s102",
+          "name": "tunic",
+          "type": "rect",
+          "params": {
+            "x": 7,
+            "y": 7,
+            "w": 5,
+            "h": 5,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s103",
+          "name": "arm_r",
+          "type": "rect",
+          "params": {
+            "x": 12,
+            "y": 7,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s104",
+          "name": "boot_l",
+          "type": "rect",
+          "params": {
+            "x": 8,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s105",
+          "name": "boot_r",
+          "type": "rect",
+          "params": {
+            "x": 9,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 6,
+          "visible": true
+        }
+      ]
+    },
+    "2,2": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s106",
+          "name": "head",
+          "type": "circle",
+          "params": {
+            "cx": 8,
+            "cy": 4,
+            "r": 3,
+            "filled": true
+          },
+          "color": "#ffccaa",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s107",
+          "name": "hair",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 2,
+            "w": 5,
+            "h": 2,
+            "filled": true
+          },
+          "color": "#1d2b53",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s108",
+          "name": "eye_r",
+          "type": "point",
+          "params": {
+            "x": 10,
+            "y": 4
+          },
+          "color": "#1d2b53",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s109",
+          "name": "tunic",
+          "type": "rect",
+          "params": {
+            "x": 7,
+            "y": 7,
+            "w": 5,
+            "h": 5,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s110",
+          "name": "arm_r",
+          "type": "rect",
+          "params": {
+            "x": 12,
+            "y": 8,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s111",
+          "name": "boot_l",
+          "type": "rect",
+          "params": {
+            "x": 7,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s112",
+          "name": "boot_r",
+          "type": "rect",
+          "params": {
+            "x": 10,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 6,
+          "visible": true
+        }
+      ]
+    },
+    "2,3": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s113",
+          "name": "head",
+          "type": "circle",
+          "params": {
+            "cx": 8,
+            "cy": 4,
+            "r": 3,
+            "filled": true
+          },
+          "color": "#ffccaa",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s114",
+          "name": "hair",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 2,
+            "w": 5,
+            "h": 2,
+            "filled": true
+          },
+          "color": "#1d2b53",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s115",
+          "name": "eye_r",
+          "type": "point",
+          "params": {
+            "x": 10,
+            "y": 4
+          },
+          "color": "#1d2b53",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s116",
+          "name": "tunic",
+          "type": "rect",
+          "params": {
+            "x": 7,
+            "y": 7,
+            "w": 5,
+            "h": 5,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s117",
+          "name": "arm_r",
+          "type": "rect",
+          "params": {
+            "x": 12,
+            "y": 9,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s118",
+          "name": "boot_l",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s119",
+          "name": "boot_r",
+          "type": "rect",
+          "params": {
+            "x": 11,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 6,
+          "visible": true
+        }
+      ]
+    },
+    "3,0": {
+      "name": "up_1",
+      "shapes": [
+        {
+          "id": "s120",
+          "name": "head",
+          "type": "circle",
+          "params": {
+            "cx": 8,
+            "cy": 4,
+            "r": 3,
+            "filled": true
+          },
+          "color": "#ffccaa",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s121",
+          "name": "hair",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 2,
+            "w": 5,
+            "h": 2,
+            "filled": true
+          },
+          "color": "#1d2b53",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s122",
+          "name": "tunic",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 7,
+            "w": 5,
+            "h": 5,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s123",
+          "name": "arm_l",
+          "type": "rect",
+          "params": {
+            "x": 4,
+            "y": 8,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s124",
+          "name": "arm_r",
+          "type": "rect",
+          "params": {
+            "x": 11,
+            "y": 8,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s125",
+          "name": "boot_l",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s126",
+          "name": "boot_r",
+          "type": "rect",
+          "params": {
+            "x": 9,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 6,
+          "visible": true
+        }
+      ]
+    },
+    "3,1": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s127",
+          "name": "head",
+          "type": "circle",
+          "params": {
+            "cx": 8,
+            "cy": 4,
+            "r": 3,
+            "filled": true
+          },
+          "color": "#ffccaa",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s128",
+          "name": "hair",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 2,
+            "w": 5,
+            "h": 2,
+            "filled": true
+          },
+          "color": "#1d2b53",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s129",
+          "name": "tunic",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 7,
+            "w": 5,
+            "h": 5,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s130",
+          "name": "arm_l",
+          "type": "rect",
+          "params": {
+            "x": 4,
+            "y": 7,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s131",
+          "name": "arm_r",
+          "type": "rect",
+          "params": {
+            "x": 11,
+            "y": 9,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s132",
+          "name": "boot_l",
+          "type": "rect",
+          "params": {
+            "x": 5,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s133",
+          "name": "boot_r",
+          "type": "rect",
+          "params": {
+            "x": 10,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 6,
+          "visible": true
+        }
+      ]
+    },
+    "3,2": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s134",
+          "name": "head",
+          "type": "circle",
+          "params": {
+            "cx": 8,
+            "cy": 4,
+            "r": 3,
+            "filled": true
+          },
+          "color": "#ffccaa",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s135",
+          "name": "hair",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 2,
+            "w": 5,
+            "h": 2,
+            "filled": true
+          },
+          "color": "#1d2b53",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s136",
+          "name": "tunic",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 7,
+            "w": 5,
+            "h": 5,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s137",
+          "name": "arm_l",
+          "type": "rect",
+          "params": {
+            "x": 4,
+            "y": 8,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s138",
+          "name": "arm_r",
+          "type": "rect",
+          "params": {
+            "x": 11,
+            "y": 8,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s139",
+          "name": "boot_l",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s140",
+          "name": "boot_r",
+          "type": "rect",
+          "params": {
+            "x": 9,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 6,
+          "visible": true
+        }
+      ]
+    },
+    "3,3": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s141",
+          "name": "head",
+          "type": "circle",
+          "params": {
+            "cx": 8,
+            "cy": 4,
+            "r": 3,
+            "filled": true
+          },
+          "color": "#ffccaa",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s142",
+          "name": "hair",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 2,
+            "w": 5,
+            "h": 2,
+            "filled": true
+          },
+          "color": "#1d2b53",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s143",
+          "name": "tunic",
+          "type": "rect",
+          "params": {
+            "x": 6,
+            "y": 7,
+            "w": 5,
+            "h": 5,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s144",
+          "name": "arm_l",
+          "type": "rect",
+          "params": {
+            "x": 4,
+            "y": 9,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s145",
+          "name": "arm_r",
+          "type": "rect",
+          "params": {
+            "x": 11,
+            "y": 7,
+            "w": 2,
+            "h": 4,
+            "filled": true
+          },
+          "color": "#29adff",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s146",
+          "name": "boot_l",
+          "type": "rect",
+          "params": {
+            "x": 7,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s147",
+          "name": "boot_r",
+          "type": "rect",
+          "params": {
+            "x": 8,
+            "y": 12,
+            "w": 2,
+            "h": 3,
+            "filled": true
+          },
+          "color": "#ab5236",
+          "zIndex": 6,
+          "visible": true
+        }
+      ]
+    }
+  },
+  "groups": {
+    "walk_down": [
+      "0,0",
+      "0,1",
+      "0,2",
+      "0,3"
+    ],
+    "walk_left": [
+      "1,0",
+      "1,1",
+      "1,2",
+      "1,3"
+    ],
+    "walk_right": [
+      "2,0",
+      "2,1",
+      "2,2",
+      "2,3"
+    ],
+    "walk_up": [
+      "3,0",
+      "3,1",
+      "3,2",
+      "3,3"
+    ]
+  }
+}

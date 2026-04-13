@@ -1,0 +1,70 @@
+[
+  {
+    "command": "clear",
+    "cell": "{{cell}}"
+  },
+  {
+    "command": "draw",
+    "type": "ellipse",
+    "cell": "{{cell}}",
+    "cx": 32,
+    "cy": 60,
+    "rx": "{{sx}}",
+    "ry": "{{sy}}",
+    "color": "#222034",
+    "name": "shadow"
+  },
+  {
+    "command": "draw",
+    "type": "{{btype}}",
+    "cell": "{{cell}}",
+    "cx": 32,
+    "cy": "{{bcy}}",
+    "rx": "{{brx}}",
+    "ry": "{{bry}}",
+    "r": "{{brx}}",
+    "color": "#99e550",
+    "name": "ball"
+  },
+  {
+    "command": "draw",
+    "type": "sphere-shade",
+    "cell": "{{cell}}",
+    "shape": "ball"
+  },
+  {
+    "command": "draw",
+    "type": "ellipse",
+    "cell": "{{cell}}",
+    "cx": "{{seam_left_cx}}",
+    "cy": "{{bcy}}",
+    "rx": "{{seam_rx}}",
+    "ry": "{{seam_ry}}",
+    "filled": false,
+    "color": "#fff1e8",
+    "clip_to": "ball",
+    "name": "seam_left"
+  },
+  {
+    "command": "draw",
+    "type": "ellipse",
+    "cell": "{{cell}}",
+    "cx": "{{seam_right_cx}}",
+    "cy": "{{bcy}}",
+    "rx": "{{seam_rx}}",
+    "ry": "{{seam_ry}}",
+    "filled": false,
+    "color": "#fff1e8",
+    "clip_to": "ball",
+    "name": "seam_right"
+  },
+  {
+    "command": "draw",
+    "type": "border",
+    "cell": "{{cell}}",
+    "shape_prefix": "seam",
+    "color": "#6abe30",
+    "clip_to": "ball",
+    "shape_name": "seamhalo"
+  }
+]

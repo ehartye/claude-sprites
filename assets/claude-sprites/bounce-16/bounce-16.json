@@ -1,0 +1,902 @@
+{
+  "version": 1,
+  "name": "bounce-16",
+  "cellSize": 16,
+  "grid": {
+    "rows": 1,
+    "cols": 8
+  },
+  "background": {
+    "mode": "transparent"
+  },
+  "palette": [
+    {
+      "name": "black",
+      "color": "#000000"
+    },
+    {
+      "name": "valhalla",
+      "color": "#222034"
+    },
+    {
+      "name": "loulou",
+      "color": "#45283c"
+    },
+    {
+      "name": "oiled-cedar",
+      "color": "#663931"
+    },
+    {
+      "name": "rope",
+      "color": "#8f563b"
+    },
+    {
+      "name": "tahiti-gold",
+      "color": "#df7126"
+    },
+    {
+      "name": "twine",
+      "color": "#d9a066"
+    },
+    {
+      "name": "pancho",
+      "color": "#eec39a"
+    },
+    {
+      "name": "golden-fizz",
+      "color": "#fbf236"
+    },
+    {
+      "name": "atlantis",
+      "color": "#99e550"
+    },
+    {
+      "name": "christi",
+      "color": "#6abe30"
+    },
+    {
+      "name": "elf-green",
+      "color": "#37946e"
+    },
+    {
+      "name": "dell",
+      "color": "#4b692f"
+    },
+    {
+      "name": "verdigris",
+      "color": "#524b24"
+    },
+    {
+      "name": "opal",
+      "color": "#323c39"
+    },
+    {
+      "name": "deep-koamaru",
+      "color": "#3f3f74"
+    },
+    {
+      "name": "venice-blue",
+      "color": "#306082"
+    },
+    {
+      "name": "royal-blue",
+      "color": "#5b6ee1"
+    },
+    {
+      "name": "cornflower",
+      "color": "#639bff"
+    },
+    {
+      "name": "viking",
+      "color": "#5fcde4"
+    },
+    {
+      "name": "light-steel-blue",
+      "color": "#cbdbfc"
+    },
+    {
+      "name": "white",
+      "color": "#ffffff"
+    },
+    {
+      "name": "heather",
+      "color": "#9badb7"
+    },
+    {
+      "name": "topaz",
+      "color": "#847e87"
+    },
+    {
+      "name": "dim-gray",
+      "color": "#696a6a"
+    },
+    {
+      "name": "smokey-ash",
+      "color": "#595652"
+    },
+    {
+      "name": "clairvoyant",
+      "color": "#76428a"
+    },
+    {
+      "name": "red",
+      "color": "#ac3232"
+    },
+    {
+      "name": "mandy",
+      "color": "#d95763"
+    },
+    {
+      "name": "plum",
+      "color": "#d77bba"
+    },
+    {
+      "name": "rainforest",
+      "color": "#8f974a"
+    },
+    {
+      "name": "stinger",
+      "color": "#8a6f30"
+    }
+  ],
+  "cells": {
+    "0,0": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s77",
+          "name": "shadow",
+          "type": "ellipse",
+          "params": {
+            "cx": 8,
+            "cy": 14,
+            "rx": 6,
+            "ry": 2,
+            "filled": true
+          },
+          "color": "#222034",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s78",
+          "name": "ball",
+          "type": "ellipse",
+          "params": {
+            "cx": 8,
+            "cy": 12,
+            "rx": 5,
+            "ry": 3,
+            "filled": true
+          },
+          "color": "#d95763",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s79",
+          "name": "ball_hl_0",
+          "type": "point",
+          "params": {
+            "x": 6,
+            "y": 11
+          },
+          "color": "#d77bba",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s80",
+          "name": "ball_hl_1",
+          "type": "point",
+          "params": {
+            "x": 7,
+            "y": 11
+          },
+          "color": "#d77bba",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s81",
+          "name": "ball_sh_0",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 13
+          },
+          "color": "#ac3232",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s82",
+          "name": "ball_sh_1",
+          "type": "point",
+          "params": {
+            "x": 10,
+            "y": 13
+          },
+          "color": "#ac3232",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s83",
+          "name": "ball_sh_2",
+          "type": "point",
+          "params": {
+            "x": 9,
+            "y": 14
+          },
+          "color": "#ac3232",
+          "zIndex": 6,
+          "visible": true
+        }
+      ]
+    },
+    "0,1": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s84",
+          "name": "shadow",
+          "type": "ellipse",
+          "params": {
+            "cx": 8,
+            "cy": 14,
+            "rx": 4,
+            "ry": 1,
+            "filled": true
+          },
+          "color": "#222034",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s85",
+          "name": "ball",
+          "type": "ellipse",
+          "params": {
+            "cx": 8,
+            "cy": 10,
+            "rx": 4,
+            "ry": 5,
+            "filled": true
+          },
+          "color": "#d95763",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s86",
+          "name": "ball_hl_0",
+          "type": "point",
+          "params": {
+            "x": 6,
+            "y": 9
+          },
+          "color": "#d77bba",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s87",
+          "name": "ball_hl_1",
+          "type": "point",
+          "params": {
+            "x": 6,
+            "y": 8
+          },
+          "color": "#d77bba",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s88",
+          "name": "ball_hl_2",
+          "type": "point",
+          "params": {
+            "x": 7,
+            "y": 8
+          },
+          "color": "#d77bba",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s89",
+          "name": "ball_sh_0",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 11
+          },
+          "color": "#ac3232",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s90",
+          "name": "ball_sh_1",
+          "type": "point",
+          "params": {
+            "x": 10,
+            "y": 12
+          },
+          "color": "#ac3232",
+          "zIndex": 6,
+          "visible": true
+        },
+        {
+          "id": "s91",
+          "name": "ball_sh_2",
+          "type": "point",
+          "params": {
+            "x": 9,
+            "y": 13
+          },
+          "color": "#ac3232",
+          "zIndex": 7,
+          "visible": true
+        }
+      ]
+    },
+    "0,2": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s92",
+          "name": "shadow",
+          "type": "ellipse",
+          "params": {
+            "cx": 8,
+            "cy": 14,
+            "rx": 3,
+            "ry": 1,
+            "filled": true
+          },
+          "color": "#222034",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s93",
+          "name": "ball",
+          "type": "circle",
+          "params": {
+            "cx": 8,
+            "cy": 7,
+            "r": 4,
+            "filled": true
+          },
+          "color": "#d95763",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s94",
+          "name": "ball_hl_0",
+          "type": "point",
+          "params": {
+            "x": 6,
+            "y": 6
+          },
+          "color": "#d77bba",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s95",
+          "name": "ball_hl_1",
+          "type": "point",
+          "params": {
+            "x": 7,
+            "y": 5
+          },
+          "color": "#d77bba",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s96",
+          "name": "ball_sh_0",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 8
+          },
+          "color": "#ac3232",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s97",
+          "name": "ball_sh_1",
+          "type": "point",
+          "params": {
+            "x": 9,
+            "y": 10
+          },
+          "color": "#ac3232",
+          "zIndex": 5,
+          "visible": true
+        }
+      ]
+    },
+    "0,3": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s98",
+          "name": "shadow",
+          "type": "ellipse",
+          "params": {
+            "cx": 8,
+            "cy": 14,
+            "rx": 2,
+            "ry": 1,
+            "filled": true
+          },
+          "color": "#222034",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s99",
+          "name": "ball",
+          "type": "ellipse",
+          "params": {
+            "cx": 8,
+            "cy": 4,
+            "rx": 3,
+            "ry": 5,
+            "filled": true
+          },
+          "color": "#d95763",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s100",
+          "name": "ball_hl_0",
+          "type": "point",
+          "params": {
+            "x": 7,
+            "y": 3
+          },
+          "color": "#d77bba",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s101",
+          "name": "ball_hl_1",
+          "type": "point",
+          "params": {
+            "x": 7,
+            "y": 2
+          },
+          "color": "#d77bba",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s102",
+          "name": "ball_sh_0",
+          "type": "point",
+          "params": {
+            "x": 10,
+            "y": 5
+          },
+          "color": "#ac3232",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s103",
+          "name": "ball_sh_1",
+          "type": "point",
+          "params": {
+            "x": 9,
+            "y": 6
+          },
+          "color": "#ac3232",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s104",
+          "name": "ball_sh_2",
+          "type": "point",
+          "params": {
+            "x": 9,
+            "y": 7
+          },
+          "color": "#ac3232",
+          "zIndex": 6,
+          "visible": true
+        }
+      ]
+    },
+    "0,4": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s105",
+          "name": "shadow",
+          "type": "ellipse",
+          "params": {
+            "cx": 8,
+            "cy": 14,
+            "rx": 2,
+            "ry": 1,
+            "filled": true
+          },
+          "color": "#222034",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s106",
+          "name": "ball",
+          "type": "ellipse",
+          "params": {
+            "cx": 8,
+            "cy": 3,
+            "rx": 3,
+            "ry": 4,
+            "filled": true
+          },
+          "color": "#d95763",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s107",
+          "name": "ball_hl_0",
+          "type": "point",
+          "params": {
+            "x": 7,
+            "y": 2
+          },
+          "color": "#d77bba",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s108",
+          "name": "ball_hl_1",
+          "type": "point",
+          "params": {
+            "x": 7,
+            "y": 1
+          },
+          "color": "#d77bba",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s109",
+          "name": "ball_sh_0",
+          "type": "point",
+          "params": {
+            "x": 10,
+            "y": 4
+          },
+          "color": "#ac3232",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s110",
+          "name": "ball_sh_1",
+          "type": "point",
+          "params": {
+            "x": 9,
+            "y": 6
+          },
+          "color": "#ac3232",
+          "zIndex": 5,
+          "visible": true
+        }
+      ]
+    },
+    "0,5": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s111",
+          "name": "shadow",
+          "type": "ellipse",
+          "params": {
+            "cx": 8,
+            "cy": 14,
+            "rx": 2,
+            "ry": 1,
+            "filled": true
+          },
+          "color": "#222034",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s112",
+          "name": "ball",
+          "type": "ellipse",
+          "params": {
+            "cx": 8,
+            "cy": 4,
+            "rx": 3,
+            "ry": 5,
+            "filled": true
+          },
+          "color": "#d95763",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s113",
+          "name": "ball_hl_0",
+          "type": "point",
+          "params": {
+            "x": 7,
+            "y": 3
+          },
+          "color": "#d77bba",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s114",
+          "name": "ball_hl_1",
+          "type": "point",
+          "params": {
+            "x": 7,
+            "y": 2
+          },
+          "color": "#d77bba",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s115",
+          "name": "ball_sh_0",
+          "type": "point",
+          "params": {
+            "x": 10,
+            "y": 5
+          },
+          "color": "#ac3232",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s116",
+          "name": "ball_sh_1",
+          "type": "point",
+          "params": {
+            "x": 9,
+            "y": 6
+          },
+          "color": "#ac3232",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s117",
+          "name": "ball_sh_2",
+          "type": "point",
+          "params": {
+            "x": 9,
+            "y": 7
+          },
+          "color": "#ac3232",
+          "zIndex": 6,
+          "visible": true
+        }
+      ]
+    },
+    "0,6": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s118",
+          "name": "shadow",
+          "type": "ellipse",
+          "params": {
+            "cx": 8,
+            "cy": 14,
+            "rx": 3,
+            "ry": 1,
+            "filled": true
+          },
+          "color": "#222034",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s119",
+          "name": "ball",
+          "type": "circle",
+          "params": {
+            "cx": 8,
+            "cy": 7,
+            "r": 4,
+            "filled": true
+          },
+          "color": "#d95763",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s120",
+          "name": "ball_hl_0",
+          "type": "point",
+          "params": {
+            "x": 6,
+            "y": 6
+          },
+          "color": "#d77bba",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s121",
+          "name": "ball_hl_1",
+          "type": "point",
+          "params": {
+            "x": 7,
+            "y": 5
+          },
+          "color": "#d77bba",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s122",
+          "name": "ball_sh_0",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 8
+          },
+          "color": "#ac3232",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s123",
+          "name": "ball_sh_1",
+          "type": "point",
+          "params": {
+            "x": 9,
+            "y": 10
+          },
+          "color": "#ac3232",
+          "zIndex": 5,
+          "visible": true
+        }
+      ]
+    },
+    "0,7": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s124",
+          "name": "shadow",
+          "type": "ellipse",
+          "params": {
+            "cx": 8,
+            "cy": 14,
+            "rx": 4,
+            "ry": 1,
+            "filled": true
+          },
+          "color": "#222034",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s125",
+          "name": "ball",
+          "type": "ellipse",
+          "params": {
+            "cx": 8,
+            "cy": 10,
+            "rx": 4,
+            "ry": 5,
+            "filled": true
+          },
+          "color": "#d95763",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s126",
+          "name": "ball_hl_0",
+          "type": "point",
+          "params": {
+            "x": 6,
+            "y": 9
+          },
+          "color": "#d77bba",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s127",
+          "name": "ball_hl_1",
+          "type": "point",
+          "params": {
+            "x": 6,
+            "y": 8
+          },
+          "color": "#d77bba",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s128",
+          "name": "ball_hl_2",
+          "type": "point",
+          "params": {
+            "x": 7,
+            "y": 8
+          },
+          "color": "#d77bba",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s129",
+          "name": "ball_sh_0",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 11
+          },
+          "color": "#ac3232",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s130",
+          "name": "ball_sh_1",
+          "type": "point",
+          "params": {
+            "x": 10,
+            "y": 12
+          },
+          "color": "#ac3232",
+          "zIndex": 6,
+          "visible": true
+        },
+        {
+          "id": "s131",
+          "name": "ball_sh_2",
+          "type": "point",
+          "params": {
+            "x": 9,
+            "y": 13
+          },
+          "color": "#ac3232",
+          "zIndex": 7,
+          "visible": true
+        }
+      ]
+    }
+  },
+  "groups": {
+    "bounce": [
+      "0,0",
+      "0,1",
+      "0,2",
+      "0,3",
+      "0,4",
+      "0,5",
+      "0,6",
+      "0,7"
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+[
+  { "cell": "0,0", "sx": 24, "sy": 8, "bcy": 48, "brx": 20, "bry": 12, "btype": "ellipse", "seam_left_cx": 2,  "seam_right_cx": 62, "seam_rx": 25, "seam_ry": 14 },
+  { "cell": "0,1", "sx": 16, "sy": 4, "bcy": 40, "brx": 16, "bry": 20, "btype": "ellipse", "seam_left_cx": 8,  "seam_right_cx": 56, "seam_rx": 20, "seam_ry": 24 },
+  { "cell": "0,2", "sx": 12, "sy": 4, "bcy": 28, "brx": 16, "bry": 16, "btype": "circle",  "seam_left_cx": 8,  "seam_right_cx": 56, "seam_rx": 20, "seam_ry": 19 },
+  { "cell": "0,3", "sx": 8,  "sy": 4, "bcy": 16, "brx": 12, "bry": 20, "btype": "ellipse", "seam_left_cx": 14, "seam_right_cx": 50, "seam_rx": 15, "seam_ry": 24 },
+  { "cell": "0,4", "sx": 8,  "sy": 4, "bcy": 12, "brx": 12, "bry": 16, "btype": "ellipse", "seam_left_cx": 14, "seam_right_cx": 50, "seam_rx": 15, "seam_ry": 19 },
+  { "cell": "0,5", "sx": 8,  "sy": 4, "bcy": 16, "brx": 12, "bry": 20, "btype": "ellipse", "seam_left_cx": 14, "seam_right_cx": 50, "seam_rx": 15, "seam_ry": 24 },
+  { "cell": "0,6", "sx": 12, "sy": 4, "bcy": 28, "brx": 16, "bry": 16, "btype": "circle",  "seam_left_cx": 8,  "seam_right_cx": 56, "seam_rx": 20, "seam_ry": 19 },
+  { "cell": "0,7", "sx": 16, "sy": 4, "bcy": 40, "brx": 16, "bry": 20, "btype": "ellipse", "seam_left_cx": 8,  "seam_right_cx": 56, "seam_rx": 20, "seam_ry": 24 }
+]

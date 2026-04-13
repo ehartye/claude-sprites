@@ -1,0 +1,8354 @@
+{
+  "version": 1,
+  "name": "bounce-tennis-ag",
+  "cellSize": 32,
+  "grid": {
+    "rows": 1,
+    "cols": 8
+  },
+  "background": {
+    "mode": "transparent"
+  },
+  "palette": [
+    {
+      "name": "black",
+      "color": "#000000"
+    },
+    {
+      "name": "valhalla",
+      "color": "#222034"
+    },
+    {
+      "name": "loulou",
+      "color": "#45283c"
+    },
+    {
+      "name": "oiled-cedar",
+      "color": "#663931"
+    },
+    {
+      "name": "rope",
+      "color": "#8f563b"
+    },
+    {
+      "name": "tahiti-gold",
+      "color": "#df7126"
+    },
+    {
+      "name": "twine",
+      "color": "#d9a066"
+    },
+    {
+      "name": "pancho",
+      "color": "#eec39a"
+    },
+    {
+      "name": "golden-fizz",
+      "color": "#fbf236"
+    },
+    {
+      "name": "atlantis",
+      "color": "#99e550"
+    },
+    {
+      "name": "christi",
+      "color": "#6abe30"
+    },
+    {
+      "name": "elf-green",
+      "color": "#37946e"
+    },
+    {
+      "name": "dell",
+      "color": "#4b692f"
+    },
+    {
+      "name": "verdigris",
+      "color": "#524b24"
+    },
+    {
+      "name": "opal",
+      "color": "#323c39"
+    },
+    {
+      "name": "deep-koamaru",
+      "color": "#3f3f74"
+    },
+    {
+      "name": "venice-blue",
+      "color": "#306082"
+    },
+    {
+      "name": "royal-blue",
+      "color": "#5b6ee1"
+    },
+    {
+      "name": "cornflower",
+      "color": "#639bff"
+    },
+    {
+      "name": "viking",
+      "color": "#5fcde4"
+    },
+    {
+      "name": "light-steel-blue",
+      "color": "#cbdbfc"
+    },
+    {
+      "name": "white",
+      "color": "#ffffff"
+    },
+    {
+      "name": "heather",
+      "color": "#9badb7"
+    },
+    {
+      "name": "topaz",
+      "color": "#847e87"
+    },
+    {
+      "name": "dim-gray",
+      "color": "#696a6a"
+    },
+    {
+      "name": "smokey-ash",
+      "color": "#595652"
+    },
+    {
+      "name": "clairvoyant",
+      "color": "#76428a"
+    },
+    {
+      "name": "red",
+      "color": "#ac3232"
+    },
+    {
+      "name": "mandy",
+      "color": "#d95763"
+    },
+    {
+      "name": "plum",
+      "color": "#d77bba"
+    },
+    {
+      "name": "rainforest",
+      "color": "#8f974a"
+    },
+    {
+      "name": "stinger",
+      "color": "#8a6f30"
+    }
+  ],
+  "cells": {
+    "0,0": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s677",
+          "name": "shadow",
+          "type": "ellipse",
+          "params": {
+            "cx": 16,
+            "cy": 30,
+            "rx": 12,
+            "ry": 4,
+            "filled": true
+          },
+          "color": "#222034",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s678",
+          "name": "ball",
+          "type": "ellipse",
+          "params": {
+            "cx": 16,
+            "cy": 24,
+            "rx": 10,
+            "ry": 6,
+            "filled": true
+          },
+          "color": "#99e550",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s679",
+          "name": "ball_shade_mid_0",
+          "type": "point",
+          "params": {
+            "x": 24,
+            "y": 23
+          },
+          "color": "#6abe30",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s680",
+          "name": "ball_shade_mid_1",
+          "type": "point",
+          "params": {
+            "x": 23,
+            "y": 26
+          },
+          "color": "#6abe30",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s681",
+          "name": "ball_shade_mid_2",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 28
+          },
+          "color": "#6abe30",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s682",
+          "name": "ball_shade_mid_3",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 29
+          },
+          "color": "#6abe30",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s683",
+          "name": "ball_shade_core_0",
+          "type": "point",
+          "params": {
+            "x": 22,
+            "y": 26
+          },
+          "color": "#4b692f",
+          "zIndex": 6,
+          "visible": true
+        },
+        {
+          "id": "s684",
+          "name": "ball_shade_core_1",
+          "type": "point",
+          "params": {
+            "x": 22,
+            "y": 27
+          },
+          "color": "#4b692f",
+          "zIndex": 7,
+          "visible": true
+        },
+        {
+          "id": "s685",
+          "name": "ball_shade_core_2",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 27
+          },
+          "color": "#4b692f",
+          "zIndex": 8,
+          "visible": true
+        },
+        {
+          "id": "s686",
+          "name": "ball_shade_core_3",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 28
+          },
+          "color": "#4b692f",
+          "zIndex": 9,
+          "visible": true
+        },
+        {
+          "id": "s687",
+          "name": "ball_shade_hl_0",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 22
+          },
+          "color": "#fbf236",
+          "zIndex": 10,
+          "visible": true
+        },
+        {
+          "id": "s688",
+          "name": "ball_shade_hl_1",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 22
+          },
+          "color": "#fbf236",
+          "zIndex": 11,
+          "visible": true
+        },
+        {
+          "id": "s689",
+          "name": "ball_shade_hl_2",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 21
+          },
+          "color": "#fbf236",
+          "zIndex": 12,
+          "visible": true
+        },
+        {
+          "id": "s690",
+          "name": "ball_shade_hl_3",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 21
+          },
+          "color": "#fbf236",
+          "zIndex": 13,
+          "visible": true
+        },
+        {
+          "id": "s691",
+          "name": "seam_left_0",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 24
+          },
+          "color": "#fff1e8",
+          "zIndex": 14,
+          "visible": true
+        },
+        {
+          "id": "s692",
+          "name": "seam_left_1",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 25
+          },
+          "color": "#fff1e8",
+          "zIndex": 15,
+          "visible": true
+        },
+        {
+          "id": "s693",
+          "name": "seam_left_2",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 26
+          },
+          "color": "#fff1e8",
+          "zIndex": 16,
+          "visible": true
+        },
+        {
+          "id": "s694",
+          "name": "seam_left_3",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 27
+          },
+          "color": "#fff1e8",
+          "zIndex": 17,
+          "visible": true
+        },
+        {
+          "id": "s695",
+          "name": "seam_left_4",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 28
+          },
+          "color": "#fff1e8",
+          "zIndex": 18,
+          "visible": true
+        },
+        {
+          "id": "s696",
+          "name": "seam_left_5",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 20
+          },
+          "color": "#fff1e8",
+          "zIndex": 19,
+          "visible": true
+        },
+        {
+          "id": "s697",
+          "name": "seam_left_6",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 21
+          },
+          "color": "#fff1e8",
+          "zIndex": 20,
+          "visible": true
+        },
+        {
+          "id": "s698",
+          "name": "seam_left_7",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 22
+          },
+          "color": "#fff1e8",
+          "zIndex": 21,
+          "visible": true
+        },
+        {
+          "id": "s699",
+          "name": "seam_left_8",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 23
+          },
+          "color": "#fff1e8",
+          "zIndex": 22,
+          "visible": true
+        },
+        {
+          "id": "s700",
+          "name": "seam_right_0",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 28
+          },
+          "color": "#fff1e8",
+          "zIndex": 23,
+          "visible": true
+        },
+        {
+          "id": "s701",
+          "name": "seam_right_1",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 27
+          },
+          "color": "#fff1e8",
+          "zIndex": 24,
+          "visible": true
+        },
+        {
+          "id": "s702",
+          "name": "seam_right_2",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 26
+          },
+          "color": "#fff1e8",
+          "zIndex": 25,
+          "visible": true
+        },
+        {
+          "id": "s703",
+          "name": "seam_right_3",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 25
+          },
+          "color": "#fff1e8",
+          "zIndex": 26,
+          "visible": true
+        },
+        {
+          "id": "s704",
+          "name": "seam_right_4",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 24
+          },
+          "color": "#fff1e8",
+          "zIndex": 27,
+          "visible": true
+        },
+        {
+          "id": "s705",
+          "name": "seam_right_5",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 23
+          },
+          "color": "#fff1e8",
+          "zIndex": 28,
+          "visible": true
+        },
+        {
+          "id": "s706",
+          "name": "seam_right_6",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 22
+          },
+          "color": "#fff1e8",
+          "zIndex": 29,
+          "visible": true
+        },
+        {
+          "id": "s707",
+          "name": "seam_right_7",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 21
+          },
+          "color": "#fff1e8",
+          "zIndex": 30,
+          "visible": true
+        },
+        {
+          "id": "s708",
+          "name": "seam_right_8",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 21
+          },
+          "color": "#fff1e8",
+          "zIndex": 31,
+          "visible": true
+        },
+        {
+          "id": "s709",
+          "name": "seam_right_9",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 20
+          },
+          "color": "#fff1e8",
+          "zIndex": 32,
+          "visible": true
+        },
+        {
+          "id": "s710",
+          "name": "seamhalo_0",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 24
+          },
+          "color": "#6abe30",
+          "zIndex": 33,
+          "visible": true
+        },
+        {
+          "id": "s711",
+          "name": "seamhalo_1",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 24
+          },
+          "color": "#6abe30",
+          "zIndex": 34,
+          "visible": true
+        },
+        {
+          "id": "s712",
+          "name": "seamhalo_2",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 25
+          },
+          "color": "#6abe30",
+          "zIndex": 35,
+          "visible": true
+        },
+        {
+          "id": "s713",
+          "name": "seamhalo_3",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 25
+          },
+          "color": "#6abe30",
+          "zIndex": 36,
+          "visible": true
+        },
+        {
+          "id": "s714",
+          "name": "seamhalo_4",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 26
+          },
+          "color": "#6abe30",
+          "zIndex": 37,
+          "visible": true
+        },
+        {
+          "id": "s715",
+          "name": "seamhalo_5",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 26
+          },
+          "color": "#6abe30",
+          "zIndex": 38,
+          "visible": true
+        },
+        {
+          "id": "s716",
+          "name": "seamhalo_6",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 27
+          },
+          "color": "#6abe30",
+          "zIndex": 39,
+          "visible": true
+        },
+        {
+          "id": "s717",
+          "name": "seamhalo_7",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 27
+          },
+          "color": "#6abe30",
+          "zIndex": 40,
+          "visible": true
+        },
+        {
+          "id": "s718",
+          "name": "seamhalo_8",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 28
+          },
+          "color": "#6abe30",
+          "zIndex": 41,
+          "visible": true
+        },
+        {
+          "id": "s719",
+          "name": "seamhalo_9",
+          "type": "point",
+          "params": {
+            "x": 10,
+            "y": 28
+          },
+          "color": "#6abe30",
+          "zIndex": 42,
+          "visible": true
+        },
+        {
+          "id": "s720",
+          "name": "seamhalo_10",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 29
+          },
+          "color": "#6abe30",
+          "zIndex": 43,
+          "visible": true
+        },
+        {
+          "id": "s721",
+          "name": "seamhalo_11",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 44,
+          "visible": true
+        },
+        {
+          "id": "s722",
+          "name": "seamhalo_12",
+          "type": "point",
+          "params": {
+            "x": 10,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 45,
+          "visible": true
+        },
+        {
+          "id": "s723",
+          "name": "seamhalo_13",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 21
+          },
+          "color": "#6abe30",
+          "zIndex": 46,
+          "visible": true
+        },
+        {
+          "id": "s724",
+          "name": "seamhalo_14",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 19
+          },
+          "color": "#6abe30",
+          "zIndex": 47,
+          "visible": true
+        },
+        {
+          "id": "s725",
+          "name": "seamhalo_15",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 21
+          },
+          "color": "#6abe30",
+          "zIndex": 48,
+          "visible": true
+        },
+        {
+          "id": "s726",
+          "name": "seamhalo_16",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 22
+          },
+          "color": "#6abe30",
+          "zIndex": 49,
+          "visible": true
+        },
+        {
+          "id": "s727",
+          "name": "seamhalo_17",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 22
+          },
+          "color": "#6abe30",
+          "zIndex": 50,
+          "visible": true
+        },
+        {
+          "id": "s728",
+          "name": "seamhalo_18",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 23
+          },
+          "color": "#6abe30",
+          "zIndex": 51,
+          "visible": true
+        },
+        {
+          "id": "s729",
+          "name": "seamhalo_19",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 23
+          },
+          "color": "#6abe30",
+          "zIndex": 52,
+          "visible": true
+        },
+        {
+          "id": "s730",
+          "name": "seamhalo_20",
+          "type": "point",
+          "params": {
+            "x": 22,
+            "y": 28
+          },
+          "color": "#6abe30",
+          "zIndex": 53,
+          "visible": true
+        },
+        {
+          "id": "s731",
+          "name": "seamhalo_21",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 28
+          },
+          "color": "#6abe30",
+          "zIndex": 54,
+          "visible": true
+        },
+        {
+          "id": "s732",
+          "name": "seamhalo_22",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 29
+          },
+          "color": "#6abe30",
+          "zIndex": 55,
+          "visible": true
+        },
+        {
+          "id": "s733",
+          "name": "seamhalo_23",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 27
+          },
+          "color": "#6abe30",
+          "zIndex": 56,
+          "visible": true
+        },
+        {
+          "id": "s734",
+          "name": "seamhalo_24",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 27
+          },
+          "color": "#6abe30",
+          "zIndex": 57,
+          "visible": true
+        },
+        {
+          "id": "s735",
+          "name": "seamhalo_25",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 26
+          },
+          "color": "#6abe30",
+          "zIndex": 58,
+          "visible": true
+        },
+        {
+          "id": "s736",
+          "name": "seamhalo_26",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 26
+          },
+          "color": "#6abe30",
+          "zIndex": 59,
+          "visible": true
+        },
+        {
+          "id": "s737",
+          "name": "seamhalo_27",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 25
+          },
+          "color": "#6abe30",
+          "zIndex": 60,
+          "visible": true
+        },
+        {
+          "id": "s738",
+          "name": "seamhalo_28",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 25
+          },
+          "color": "#6abe30",
+          "zIndex": 61,
+          "visible": true
+        },
+        {
+          "id": "s739",
+          "name": "seamhalo_29",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 24
+          },
+          "color": "#6abe30",
+          "zIndex": 62,
+          "visible": true
+        },
+        {
+          "id": "s740",
+          "name": "seamhalo_30",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 24
+          },
+          "color": "#6abe30",
+          "zIndex": 63,
+          "visible": true
+        },
+        {
+          "id": "s741",
+          "name": "seamhalo_31",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 23
+          },
+          "color": "#6abe30",
+          "zIndex": 64,
+          "visible": true
+        },
+        {
+          "id": "s742",
+          "name": "seamhalo_32",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 23
+          },
+          "color": "#6abe30",
+          "zIndex": 65,
+          "visible": true
+        },
+        {
+          "id": "s743",
+          "name": "seamhalo_33",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 22
+          },
+          "color": "#6abe30",
+          "zIndex": 66,
+          "visible": true
+        },
+        {
+          "id": "s744",
+          "name": "seamhalo_34",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 22
+          },
+          "color": "#6abe30",
+          "zIndex": 67,
+          "visible": true
+        },
+        {
+          "id": "s745",
+          "name": "seamhalo_35",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 21
+          },
+          "color": "#6abe30",
+          "zIndex": 68,
+          "visible": true
+        },
+        {
+          "id": "s746",
+          "name": "seamhalo_36",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 69,
+          "visible": true
+        },
+        {
+          "id": "s747",
+          "name": "seamhalo_37",
+          "type": "point",
+          "params": {
+            "x": 22,
+            "y": 21
+          },
+          "color": "#6abe30",
+          "zIndex": 70,
+          "visible": true
+        },
+        {
+          "id": "s748",
+          "name": "seamhalo_38",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 22
+          },
+          "color": "#6abe30",
+          "zIndex": 71,
+          "visible": true
+        },
+        {
+          "id": "s749",
+          "name": "seamhalo_39",
+          "type": "point",
+          "params": {
+            "x": 22,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 72,
+          "visible": true
+        },
+        {
+          "id": "s750",
+          "name": "seamhalo_40",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 19
+          },
+          "color": "#6abe30",
+          "zIndex": 73,
+          "visible": true
+        }
+      ]
+    },
+    "0,1": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s751",
+          "name": "shadow",
+          "type": "ellipse",
+          "params": {
+            "cx": 16,
+            "cy": 30,
+            "rx": 8,
+            "ry": 2,
+            "filled": true
+          },
+          "color": "#222034",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s752",
+          "name": "ball",
+          "type": "ellipse",
+          "params": {
+            "cx": 16,
+            "cy": 20,
+            "rx": 8,
+            "ry": 10,
+            "filled": true
+          },
+          "color": "#99e550",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s753",
+          "name": "ball_shade_mid_0",
+          "type": "point",
+          "params": {
+            "x": 22,
+            "y": 19
+          },
+          "color": "#6abe30",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s754",
+          "name": "ball_shade_mid_1",
+          "type": "point",
+          "params": {
+            "x": 22,
+            "y": 24
+          },
+          "color": "#6abe30",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s755",
+          "name": "ball_shade_mid_2",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 27
+          },
+          "color": "#6abe30",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s756",
+          "name": "ball_shade_mid_3",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 28
+          },
+          "color": "#6abe30",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s757",
+          "name": "ball_shade_core_0",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 23
+          },
+          "color": "#4b692f",
+          "zIndex": 6,
+          "visible": true
+        },
+        {
+          "id": "s758",
+          "name": "ball_shade_core_1",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 25
+          },
+          "color": "#4b692f",
+          "zIndex": 7,
+          "visible": true
+        },
+        {
+          "id": "s759",
+          "name": "ball_shade_core_2",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 26
+          },
+          "color": "#4b692f",
+          "zIndex": 8,
+          "visible": true
+        },
+        {
+          "id": "s760",
+          "name": "ball_shade_core_3",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 26
+          },
+          "color": "#4b692f",
+          "zIndex": 9,
+          "visible": true
+        },
+        {
+          "id": "s761",
+          "name": "ball_shade_hl_0",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 17
+          },
+          "color": "#fbf236",
+          "zIndex": 10,
+          "visible": true
+        },
+        {
+          "id": "s762",
+          "name": "ball_shade_hl_1",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 16
+          },
+          "color": "#fbf236",
+          "zIndex": 11,
+          "visible": true
+        },
+        {
+          "id": "s763",
+          "name": "ball_shade_hl_2",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 15
+          },
+          "color": "#fbf236",
+          "zIndex": 12,
+          "visible": true
+        },
+        {
+          "id": "s764",
+          "name": "seam_left_0",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 20
+          },
+          "color": "#fff1e8",
+          "zIndex": 13,
+          "visible": true
+        },
+        {
+          "id": "s765",
+          "name": "seam_left_1",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 22
+          },
+          "color": "#fff1e8",
+          "zIndex": 14,
+          "visible": true
+        },
+        {
+          "id": "s766",
+          "name": "seam_left_2",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 23
+          },
+          "color": "#fff1e8",
+          "zIndex": 15,
+          "visible": true
+        },
+        {
+          "id": "s767",
+          "name": "seam_left_3",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 25
+          },
+          "color": "#fff1e8",
+          "zIndex": 16,
+          "visible": true
+        },
+        {
+          "id": "s768",
+          "name": "seam_left_4",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 26
+          },
+          "color": "#fff1e8",
+          "zIndex": 17,
+          "visible": true
+        },
+        {
+          "id": "s769",
+          "name": "seam_left_5",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 27
+          },
+          "color": "#fff1e8",
+          "zIndex": 18,
+          "visible": true
+        },
+        {
+          "id": "s770",
+          "name": "seam_left_6",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 13
+          },
+          "color": "#fff1e8",
+          "zIndex": 19,
+          "visible": true
+        },
+        {
+          "id": "s771",
+          "name": "seam_left_7",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 14
+          },
+          "color": "#fff1e8",
+          "zIndex": 20,
+          "visible": true
+        },
+        {
+          "id": "s772",
+          "name": "seam_left_8",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 15
+          },
+          "color": "#fff1e8",
+          "zIndex": 21,
+          "visible": true
+        },
+        {
+          "id": "s773",
+          "name": "seam_left_9",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 17
+          },
+          "color": "#fff1e8",
+          "zIndex": 22,
+          "visible": true
+        },
+        {
+          "id": "s774",
+          "name": "seam_left_10",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 18
+          },
+          "color": "#fff1e8",
+          "zIndex": 23,
+          "visible": true
+        },
+        {
+          "id": "s775",
+          "name": "seam_right_0",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 27
+          },
+          "color": "#fff1e8",
+          "zIndex": 24,
+          "visible": true
+        },
+        {
+          "id": "s776",
+          "name": "seam_right_1",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 26
+          },
+          "color": "#fff1e8",
+          "zIndex": 25,
+          "visible": true
+        },
+        {
+          "id": "s777",
+          "name": "seam_right_2",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 25
+          },
+          "color": "#fff1e8",
+          "zIndex": 26,
+          "visible": true
+        },
+        {
+          "id": "s778",
+          "name": "seam_right_3",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 23
+          },
+          "color": "#fff1e8",
+          "zIndex": 27,
+          "visible": true
+        },
+        {
+          "id": "s779",
+          "name": "seam_right_4",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 22
+          },
+          "color": "#fff1e8",
+          "zIndex": 28,
+          "visible": true
+        },
+        {
+          "id": "s780",
+          "name": "seam_right_5",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 20
+          },
+          "color": "#fff1e8",
+          "zIndex": 29,
+          "visible": true
+        },
+        {
+          "id": "s781",
+          "name": "seam_right_6",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 18
+          },
+          "color": "#fff1e8",
+          "zIndex": 30,
+          "visible": true
+        },
+        {
+          "id": "s782",
+          "name": "seam_right_7",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 17
+          },
+          "color": "#fff1e8",
+          "zIndex": 31,
+          "visible": true
+        },
+        {
+          "id": "s783",
+          "name": "seam_right_8",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 15
+          },
+          "color": "#fff1e8",
+          "zIndex": 32,
+          "visible": true
+        },
+        {
+          "id": "s784",
+          "name": "seam_right_9",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 14
+          },
+          "color": "#fff1e8",
+          "zIndex": 33,
+          "visible": true
+        },
+        {
+          "id": "s785",
+          "name": "seam_right_10",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 13
+          },
+          "color": "#fff1e8",
+          "zIndex": 34,
+          "visible": true
+        },
+        {
+          "id": "s786",
+          "name": "seamhalo_0",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 35,
+          "visible": true
+        },
+        {
+          "id": "s787",
+          "name": "seamhalo_1",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 36,
+          "visible": true
+        },
+        {
+          "id": "s788",
+          "name": "seamhalo_2",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 21
+          },
+          "color": "#6abe30",
+          "zIndex": 37,
+          "visible": true
+        },
+        {
+          "id": "s789",
+          "name": "seamhalo_3",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 19
+          },
+          "color": "#6abe30",
+          "zIndex": 38,
+          "visible": true
+        },
+        {
+          "id": "s790",
+          "name": "seamhalo_4",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 22
+          },
+          "color": "#6abe30",
+          "zIndex": 39,
+          "visible": true
+        },
+        {
+          "id": "s791",
+          "name": "seamhalo_5",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 22
+          },
+          "color": "#6abe30",
+          "zIndex": 40,
+          "visible": true
+        },
+        {
+          "id": "s792",
+          "name": "seamhalo_6",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 23
+          },
+          "color": "#6abe30",
+          "zIndex": 41,
+          "visible": true
+        },
+        {
+          "id": "s793",
+          "name": "seamhalo_7",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 23
+          },
+          "color": "#6abe30",
+          "zIndex": 42,
+          "visible": true
+        },
+        {
+          "id": "s794",
+          "name": "seamhalo_8",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 24
+          },
+          "color": "#6abe30",
+          "zIndex": 43,
+          "visible": true
+        },
+        {
+          "id": "s795",
+          "name": "seamhalo_9",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 25
+          },
+          "color": "#6abe30",
+          "zIndex": 44,
+          "visible": true
+        },
+        {
+          "id": "s796",
+          "name": "seamhalo_10",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 25
+          },
+          "color": "#6abe30",
+          "zIndex": 45,
+          "visible": true
+        },
+        {
+          "id": "s797",
+          "name": "seamhalo_11",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 24
+          },
+          "color": "#6abe30",
+          "zIndex": 46,
+          "visible": true
+        },
+        {
+          "id": "s798",
+          "name": "seamhalo_12",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 26
+          },
+          "color": "#6abe30",
+          "zIndex": 47,
+          "visible": true
+        },
+        {
+          "id": "s799",
+          "name": "seamhalo_13",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 26
+          },
+          "color": "#6abe30",
+          "zIndex": 48,
+          "visible": true
+        },
+        {
+          "id": "s800",
+          "name": "seamhalo_14",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 27
+          },
+          "color": "#6abe30",
+          "zIndex": 49,
+          "visible": true
+        },
+        {
+          "id": "s801",
+          "name": "seamhalo_15",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 27
+          },
+          "color": "#6abe30",
+          "zIndex": 50,
+          "visible": true
+        },
+        {
+          "id": "s802",
+          "name": "seamhalo_16",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 28
+          },
+          "color": "#6abe30",
+          "zIndex": 51,
+          "visible": true
+        },
+        {
+          "id": "s803",
+          "name": "seamhalo_17",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 52,
+          "visible": true
+        },
+        {
+          "id": "s804",
+          "name": "seamhalo_18",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 53,
+          "visible": true
+        },
+        {
+          "id": "s805",
+          "name": "seamhalo_19",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 54,
+          "visible": true
+        },
+        {
+          "id": "s806",
+          "name": "seamhalo_20",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 55,
+          "visible": true
+        },
+        {
+          "id": "s807",
+          "name": "seamhalo_21",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 56,
+          "visible": true
+        },
+        {
+          "id": "s808",
+          "name": "seamhalo_22",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 57,
+          "visible": true
+        },
+        {
+          "id": "s809",
+          "name": "seamhalo_23",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 58,
+          "visible": true
+        },
+        {
+          "id": "s810",
+          "name": "seamhalo_24",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 59,
+          "visible": true
+        },
+        {
+          "id": "s811",
+          "name": "seamhalo_25",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 17
+          },
+          "color": "#6abe30",
+          "zIndex": 60,
+          "visible": true
+        },
+        {
+          "id": "s812",
+          "name": "seamhalo_26",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 17
+          },
+          "color": "#6abe30",
+          "zIndex": 61,
+          "visible": true
+        },
+        {
+          "id": "s813",
+          "name": "seamhalo_27",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 62,
+          "visible": true
+        },
+        {
+          "id": "s814",
+          "name": "seamhalo_28",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 18
+          },
+          "color": "#6abe30",
+          "zIndex": 63,
+          "visible": true
+        },
+        {
+          "id": "s815",
+          "name": "seamhalo_29",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 18
+          },
+          "color": "#6abe30",
+          "zIndex": 64,
+          "visible": true
+        },
+        {
+          "id": "s816",
+          "name": "seamhalo_30",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 27
+          },
+          "color": "#6abe30",
+          "zIndex": 65,
+          "visible": true
+        },
+        {
+          "id": "s817",
+          "name": "seamhalo_31",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 27
+          },
+          "color": "#6abe30",
+          "zIndex": 66,
+          "visible": true
+        },
+        {
+          "id": "s818",
+          "name": "seamhalo_32",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 28
+          },
+          "color": "#6abe30",
+          "zIndex": 67,
+          "visible": true
+        },
+        {
+          "id": "s819",
+          "name": "seamhalo_33",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 26
+          },
+          "color": "#6abe30",
+          "zIndex": 68,
+          "visible": true
+        },
+        {
+          "id": "s820",
+          "name": "seamhalo_34",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 26
+          },
+          "color": "#6abe30",
+          "zIndex": 69,
+          "visible": true
+        },
+        {
+          "id": "s821",
+          "name": "seamhalo_35",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 25
+          },
+          "color": "#6abe30",
+          "zIndex": 70,
+          "visible": true
+        },
+        {
+          "id": "s822",
+          "name": "seamhalo_36",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 25
+          },
+          "color": "#6abe30",
+          "zIndex": 71,
+          "visible": true
+        },
+        {
+          "id": "s823",
+          "name": "seamhalo_37",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 24
+          },
+          "color": "#6abe30",
+          "zIndex": 72,
+          "visible": true
+        },
+        {
+          "id": "s824",
+          "name": "seamhalo_38",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 23
+          },
+          "color": "#6abe30",
+          "zIndex": 73,
+          "visible": true
+        },
+        {
+          "id": "s825",
+          "name": "seamhalo_39",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 23
+          },
+          "color": "#6abe30",
+          "zIndex": 74,
+          "visible": true
+        },
+        {
+          "id": "s826",
+          "name": "seamhalo_40",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 24
+          },
+          "color": "#6abe30",
+          "zIndex": 75,
+          "visible": true
+        },
+        {
+          "id": "s827",
+          "name": "seamhalo_41",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 22
+          },
+          "color": "#6abe30",
+          "zIndex": 76,
+          "visible": true
+        },
+        {
+          "id": "s828",
+          "name": "seamhalo_42",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 22
+          },
+          "color": "#6abe30",
+          "zIndex": 77,
+          "visible": true
+        },
+        {
+          "id": "s829",
+          "name": "seamhalo_43",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 21
+          },
+          "color": "#6abe30",
+          "zIndex": 78,
+          "visible": true
+        },
+        {
+          "id": "s830",
+          "name": "seamhalo_44",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 79,
+          "visible": true
+        },
+        {
+          "id": "s831",
+          "name": "seamhalo_45",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 80,
+          "visible": true
+        },
+        {
+          "id": "s832",
+          "name": "seamhalo_46",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 19
+          },
+          "color": "#6abe30",
+          "zIndex": 81,
+          "visible": true
+        },
+        {
+          "id": "s833",
+          "name": "seamhalo_47",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 18
+          },
+          "color": "#6abe30",
+          "zIndex": 82,
+          "visible": true
+        },
+        {
+          "id": "s834",
+          "name": "seamhalo_48",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 18
+          },
+          "color": "#6abe30",
+          "zIndex": 83,
+          "visible": true
+        },
+        {
+          "id": "s835",
+          "name": "seamhalo_49",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 17
+          },
+          "color": "#6abe30",
+          "zIndex": 84,
+          "visible": true
+        },
+        {
+          "id": "s836",
+          "name": "seamhalo_50",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 17
+          },
+          "color": "#6abe30",
+          "zIndex": 85,
+          "visible": true
+        },
+        {
+          "id": "s837",
+          "name": "seamhalo_51",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 86,
+          "visible": true
+        },
+        {
+          "id": "s838",
+          "name": "seamhalo_52",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 87,
+          "visible": true
+        },
+        {
+          "id": "s839",
+          "name": "seamhalo_53",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 88,
+          "visible": true
+        },
+        {
+          "id": "s840",
+          "name": "seamhalo_54",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 89,
+          "visible": true
+        },
+        {
+          "id": "s841",
+          "name": "seamhalo_55",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 90,
+          "visible": true
+        },
+        {
+          "id": "s842",
+          "name": "seamhalo_56",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 91,
+          "visible": true
+        },
+        {
+          "id": "s843",
+          "name": "seamhalo_57",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 92,
+          "visible": true
+        },
+        {
+          "id": "s844",
+          "name": "seamhalo_58",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 93,
+          "visible": true
+        },
+        {
+          "id": "s845",
+          "name": "seamhalo_59",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 94,
+          "visible": true
+        }
+      ]
+    },
+    "0,2": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s846",
+          "name": "shadow",
+          "type": "ellipse",
+          "params": {
+            "cx": 16,
+            "cy": 30,
+            "rx": 6,
+            "ry": 2,
+            "filled": true
+          },
+          "color": "#222034",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s847",
+          "name": "ball",
+          "type": "circle",
+          "params": {
+            "cx": 16,
+            "cy": 14,
+            "r": 8,
+            "filled": true
+          },
+          "color": "#99e550",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s848",
+          "name": "ball_shade_mid_0",
+          "type": "point",
+          "params": {
+            "x": 22,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s849",
+          "name": "ball_shade_mid_1",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 18
+          },
+          "color": "#6abe30",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s850",
+          "name": "ball_shade_mid_2",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s851",
+          "name": "ball_shade_core_0",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 17
+          },
+          "color": "#4b692f",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s852",
+          "name": "ball_shade_core_1",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 18
+          },
+          "color": "#4b692f",
+          "zIndex": 6,
+          "visible": true
+        },
+        {
+          "id": "s853",
+          "name": "ball_shade_core_2",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 19
+          },
+          "color": "#4b692f",
+          "zIndex": 7,
+          "visible": true
+        },
+        {
+          "id": "s854",
+          "name": "ball_shade_hl_0",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 12
+          },
+          "color": "#fbf236",
+          "zIndex": 8,
+          "visible": true
+        },
+        {
+          "id": "s855",
+          "name": "ball_shade_hl_1",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 11
+          },
+          "color": "#fbf236",
+          "zIndex": 9,
+          "visible": true
+        },
+        {
+          "id": "s856",
+          "name": "ball_shade_hl_2",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 10
+          },
+          "color": "#fbf236",
+          "zIndex": 10,
+          "visible": true
+        },
+        {
+          "id": "s857",
+          "name": "seam_left_0",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 14
+          },
+          "color": "#fff1e8",
+          "zIndex": 11,
+          "visible": true
+        },
+        {
+          "id": "s858",
+          "name": "seam_left_1",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 16
+          },
+          "color": "#fff1e8",
+          "zIndex": 12,
+          "visible": true
+        },
+        {
+          "id": "s859",
+          "name": "seam_left_2",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 17
+          },
+          "color": "#fff1e8",
+          "zIndex": 13,
+          "visible": true
+        },
+        {
+          "id": "s860",
+          "name": "seam_left_3",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 19
+          },
+          "color": "#fff1e8",
+          "zIndex": 14,
+          "visible": true
+        },
+        {
+          "id": "s861",
+          "name": "seam_left_4",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 20
+          },
+          "color": "#fff1e8",
+          "zIndex": 15,
+          "visible": true
+        },
+        {
+          "id": "s862",
+          "name": "seam_left_5",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 8
+          },
+          "color": "#fff1e8",
+          "zIndex": 16,
+          "visible": true
+        },
+        {
+          "id": "s863",
+          "name": "seam_left_6",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 9
+          },
+          "color": "#fff1e8",
+          "zIndex": 17,
+          "visible": true
+        },
+        {
+          "id": "s864",
+          "name": "seam_left_7",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 11
+          },
+          "color": "#fff1e8",
+          "zIndex": 18,
+          "visible": true
+        },
+        {
+          "id": "s865",
+          "name": "seam_left_8",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 12
+          },
+          "color": "#fff1e8",
+          "zIndex": 19,
+          "visible": true
+        },
+        {
+          "id": "s866",
+          "name": "seam_right_0",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 20
+          },
+          "color": "#fff1e8",
+          "zIndex": 20,
+          "visible": true
+        },
+        {
+          "id": "s867",
+          "name": "seam_right_1",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 19
+          },
+          "color": "#fff1e8",
+          "zIndex": 21,
+          "visible": true
+        },
+        {
+          "id": "s868",
+          "name": "seam_right_2",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 17
+          },
+          "color": "#fff1e8",
+          "zIndex": 22,
+          "visible": true
+        },
+        {
+          "id": "s869",
+          "name": "seam_right_3",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 16
+          },
+          "color": "#fff1e8",
+          "zIndex": 23,
+          "visible": true
+        },
+        {
+          "id": "s870",
+          "name": "seam_right_4",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 14
+          },
+          "color": "#fff1e8",
+          "zIndex": 24,
+          "visible": true
+        },
+        {
+          "id": "s871",
+          "name": "seam_right_5",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 12
+          },
+          "color": "#fff1e8",
+          "zIndex": 25,
+          "visible": true
+        },
+        {
+          "id": "s872",
+          "name": "seam_right_6",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 11
+          },
+          "color": "#fff1e8",
+          "zIndex": 26,
+          "visible": true
+        },
+        {
+          "id": "s873",
+          "name": "seam_right_7",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 9
+          },
+          "color": "#fff1e8",
+          "zIndex": 27,
+          "visible": true
+        },
+        {
+          "id": "s874",
+          "name": "seam_right_8",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 8
+          },
+          "color": "#fff1e8",
+          "zIndex": 28,
+          "visible": true
+        },
+        {
+          "id": "s875",
+          "name": "seamhalo_0",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 29,
+          "visible": true
+        },
+        {
+          "id": "s876",
+          "name": "seamhalo_1",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 30,
+          "visible": true
+        },
+        {
+          "id": "s877",
+          "name": "seamhalo_2",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 31,
+          "visible": true
+        },
+        {
+          "id": "s878",
+          "name": "seamhalo_3",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 32,
+          "visible": true
+        },
+        {
+          "id": "s879",
+          "name": "seamhalo_4",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 33,
+          "visible": true
+        },
+        {
+          "id": "s880",
+          "name": "seamhalo_5",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 34,
+          "visible": true
+        },
+        {
+          "id": "s881",
+          "name": "seamhalo_6",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 17
+          },
+          "color": "#6abe30",
+          "zIndex": 35,
+          "visible": true
+        },
+        {
+          "id": "s882",
+          "name": "seamhalo_7",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 17
+          },
+          "color": "#6abe30",
+          "zIndex": 36,
+          "visible": true
+        },
+        {
+          "id": "s883",
+          "name": "seamhalo_8",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 18
+          },
+          "color": "#6abe30",
+          "zIndex": 37,
+          "visible": true
+        },
+        {
+          "id": "s884",
+          "name": "seamhalo_9",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 19
+          },
+          "color": "#6abe30",
+          "zIndex": 38,
+          "visible": true
+        },
+        {
+          "id": "s885",
+          "name": "seamhalo_10",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 19
+          },
+          "color": "#6abe30",
+          "zIndex": 39,
+          "visible": true
+        },
+        {
+          "id": "s886",
+          "name": "seamhalo_11",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 40,
+          "visible": true
+        },
+        {
+          "id": "s887",
+          "name": "seamhalo_12",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 18
+          },
+          "color": "#6abe30",
+          "zIndex": 41,
+          "visible": true
+        },
+        {
+          "id": "s888",
+          "name": "seamhalo_13",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 42,
+          "visible": true
+        },
+        {
+          "id": "s889",
+          "name": "seamhalo_14",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 8
+          },
+          "color": "#6abe30",
+          "zIndex": 43,
+          "visible": true
+        },
+        {
+          "id": "s890",
+          "name": "seamhalo_15",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 8
+          },
+          "color": "#6abe30",
+          "zIndex": 44,
+          "visible": true
+        },
+        {
+          "id": "s891",
+          "name": "seamhalo_16",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 9
+          },
+          "color": "#6abe30",
+          "zIndex": 45,
+          "visible": true
+        },
+        {
+          "id": "s892",
+          "name": "seamhalo_17",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 9
+          },
+          "color": "#6abe30",
+          "zIndex": 46,
+          "visible": true
+        },
+        {
+          "id": "s893",
+          "name": "seamhalo_18",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 10
+          },
+          "color": "#6abe30",
+          "zIndex": 47,
+          "visible": true
+        },
+        {
+          "id": "s894",
+          "name": "seamhalo_19",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 11
+          },
+          "color": "#6abe30",
+          "zIndex": 48,
+          "visible": true
+        },
+        {
+          "id": "s895",
+          "name": "seamhalo_20",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 11
+          },
+          "color": "#6abe30",
+          "zIndex": 49,
+          "visible": true
+        },
+        {
+          "id": "s896",
+          "name": "seamhalo_21",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 10
+          },
+          "color": "#6abe30",
+          "zIndex": 50,
+          "visible": true
+        },
+        {
+          "id": "s897",
+          "name": "seamhalo_22",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 51,
+          "visible": true
+        },
+        {
+          "id": "s898",
+          "name": "seamhalo_23",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 52,
+          "visible": true
+        },
+        {
+          "id": "s899",
+          "name": "seamhalo_24",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 53,
+          "visible": true
+        },
+        {
+          "id": "s900",
+          "name": "seamhalo_25",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 54,
+          "visible": true
+        },
+        {
+          "id": "s901",
+          "name": "seamhalo_26",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 19
+          },
+          "color": "#6abe30",
+          "zIndex": 55,
+          "visible": true
+        },
+        {
+          "id": "s902",
+          "name": "seamhalo_27",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 19
+          },
+          "color": "#6abe30",
+          "zIndex": 56,
+          "visible": true
+        },
+        {
+          "id": "s903",
+          "name": "seamhalo_28",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 18
+          },
+          "color": "#6abe30",
+          "zIndex": 57,
+          "visible": true
+        },
+        {
+          "id": "s904",
+          "name": "seamhalo_29",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 17
+          },
+          "color": "#6abe30",
+          "zIndex": 58,
+          "visible": true
+        },
+        {
+          "id": "s905",
+          "name": "seamhalo_30",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 17
+          },
+          "color": "#6abe30",
+          "zIndex": 59,
+          "visible": true
+        },
+        {
+          "id": "s906",
+          "name": "seamhalo_31",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 18
+          },
+          "color": "#6abe30",
+          "zIndex": 60,
+          "visible": true
+        },
+        {
+          "id": "s907",
+          "name": "seamhalo_32",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 61,
+          "visible": true
+        },
+        {
+          "id": "s908",
+          "name": "seamhalo_33",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 62,
+          "visible": true
+        },
+        {
+          "id": "s909",
+          "name": "seamhalo_34",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 63,
+          "visible": true
+        },
+        {
+          "id": "s910",
+          "name": "seamhalo_35",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 64,
+          "visible": true
+        },
+        {
+          "id": "s911",
+          "name": "seamhalo_36",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 65,
+          "visible": true
+        },
+        {
+          "id": "s912",
+          "name": "seamhalo_37",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 66,
+          "visible": true
+        },
+        {
+          "id": "s913",
+          "name": "seamhalo_38",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 67,
+          "visible": true
+        },
+        {
+          "id": "s914",
+          "name": "seamhalo_39",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 68,
+          "visible": true
+        },
+        {
+          "id": "s915",
+          "name": "seamhalo_40",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 11
+          },
+          "color": "#6abe30",
+          "zIndex": 69,
+          "visible": true
+        },
+        {
+          "id": "s916",
+          "name": "seamhalo_41",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 11
+          },
+          "color": "#6abe30",
+          "zIndex": 70,
+          "visible": true
+        },
+        {
+          "id": "s917",
+          "name": "seamhalo_42",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 10
+          },
+          "color": "#6abe30",
+          "zIndex": 71,
+          "visible": true
+        },
+        {
+          "id": "s918",
+          "name": "seamhalo_43",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 9
+          },
+          "color": "#6abe30",
+          "zIndex": 72,
+          "visible": true
+        },
+        {
+          "id": "s919",
+          "name": "seamhalo_44",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 9
+          },
+          "color": "#6abe30",
+          "zIndex": 73,
+          "visible": true
+        },
+        {
+          "id": "s920",
+          "name": "seamhalo_45",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 10
+          },
+          "color": "#6abe30",
+          "zIndex": 74,
+          "visible": true
+        },
+        {
+          "id": "s921",
+          "name": "seamhalo_46",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 8
+          },
+          "color": "#6abe30",
+          "zIndex": 75,
+          "visible": true
+        },
+        {
+          "id": "s922",
+          "name": "seamhalo_47",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 8
+          },
+          "color": "#6abe30",
+          "zIndex": 76,
+          "visible": true
+        }
+      ]
+    },
+    "0,3": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s923",
+          "name": "shadow",
+          "type": "ellipse",
+          "params": {
+            "cx": 16,
+            "cy": 30,
+            "rx": 4,
+            "ry": 2,
+            "filled": true
+          },
+          "color": "#222034",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s924",
+          "name": "ball",
+          "type": "ellipse",
+          "params": {
+            "cx": 16,
+            "cy": 8,
+            "rx": 6,
+            "ry": 10,
+            "filled": true
+          },
+          "color": "#99e550",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s925",
+          "name": "ball_shade_mid_0",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 7
+          },
+          "color": "#6abe30",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s926",
+          "name": "ball_shade_mid_1",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s927",
+          "name": "ball_shade_mid_2",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s928",
+          "name": "ball_shade_mid_3",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s929",
+          "name": "ball_shade_core_0",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 11
+          },
+          "color": "#4b692f",
+          "zIndex": 6,
+          "visible": true
+        },
+        {
+          "id": "s930",
+          "name": "ball_shade_core_1",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 13
+          },
+          "color": "#4b692f",
+          "zIndex": 7,
+          "visible": true
+        },
+        {
+          "id": "s931",
+          "name": "ball_shade_core_2",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 14
+          },
+          "color": "#4b692f",
+          "zIndex": 8,
+          "visible": true
+        },
+        {
+          "id": "s932",
+          "name": "ball_shade_core_3",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 14
+          },
+          "color": "#4b692f",
+          "zIndex": 9,
+          "visible": true
+        },
+        {
+          "id": "s933",
+          "name": "ball_shade_hl_0",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 5
+          },
+          "color": "#fbf236",
+          "zIndex": 10,
+          "visible": true
+        },
+        {
+          "id": "s934",
+          "name": "ball_shade_hl_1",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 4
+          },
+          "color": "#fbf236",
+          "zIndex": 11,
+          "visible": true
+        },
+        {
+          "id": "s935",
+          "name": "ball_shade_hl_2",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 4
+          },
+          "color": "#fbf236",
+          "zIndex": 12,
+          "visible": true
+        },
+        {
+          "id": "s936",
+          "name": "ball_shade_hl_3",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 3
+          },
+          "color": "#fbf236",
+          "zIndex": 13,
+          "visible": true
+        },
+        {
+          "id": "s937",
+          "name": "seam_left_0",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 8
+          },
+          "color": "#fff1e8",
+          "zIndex": 14,
+          "visible": true
+        },
+        {
+          "id": "s938",
+          "name": "seam_left_1",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 10
+          },
+          "color": "#fff1e8",
+          "zIndex": 15,
+          "visible": true
+        },
+        {
+          "id": "s939",
+          "name": "seam_left_2",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 11
+          },
+          "color": "#fff1e8",
+          "zIndex": 16,
+          "visible": true
+        },
+        {
+          "id": "s940",
+          "name": "seam_left_3",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 13
+          },
+          "color": "#fff1e8",
+          "zIndex": 17,
+          "visible": true
+        },
+        {
+          "id": "s941",
+          "name": "seam_left_4",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 14
+          },
+          "color": "#fff1e8",
+          "zIndex": 18,
+          "visible": true
+        },
+        {
+          "id": "s942",
+          "name": "seam_left_5",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 15
+          },
+          "color": "#fff1e8",
+          "zIndex": 19,
+          "visible": true
+        },
+        {
+          "id": "s943",
+          "name": "seam_left_6",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 16
+          },
+          "color": "#fff1e8",
+          "zIndex": 20,
+          "visible": true
+        },
+        {
+          "id": "s944",
+          "name": "seam_left_7",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 0
+          },
+          "color": "#fff1e8",
+          "zIndex": 21,
+          "visible": true
+        },
+        {
+          "id": "s945",
+          "name": "seam_left_8",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 1
+          },
+          "color": "#fff1e8",
+          "zIndex": 22,
+          "visible": true
+        },
+        {
+          "id": "s946",
+          "name": "seam_left_9",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 2
+          },
+          "color": "#fff1e8",
+          "zIndex": 23,
+          "visible": true
+        },
+        {
+          "id": "s947",
+          "name": "seam_left_10",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 3
+          },
+          "color": "#fff1e8",
+          "zIndex": 24,
+          "visible": true
+        },
+        {
+          "id": "s948",
+          "name": "seam_left_11",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 5
+          },
+          "color": "#fff1e8",
+          "zIndex": 25,
+          "visible": true
+        },
+        {
+          "id": "s949",
+          "name": "seam_left_12",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 6
+          },
+          "color": "#fff1e8",
+          "zIndex": 26,
+          "visible": true
+        },
+        {
+          "id": "s950",
+          "name": "seam_right_0",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 16
+          },
+          "color": "#fff1e8",
+          "zIndex": 27,
+          "visible": true
+        },
+        {
+          "id": "s951",
+          "name": "seam_right_1",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 15
+          },
+          "color": "#fff1e8",
+          "zIndex": 28,
+          "visible": true
+        },
+        {
+          "id": "s952",
+          "name": "seam_right_2",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 14
+          },
+          "color": "#fff1e8",
+          "zIndex": 29,
+          "visible": true
+        },
+        {
+          "id": "s953",
+          "name": "seam_right_3",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 13
+          },
+          "color": "#fff1e8",
+          "zIndex": 30,
+          "visible": true
+        },
+        {
+          "id": "s954",
+          "name": "seam_right_4",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 11
+          },
+          "color": "#fff1e8",
+          "zIndex": 31,
+          "visible": true
+        },
+        {
+          "id": "s955",
+          "name": "seam_right_5",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 10
+          },
+          "color": "#fff1e8",
+          "zIndex": 32,
+          "visible": true
+        },
+        {
+          "id": "s956",
+          "name": "seam_right_6",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 8
+          },
+          "color": "#fff1e8",
+          "zIndex": 33,
+          "visible": true
+        },
+        {
+          "id": "s957",
+          "name": "seam_right_7",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 6
+          },
+          "color": "#fff1e8",
+          "zIndex": 34,
+          "visible": true
+        },
+        {
+          "id": "s958",
+          "name": "seam_right_8",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 5
+          },
+          "color": "#fff1e8",
+          "zIndex": 35,
+          "visible": true
+        },
+        {
+          "id": "s959",
+          "name": "seam_right_9",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 3
+          },
+          "color": "#fff1e8",
+          "zIndex": 36,
+          "visible": true
+        },
+        {
+          "id": "s960",
+          "name": "seam_right_10",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 2
+          },
+          "color": "#fff1e8",
+          "zIndex": 37,
+          "visible": true
+        },
+        {
+          "id": "s961",
+          "name": "seam_right_11",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 1
+          },
+          "color": "#fff1e8",
+          "zIndex": 38,
+          "visible": true
+        },
+        {
+          "id": "s962",
+          "name": "seam_right_12",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 0
+          },
+          "color": "#fff1e8",
+          "zIndex": 39,
+          "visible": true
+        },
+        {
+          "id": "s963",
+          "name": "seamhalo_0",
+          "type": "point",
+          "params": {
+            "x": 16,
+            "y": 8
+          },
+          "color": "#6abe30",
+          "zIndex": 40,
+          "visible": true
+        },
+        {
+          "id": "s964",
+          "name": "seamhalo_1",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 8
+          },
+          "color": "#6abe30",
+          "zIndex": 41,
+          "visible": true
+        },
+        {
+          "id": "s965",
+          "name": "seamhalo_2",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 9
+          },
+          "color": "#6abe30",
+          "zIndex": 42,
+          "visible": true
+        },
+        {
+          "id": "s966",
+          "name": "seamhalo_3",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 7
+          },
+          "color": "#6abe30",
+          "zIndex": 43,
+          "visible": true
+        },
+        {
+          "id": "s967",
+          "name": "seamhalo_4",
+          "type": "point",
+          "params": {
+            "x": 16,
+            "y": 10
+          },
+          "color": "#6abe30",
+          "zIndex": 44,
+          "visible": true
+        },
+        {
+          "id": "s968",
+          "name": "seamhalo_5",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 10
+          },
+          "color": "#6abe30",
+          "zIndex": 45,
+          "visible": true
+        },
+        {
+          "id": "s969",
+          "name": "seamhalo_6",
+          "type": "point",
+          "params": {
+            "x": 16,
+            "y": 11
+          },
+          "color": "#6abe30",
+          "zIndex": 46,
+          "visible": true
+        },
+        {
+          "id": "s970",
+          "name": "seamhalo_7",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 11
+          },
+          "color": "#6abe30",
+          "zIndex": 47,
+          "visible": true
+        },
+        {
+          "id": "s971",
+          "name": "seamhalo_8",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 48,
+          "visible": true
+        },
+        {
+          "id": "s972",
+          "name": "seamhalo_9",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 49,
+          "visible": true
+        },
+        {
+          "id": "s973",
+          "name": "seamhalo_10",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 50,
+          "visible": true
+        },
+        {
+          "id": "s974",
+          "name": "seamhalo_11",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 51,
+          "visible": true
+        },
+        {
+          "id": "s975",
+          "name": "seamhalo_12",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 52,
+          "visible": true
+        },
+        {
+          "id": "s976",
+          "name": "seamhalo_13",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 53,
+          "visible": true
+        },
+        {
+          "id": "s977",
+          "name": "seamhalo_14",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 54,
+          "visible": true
+        },
+        {
+          "id": "s978",
+          "name": "seamhalo_15",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 55,
+          "visible": true
+        },
+        {
+          "id": "s979",
+          "name": "seamhalo_16",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 56,
+          "visible": true
+        },
+        {
+          "id": "s980",
+          "name": "seamhalo_17",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 0
+          },
+          "color": "#6abe30",
+          "zIndex": 57,
+          "visible": true
+        },
+        {
+          "id": "s981",
+          "name": "seamhalo_18",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 1
+          },
+          "color": "#6abe30",
+          "zIndex": 58,
+          "visible": true
+        },
+        {
+          "id": "s982",
+          "name": "seamhalo_19",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 1
+          },
+          "color": "#6abe30",
+          "zIndex": 59,
+          "visible": true
+        },
+        {
+          "id": "s983",
+          "name": "seamhalo_20",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 2
+          },
+          "color": "#6abe30",
+          "zIndex": 60,
+          "visible": true
+        },
+        {
+          "id": "s984",
+          "name": "seamhalo_21",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 2
+          },
+          "color": "#6abe30",
+          "zIndex": 61,
+          "visible": true
+        },
+        {
+          "id": "s985",
+          "name": "seamhalo_22",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 3
+          },
+          "color": "#6abe30",
+          "zIndex": 62,
+          "visible": true
+        },
+        {
+          "id": "s986",
+          "name": "seamhalo_23",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 3
+          },
+          "color": "#6abe30",
+          "zIndex": 63,
+          "visible": true
+        },
+        {
+          "id": "s987",
+          "name": "seamhalo_24",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 4
+          },
+          "color": "#6abe30",
+          "zIndex": 64,
+          "visible": true
+        },
+        {
+          "id": "s988",
+          "name": "seamhalo_25",
+          "type": "point",
+          "params": {
+            "x": 16,
+            "y": 5
+          },
+          "color": "#6abe30",
+          "zIndex": 65,
+          "visible": true
+        },
+        {
+          "id": "s989",
+          "name": "seamhalo_26",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 5
+          },
+          "color": "#6abe30",
+          "zIndex": 66,
+          "visible": true
+        },
+        {
+          "id": "s990",
+          "name": "seamhalo_27",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 4
+          },
+          "color": "#6abe30",
+          "zIndex": 67,
+          "visible": true
+        },
+        {
+          "id": "s991",
+          "name": "seamhalo_28",
+          "type": "point",
+          "params": {
+            "x": 16,
+            "y": 6
+          },
+          "color": "#6abe30",
+          "zIndex": 68,
+          "visible": true
+        },
+        {
+          "id": "s992",
+          "name": "seamhalo_29",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 6
+          },
+          "color": "#6abe30",
+          "zIndex": 69,
+          "visible": true
+        },
+        {
+          "id": "s993",
+          "name": "seamhalo_30",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 70,
+          "visible": true
+        },
+        {
+          "id": "s994",
+          "name": "seamhalo_31",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 71,
+          "visible": true
+        },
+        {
+          "id": "s995",
+          "name": "seamhalo_32",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 72,
+          "visible": true
+        },
+        {
+          "id": "s996",
+          "name": "seamhalo_33",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 73,
+          "visible": true
+        },
+        {
+          "id": "s997",
+          "name": "seamhalo_34",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 74,
+          "visible": true
+        },
+        {
+          "id": "s998",
+          "name": "seamhalo_35",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 75,
+          "visible": true
+        },
+        {
+          "id": "s999",
+          "name": "seamhalo_36",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 76,
+          "visible": true
+        },
+        {
+          "id": "s1000",
+          "name": "seamhalo_37",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 77,
+          "visible": true
+        },
+        {
+          "id": "s1001",
+          "name": "seamhalo_38",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 11
+          },
+          "color": "#6abe30",
+          "zIndex": 78,
+          "visible": true
+        },
+        {
+          "id": "s1002",
+          "name": "seamhalo_39",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 79,
+          "visible": true
+        },
+        {
+          "id": "s1003",
+          "name": "seamhalo_40",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 10
+          },
+          "color": "#6abe30",
+          "zIndex": 80,
+          "visible": true
+        },
+        {
+          "id": "s1004",
+          "name": "seamhalo_41",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 9
+          },
+          "color": "#6abe30",
+          "zIndex": 81,
+          "visible": true
+        },
+        {
+          "id": "s1005",
+          "name": "seamhalo_42",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 8
+          },
+          "color": "#6abe30",
+          "zIndex": 82,
+          "visible": true
+        },
+        {
+          "id": "s1006",
+          "name": "seamhalo_43",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 7
+          },
+          "color": "#6abe30",
+          "zIndex": 83,
+          "visible": true
+        },
+        {
+          "id": "s1007",
+          "name": "seamhalo_44",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 6
+          },
+          "color": "#6abe30",
+          "zIndex": 84,
+          "visible": true
+        },
+        {
+          "id": "s1008",
+          "name": "seamhalo_45",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 5
+          },
+          "color": "#6abe30",
+          "zIndex": 85,
+          "visible": true
+        },
+        {
+          "id": "s1009",
+          "name": "seamhalo_46",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 4
+          },
+          "color": "#6abe30",
+          "zIndex": 86,
+          "visible": true
+        },
+        {
+          "id": "s1010",
+          "name": "seamhalo_47",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 3
+          },
+          "color": "#6abe30",
+          "zIndex": 87,
+          "visible": true
+        },
+        {
+          "id": "s1011",
+          "name": "seamhalo_48",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 3
+          },
+          "color": "#6abe30",
+          "zIndex": 88,
+          "visible": true
+        },
+        {
+          "id": "s1012",
+          "name": "seamhalo_49",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 4
+          },
+          "color": "#6abe30",
+          "zIndex": 89,
+          "visible": true
+        },
+        {
+          "id": "s1013",
+          "name": "seamhalo_50",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 2
+          },
+          "color": "#6abe30",
+          "zIndex": 90,
+          "visible": true
+        },
+        {
+          "id": "s1014",
+          "name": "seamhalo_51",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 2
+          },
+          "color": "#6abe30",
+          "zIndex": 91,
+          "visible": true
+        },
+        {
+          "id": "s1015",
+          "name": "seamhalo_52",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 1
+          },
+          "color": "#6abe30",
+          "zIndex": 92,
+          "visible": true
+        },
+        {
+          "id": "s1016",
+          "name": "seamhalo_53",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 1
+          },
+          "color": "#6abe30",
+          "zIndex": 93,
+          "visible": true
+        },
+        {
+          "id": "s1017",
+          "name": "seamhalo_54",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 0
+          },
+          "color": "#6abe30",
+          "zIndex": 94,
+          "visible": true
+        }
+      ]
+    },
+    "0,4": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s1018",
+          "name": "shadow",
+          "type": "ellipse",
+          "params": {
+            "cx": 16,
+            "cy": 30,
+            "rx": 4,
+            "ry": 2,
+            "filled": true
+          },
+          "color": "#222034",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s1019",
+          "name": "ball",
+          "type": "ellipse",
+          "params": {
+            "cx": 16,
+            "cy": 6,
+            "rx": 6,
+            "ry": 8,
+            "filled": true
+          },
+          "color": "#99e550",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s1020",
+          "name": "ball_shade_mid_0",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 5
+          },
+          "color": "#6abe30",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s1021",
+          "name": "ball_shade_mid_1",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 10
+          },
+          "color": "#6abe30",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s1022",
+          "name": "ball_shade_mid_2",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s1023",
+          "name": "ball_shade_core_0",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 9
+          },
+          "color": "#4b692f",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s1024",
+          "name": "ball_shade_core_1",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 10
+          },
+          "color": "#4b692f",
+          "zIndex": 6,
+          "visible": true
+        },
+        {
+          "id": "s1025",
+          "name": "ball_shade_core_2",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 11
+          },
+          "color": "#4b692f",
+          "zIndex": 7,
+          "visible": true
+        },
+        {
+          "id": "s1026",
+          "name": "ball_shade_hl_0",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 4
+          },
+          "color": "#fbf236",
+          "zIndex": 8,
+          "visible": true
+        },
+        {
+          "id": "s1027",
+          "name": "ball_shade_hl_1",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 3
+          },
+          "color": "#fbf236",
+          "zIndex": 9,
+          "visible": true
+        },
+        {
+          "id": "s1028",
+          "name": "ball_shade_hl_2",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 2
+          },
+          "color": "#fbf236",
+          "zIndex": 10,
+          "visible": true
+        },
+        {
+          "id": "s1029",
+          "name": "seam_left_0",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 6
+          },
+          "color": "#fff1e8",
+          "zIndex": 11,
+          "visible": true
+        },
+        {
+          "id": "s1030",
+          "name": "seam_left_1",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 8
+          },
+          "color": "#fff1e8",
+          "zIndex": 12,
+          "visible": true
+        },
+        {
+          "id": "s1031",
+          "name": "seam_left_2",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 9
+          },
+          "color": "#fff1e8",
+          "zIndex": 13,
+          "visible": true
+        },
+        {
+          "id": "s1032",
+          "name": "seam_left_3",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 11
+          },
+          "color": "#fff1e8",
+          "zIndex": 14,
+          "visible": true
+        },
+        {
+          "id": "s1033",
+          "name": "seam_left_4",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 12
+          },
+          "color": "#fff1e8",
+          "zIndex": 15,
+          "visible": true
+        },
+        {
+          "id": "s1034",
+          "name": "seam_left_5",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 0
+          },
+          "color": "#fff1e8",
+          "zIndex": 16,
+          "visible": true
+        },
+        {
+          "id": "s1035",
+          "name": "seam_left_6",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 1
+          },
+          "color": "#fff1e8",
+          "zIndex": 17,
+          "visible": true
+        },
+        {
+          "id": "s1036",
+          "name": "seam_left_7",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 3
+          },
+          "color": "#fff1e8",
+          "zIndex": 18,
+          "visible": true
+        },
+        {
+          "id": "s1037",
+          "name": "seam_left_8",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 4
+          },
+          "color": "#fff1e8",
+          "zIndex": 19,
+          "visible": true
+        },
+        {
+          "id": "s1038",
+          "name": "seam_right_0",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 12
+          },
+          "color": "#fff1e8",
+          "zIndex": 20,
+          "visible": true
+        },
+        {
+          "id": "s1039",
+          "name": "seam_right_1",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 11
+          },
+          "color": "#fff1e8",
+          "zIndex": 21,
+          "visible": true
+        },
+        {
+          "id": "s1040",
+          "name": "seam_right_2",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 9
+          },
+          "color": "#fff1e8",
+          "zIndex": 22,
+          "visible": true
+        },
+        {
+          "id": "s1041",
+          "name": "seam_right_3",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 8
+          },
+          "color": "#fff1e8",
+          "zIndex": 23,
+          "visible": true
+        },
+        {
+          "id": "s1042",
+          "name": "seam_right_4",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 6
+          },
+          "color": "#fff1e8",
+          "zIndex": 24,
+          "visible": true
+        },
+        {
+          "id": "s1043",
+          "name": "seam_right_5",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 4
+          },
+          "color": "#fff1e8",
+          "zIndex": 25,
+          "visible": true
+        },
+        {
+          "id": "s1044",
+          "name": "seam_right_6",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 3
+          },
+          "color": "#fff1e8",
+          "zIndex": 26,
+          "visible": true
+        },
+        {
+          "id": "s1045",
+          "name": "seam_right_7",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 1
+          },
+          "color": "#fff1e8",
+          "zIndex": 27,
+          "visible": true
+        },
+        {
+          "id": "s1046",
+          "name": "seam_right_8",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 0
+          },
+          "color": "#fff1e8",
+          "zIndex": 28,
+          "visible": true
+        },
+        {
+          "id": "s1047",
+          "name": "seamhalo_0",
+          "type": "point",
+          "params": {
+            "x": 16,
+            "y": 6
+          },
+          "color": "#6abe30",
+          "zIndex": 29,
+          "visible": true
+        },
+        {
+          "id": "s1048",
+          "name": "seamhalo_1",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 6
+          },
+          "color": "#6abe30",
+          "zIndex": 30,
+          "visible": true
+        },
+        {
+          "id": "s1049",
+          "name": "seamhalo_2",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 7
+          },
+          "color": "#6abe30",
+          "zIndex": 31,
+          "visible": true
+        },
+        {
+          "id": "s1050",
+          "name": "seamhalo_3",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 5
+          },
+          "color": "#6abe30",
+          "zIndex": 32,
+          "visible": true
+        },
+        {
+          "id": "s1051",
+          "name": "seamhalo_4",
+          "type": "point",
+          "params": {
+            "x": 16,
+            "y": 8
+          },
+          "color": "#6abe30",
+          "zIndex": 33,
+          "visible": true
+        },
+        {
+          "id": "s1052",
+          "name": "seamhalo_5",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 8
+          },
+          "color": "#6abe30",
+          "zIndex": 34,
+          "visible": true
+        },
+        {
+          "id": "s1053",
+          "name": "seamhalo_6",
+          "type": "point",
+          "params": {
+            "x": 16,
+            "y": 9
+          },
+          "color": "#6abe30",
+          "zIndex": 35,
+          "visible": true
+        },
+        {
+          "id": "s1054",
+          "name": "seamhalo_7",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 9
+          },
+          "color": "#6abe30",
+          "zIndex": 36,
+          "visible": true
+        },
+        {
+          "id": "s1055",
+          "name": "seamhalo_8",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 10
+          },
+          "color": "#6abe30",
+          "zIndex": 37,
+          "visible": true
+        },
+        {
+          "id": "s1056",
+          "name": "seamhalo_9",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 11
+          },
+          "color": "#6abe30",
+          "zIndex": 38,
+          "visible": true
+        },
+        {
+          "id": "s1057",
+          "name": "seamhalo_10",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 11
+          },
+          "color": "#6abe30",
+          "zIndex": 39,
+          "visible": true
+        },
+        {
+          "id": "s1058",
+          "name": "seamhalo_11",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 40,
+          "visible": true
+        },
+        {
+          "id": "s1059",
+          "name": "seamhalo_12",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 10
+          },
+          "color": "#6abe30",
+          "zIndex": 41,
+          "visible": true
+        },
+        {
+          "id": "s1060",
+          "name": "seamhalo_13",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 0
+          },
+          "color": "#6abe30",
+          "zIndex": 42,
+          "visible": true
+        },
+        {
+          "id": "s1061",
+          "name": "seamhalo_14",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 1
+          },
+          "color": "#6abe30",
+          "zIndex": 43,
+          "visible": true
+        },
+        {
+          "id": "s1062",
+          "name": "seamhalo_15",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 1
+          },
+          "color": "#6abe30",
+          "zIndex": 44,
+          "visible": true
+        },
+        {
+          "id": "s1063",
+          "name": "seamhalo_16",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 2
+          },
+          "color": "#6abe30",
+          "zIndex": 45,
+          "visible": true
+        },
+        {
+          "id": "s1064",
+          "name": "seamhalo_17",
+          "type": "point",
+          "params": {
+            "x": 16,
+            "y": 3
+          },
+          "color": "#6abe30",
+          "zIndex": 46,
+          "visible": true
+        },
+        {
+          "id": "s1065",
+          "name": "seamhalo_18",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 3
+          },
+          "color": "#6abe30",
+          "zIndex": 47,
+          "visible": true
+        },
+        {
+          "id": "s1066",
+          "name": "seamhalo_19",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 2
+          },
+          "color": "#6abe30",
+          "zIndex": 48,
+          "visible": true
+        },
+        {
+          "id": "s1067",
+          "name": "seamhalo_20",
+          "type": "point",
+          "params": {
+            "x": 16,
+            "y": 4
+          },
+          "color": "#6abe30",
+          "zIndex": 49,
+          "visible": true
+        },
+        {
+          "id": "s1068",
+          "name": "seamhalo_21",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 4
+          },
+          "color": "#6abe30",
+          "zIndex": 50,
+          "visible": true
+        },
+        {
+          "id": "s1069",
+          "name": "seamhalo_22",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 51,
+          "visible": true
+        },
+        {
+          "id": "s1070",
+          "name": "seamhalo_23",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 11
+          },
+          "color": "#6abe30",
+          "zIndex": 52,
+          "visible": true
+        },
+        {
+          "id": "s1071",
+          "name": "seamhalo_24",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 11
+          },
+          "color": "#6abe30",
+          "zIndex": 53,
+          "visible": true
+        },
+        {
+          "id": "s1072",
+          "name": "seamhalo_25",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 10
+          },
+          "color": "#6abe30",
+          "zIndex": 54,
+          "visible": true
+        },
+        {
+          "id": "s1073",
+          "name": "seamhalo_26",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 9
+          },
+          "color": "#6abe30",
+          "zIndex": 55,
+          "visible": true
+        },
+        {
+          "id": "s1074",
+          "name": "seamhalo_27",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 10
+          },
+          "color": "#6abe30",
+          "zIndex": 56,
+          "visible": true
+        },
+        {
+          "id": "s1075",
+          "name": "seamhalo_28",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 8
+          },
+          "color": "#6abe30",
+          "zIndex": 57,
+          "visible": true
+        },
+        {
+          "id": "s1076",
+          "name": "seamhalo_29",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 7
+          },
+          "color": "#6abe30",
+          "zIndex": 58,
+          "visible": true
+        },
+        {
+          "id": "s1077",
+          "name": "seamhalo_30",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 6
+          },
+          "color": "#6abe30",
+          "zIndex": 59,
+          "visible": true
+        },
+        {
+          "id": "s1078",
+          "name": "seamhalo_31",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 5
+          },
+          "color": "#6abe30",
+          "zIndex": 60,
+          "visible": true
+        },
+        {
+          "id": "s1079",
+          "name": "seamhalo_32",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 4
+          },
+          "color": "#6abe30",
+          "zIndex": 61,
+          "visible": true
+        },
+        {
+          "id": "s1080",
+          "name": "seamhalo_33",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 3
+          },
+          "color": "#6abe30",
+          "zIndex": 62,
+          "visible": true
+        },
+        {
+          "id": "s1081",
+          "name": "seamhalo_34",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 2
+          },
+          "color": "#6abe30",
+          "zIndex": 63,
+          "visible": true
+        },
+        {
+          "id": "s1082",
+          "name": "seamhalo_35",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 1
+          },
+          "color": "#6abe30",
+          "zIndex": 64,
+          "visible": true
+        },
+        {
+          "id": "s1083",
+          "name": "seamhalo_36",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 1
+          },
+          "color": "#6abe30",
+          "zIndex": 65,
+          "visible": true
+        },
+        {
+          "id": "s1084",
+          "name": "seamhalo_37",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 2
+          },
+          "color": "#6abe30",
+          "zIndex": 66,
+          "visible": true
+        },
+        {
+          "id": "s1085",
+          "name": "seamhalo_38",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 0
+          },
+          "color": "#6abe30",
+          "zIndex": 67,
+          "visible": true
+        }
+      ]
+    },
+    "0,5": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s1086",
+          "name": "shadow",
+          "type": "ellipse",
+          "params": {
+            "cx": 16,
+            "cy": 30,
+            "rx": 4,
+            "ry": 2,
+            "filled": true
+          },
+          "color": "#222034",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s1087",
+          "name": "ball",
+          "type": "ellipse",
+          "params": {
+            "cx": 16,
+            "cy": 8,
+            "rx": 6,
+            "ry": 10,
+            "filled": true
+          },
+          "color": "#99e550",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s1088",
+          "name": "ball_shade_mid_0",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 7
+          },
+          "color": "#6abe30",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s1089",
+          "name": "ball_shade_mid_1",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s1090",
+          "name": "ball_shade_mid_2",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s1091",
+          "name": "ball_shade_mid_3",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s1092",
+          "name": "ball_shade_core_0",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 11
+          },
+          "color": "#4b692f",
+          "zIndex": 6,
+          "visible": true
+        },
+        {
+          "id": "s1093",
+          "name": "ball_shade_core_1",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 13
+          },
+          "color": "#4b692f",
+          "zIndex": 7,
+          "visible": true
+        },
+        {
+          "id": "s1094",
+          "name": "ball_shade_core_2",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 14
+          },
+          "color": "#4b692f",
+          "zIndex": 8,
+          "visible": true
+        },
+        {
+          "id": "s1095",
+          "name": "ball_shade_core_3",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 14
+          },
+          "color": "#4b692f",
+          "zIndex": 9,
+          "visible": true
+        },
+        {
+          "id": "s1096",
+          "name": "ball_shade_hl_0",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 5
+          },
+          "color": "#fbf236",
+          "zIndex": 10,
+          "visible": true
+        },
+        {
+          "id": "s1097",
+          "name": "ball_shade_hl_1",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 4
+          },
+          "color": "#fbf236",
+          "zIndex": 11,
+          "visible": true
+        },
+        {
+          "id": "s1098",
+          "name": "ball_shade_hl_2",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 4
+          },
+          "color": "#fbf236",
+          "zIndex": 12,
+          "visible": true
+        },
+        {
+          "id": "s1099",
+          "name": "ball_shade_hl_3",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 3
+          },
+          "color": "#fbf236",
+          "zIndex": 13,
+          "visible": true
+        },
+        {
+          "id": "s1100",
+          "name": "seam_left_0",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 8
+          },
+          "color": "#fff1e8",
+          "zIndex": 14,
+          "visible": true
+        },
+        {
+          "id": "s1101",
+          "name": "seam_left_1",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 10
+          },
+          "color": "#fff1e8",
+          "zIndex": 15,
+          "visible": true
+        },
+        {
+          "id": "s1102",
+          "name": "seam_left_2",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 11
+          },
+          "color": "#fff1e8",
+          "zIndex": 16,
+          "visible": true
+        },
+        {
+          "id": "s1103",
+          "name": "seam_left_3",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 13
+          },
+          "color": "#fff1e8",
+          "zIndex": 17,
+          "visible": true
+        },
+        {
+          "id": "s1104",
+          "name": "seam_left_4",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 14
+          },
+          "color": "#fff1e8",
+          "zIndex": 18,
+          "visible": true
+        },
+        {
+          "id": "s1105",
+          "name": "seam_left_5",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 15
+          },
+          "color": "#fff1e8",
+          "zIndex": 19,
+          "visible": true
+        },
+        {
+          "id": "s1106",
+          "name": "seam_left_6",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 16
+          },
+          "color": "#fff1e8",
+          "zIndex": 20,
+          "visible": true
+        },
+        {
+          "id": "s1107",
+          "name": "seam_left_7",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 0
+          },
+          "color": "#fff1e8",
+          "zIndex": 21,
+          "visible": true
+        },
+        {
+          "id": "s1108",
+          "name": "seam_left_8",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 1
+          },
+          "color": "#fff1e8",
+          "zIndex": 22,
+          "visible": true
+        },
+        {
+          "id": "s1109",
+          "name": "seam_left_9",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 2
+          },
+          "color": "#fff1e8",
+          "zIndex": 23,
+          "visible": true
+        },
+        {
+          "id": "s1110",
+          "name": "seam_left_10",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 3
+          },
+          "color": "#fff1e8",
+          "zIndex": 24,
+          "visible": true
+        },
+        {
+          "id": "s1111",
+          "name": "seam_left_11",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 5
+          },
+          "color": "#fff1e8",
+          "zIndex": 25,
+          "visible": true
+        },
+        {
+          "id": "s1112",
+          "name": "seam_left_12",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 6
+          },
+          "color": "#fff1e8",
+          "zIndex": 26,
+          "visible": true
+        },
+        {
+          "id": "s1113",
+          "name": "seam_right_0",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 16
+          },
+          "color": "#fff1e8",
+          "zIndex": 27,
+          "visible": true
+        },
+        {
+          "id": "s1114",
+          "name": "seam_right_1",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 15
+          },
+          "color": "#fff1e8",
+          "zIndex": 28,
+          "visible": true
+        },
+        {
+          "id": "s1115",
+          "name": "seam_right_2",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 14
+          },
+          "color": "#fff1e8",
+          "zIndex": 29,
+          "visible": true
+        },
+        {
+          "id": "s1116",
+          "name": "seam_right_3",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 13
+          },
+          "color": "#fff1e8",
+          "zIndex": 30,
+          "visible": true
+        },
+        {
+          "id": "s1117",
+          "name": "seam_right_4",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 11
+          },
+          "color": "#fff1e8",
+          "zIndex": 31,
+          "visible": true
+        },
+        {
+          "id": "s1118",
+          "name": "seam_right_5",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 10
+          },
+          "color": "#fff1e8",
+          "zIndex": 32,
+          "visible": true
+        },
+        {
+          "id": "s1119",
+          "name": "seam_right_6",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 8
+          },
+          "color": "#fff1e8",
+          "zIndex": 33,
+          "visible": true
+        },
+        {
+          "id": "s1120",
+          "name": "seam_right_7",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 6
+          },
+          "color": "#fff1e8",
+          "zIndex": 34,
+          "visible": true
+        },
+        {
+          "id": "s1121",
+          "name": "seam_right_8",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 5
+          },
+          "color": "#fff1e8",
+          "zIndex": 35,
+          "visible": true
+        },
+        {
+          "id": "s1122",
+          "name": "seam_right_9",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 3
+          },
+          "color": "#fff1e8",
+          "zIndex": 36,
+          "visible": true
+        },
+        {
+          "id": "s1123",
+          "name": "seam_right_10",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 2
+          },
+          "color": "#fff1e8",
+          "zIndex": 37,
+          "visible": true
+        },
+        {
+          "id": "s1124",
+          "name": "seam_right_11",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 1
+          },
+          "color": "#fff1e8",
+          "zIndex": 38,
+          "visible": true
+        },
+        {
+          "id": "s1125",
+          "name": "seam_right_12",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 0
+          },
+          "color": "#fff1e8",
+          "zIndex": 39,
+          "visible": true
+        },
+        {
+          "id": "s1126",
+          "name": "seamhalo_0",
+          "type": "point",
+          "params": {
+            "x": 16,
+            "y": 8
+          },
+          "color": "#6abe30",
+          "zIndex": 40,
+          "visible": true
+        },
+        {
+          "id": "s1127",
+          "name": "seamhalo_1",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 8
+          },
+          "color": "#6abe30",
+          "zIndex": 41,
+          "visible": true
+        },
+        {
+          "id": "s1128",
+          "name": "seamhalo_2",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 9
+          },
+          "color": "#6abe30",
+          "zIndex": 42,
+          "visible": true
+        },
+        {
+          "id": "s1129",
+          "name": "seamhalo_3",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 7
+          },
+          "color": "#6abe30",
+          "zIndex": 43,
+          "visible": true
+        },
+        {
+          "id": "s1130",
+          "name": "seamhalo_4",
+          "type": "point",
+          "params": {
+            "x": 16,
+            "y": 10
+          },
+          "color": "#6abe30",
+          "zIndex": 44,
+          "visible": true
+        },
+        {
+          "id": "s1131",
+          "name": "seamhalo_5",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 10
+          },
+          "color": "#6abe30",
+          "zIndex": 45,
+          "visible": true
+        },
+        {
+          "id": "s1132",
+          "name": "seamhalo_6",
+          "type": "point",
+          "params": {
+            "x": 16,
+            "y": 11
+          },
+          "color": "#6abe30",
+          "zIndex": 46,
+          "visible": true
+        },
+        {
+          "id": "s1133",
+          "name": "seamhalo_7",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 11
+          },
+          "color": "#6abe30",
+          "zIndex": 47,
+          "visible": true
+        },
+        {
+          "id": "s1134",
+          "name": "seamhalo_8",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 48,
+          "visible": true
+        },
+        {
+          "id": "s1135",
+          "name": "seamhalo_9",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 49,
+          "visible": true
+        },
+        {
+          "id": "s1136",
+          "name": "seamhalo_10",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 50,
+          "visible": true
+        },
+        {
+          "id": "s1137",
+          "name": "seamhalo_11",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 51,
+          "visible": true
+        },
+        {
+          "id": "s1138",
+          "name": "seamhalo_12",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 52,
+          "visible": true
+        },
+        {
+          "id": "s1139",
+          "name": "seamhalo_13",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 53,
+          "visible": true
+        },
+        {
+          "id": "s1140",
+          "name": "seamhalo_14",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 54,
+          "visible": true
+        },
+        {
+          "id": "s1141",
+          "name": "seamhalo_15",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 55,
+          "visible": true
+        },
+        {
+          "id": "s1142",
+          "name": "seamhalo_16",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 56,
+          "visible": true
+        },
+        {
+          "id": "s1143",
+          "name": "seamhalo_17",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 0
+          },
+          "color": "#6abe30",
+          "zIndex": 57,
+          "visible": true
+        },
+        {
+          "id": "s1144",
+          "name": "seamhalo_18",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 1
+          },
+          "color": "#6abe30",
+          "zIndex": 58,
+          "visible": true
+        },
+        {
+          "id": "s1145",
+          "name": "seamhalo_19",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 1
+          },
+          "color": "#6abe30",
+          "zIndex": 59,
+          "visible": true
+        },
+        {
+          "id": "s1146",
+          "name": "seamhalo_20",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 2
+          },
+          "color": "#6abe30",
+          "zIndex": 60,
+          "visible": true
+        },
+        {
+          "id": "s1147",
+          "name": "seamhalo_21",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 2
+          },
+          "color": "#6abe30",
+          "zIndex": 61,
+          "visible": true
+        },
+        {
+          "id": "s1148",
+          "name": "seamhalo_22",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 3
+          },
+          "color": "#6abe30",
+          "zIndex": 62,
+          "visible": true
+        },
+        {
+          "id": "s1149",
+          "name": "seamhalo_23",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 3
+          },
+          "color": "#6abe30",
+          "zIndex": 63,
+          "visible": true
+        },
+        {
+          "id": "s1150",
+          "name": "seamhalo_24",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 4
+          },
+          "color": "#6abe30",
+          "zIndex": 64,
+          "visible": true
+        },
+        {
+          "id": "s1151",
+          "name": "seamhalo_25",
+          "type": "point",
+          "params": {
+            "x": 16,
+            "y": 5
+          },
+          "color": "#6abe30",
+          "zIndex": 65,
+          "visible": true
+        },
+        {
+          "id": "s1152",
+          "name": "seamhalo_26",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 5
+          },
+          "color": "#6abe30",
+          "zIndex": 66,
+          "visible": true
+        },
+        {
+          "id": "s1153",
+          "name": "seamhalo_27",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 4
+          },
+          "color": "#6abe30",
+          "zIndex": 67,
+          "visible": true
+        },
+        {
+          "id": "s1154",
+          "name": "seamhalo_28",
+          "type": "point",
+          "params": {
+            "x": 16,
+            "y": 6
+          },
+          "color": "#6abe30",
+          "zIndex": 68,
+          "visible": true
+        },
+        {
+          "id": "s1155",
+          "name": "seamhalo_29",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 6
+          },
+          "color": "#6abe30",
+          "zIndex": 69,
+          "visible": true
+        },
+        {
+          "id": "s1156",
+          "name": "seamhalo_30",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 70,
+          "visible": true
+        },
+        {
+          "id": "s1157",
+          "name": "seamhalo_31",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 71,
+          "visible": true
+        },
+        {
+          "id": "s1158",
+          "name": "seamhalo_32",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 72,
+          "visible": true
+        },
+        {
+          "id": "s1159",
+          "name": "seamhalo_33",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 73,
+          "visible": true
+        },
+        {
+          "id": "s1160",
+          "name": "seamhalo_34",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 74,
+          "visible": true
+        },
+        {
+          "id": "s1161",
+          "name": "seamhalo_35",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 75,
+          "visible": true
+        },
+        {
+          "id": "s1162",
+          "name": "seamhalo_36",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 76,
+          "visible": true
+        },
+        {
+          "id": "s1163",
+          "name": "seamhalo_37",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 77,
+          "visible": true
+        },
+        {
+          "id": "s1164",
+          "name": "seamhalo_38",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 11
+          },
+          "color": "#6abe30",
+          "zIndex": 78,
+          "visible": true
+        },
+        {
+          "id": "s1165",
+          "name": "seamhalo_39",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 79,
+          "visible": true
+        },
+        {
+          "id": "s1166",
+          "name": "seamhalo_40",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 10
+          },
+          "color": "#6abe30",
+          "zIndex": 80,
+          "visible": true
+        },
+        {
+          "id": "s1167",
+          "name": "seamhalo_41",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 9
+          },
+          "color": "#6abe30",
+          "zIndex": 81,
+          "visible": true
+        },
+        {
+          "id": "s1168",
+          "name": "seamhalo_42",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 8
+          },
+          "color": "#6abe30",
+          "zIndex": 82,
+          "visible": true
+        },
+        {
+          "id": "s1169",
+          "name": "seamhalo_43",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 7
+          },
+          "color": "#6abe30",
+          "zIndex": 83,
+          "visible": true
+        },
+        {
+          "id": "s1170",
+          "name": "seamhalo_44",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 6
+          },
+          "color": "#6abe30",
+          "zIndex": 84,
+          "visible": true
+        },
+        {
+          "id": "s1171",
+          "name": "seamhalo_45",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 5
+          },
+          "color": "#6abe30",
+          "zIndex": 85,
+          "visible": true
+        },
+        {
+          "id": "s1172",
+          "name": "seamhalo_46",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 4
+          },
+          "color": "#6abe30",
+          "zIndex": 86,
+          "visible": true
+        },
+        {
+          "id": "s1173",
+          "name": "seamhalo_47",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 3
+          },
+          "color": "#6abe30",
+          "zIndex": 87,
+          "visible": true
+        },
+        {
+          "id": "s1174",
+          "name": "seamhalo_48",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 3
+          },
+          "color": "#6abe30",
+          "zIndex": 88,
+          "visible": true
+        },
+        {
+          "id": "s1175",
+          "name": "seamhalo_49",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 4
+          },
+          "color": "#6abe30",
+          "zIndex": 89,
+          "visible": true
+        },
+        {
+          "id": "s1176",
+          "name": "seamhalo_50",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 2
+          },
+          "color": "#6abe30",
+          "zIndex": 90,
+          "visible": true
+        },
+        {
+          "id": "s1177",
+          "name": "seamhalo_51",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 2
+          },
+          "color": "#6abe30",
+          "zIndex": 91,
+          "visible": true
+        },
+        {
+          "id": "s1178",
+          "name": "seamhalo_52",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 1
+          },
+          "color": "#6abe30",
+          "zIndex": 92,
+          "visible": true
+        },
+        {
+          "id": "s1179",
+          "name": "seamhalo_53",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 1
+          },
+          "color": "#6abe30",
+          "zIndex": 93,
+          "visible": true
+        },
+        {
+          "id": "s1180",
+          "name": "seamhalo_54",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 0
+          },
+          "color": "#6abe30",
+          "zIndex": 94,
+          "visible": true
+        }
+      ]
+    },
+    "0,6": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s1181",
+          "name": "shadow",
+          "type": "ellipse",
+          "params": {
+            "cx": 16,
+            "cy": 30,
+            "rx": 6,
+            "ry": 2,
+            "filled": true
+          },
+          "color": "#222034",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s1182",
+          "name": "ball",
+          "type": "circle",
+          "params": {
+            "cx": 16,
+            "cy": 14,
+            "r": 8,
+            "filled": true
+          },
+          "color": "#99e550",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s1183",
+          "name": "ball_shade_mid_0",
+          "type": "point",
+          "params": {
+            "x": 22,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s1184",
+          "name": "ball_shade_mid_1",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 18
+          },
+          "color": "#6abe30",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s1185",
+          "name": "ball_shade_mid_2",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s1186",
+          "name": "ball_shade_core_0",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 17
+          },
+          "color": "#4b692f",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s1187",
+          "name": "ball_shade_core_1",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 18
+          },
+          "color": "#4b692f",
+          "zIndex": 6,
+          "visible": true
+        },
+        {
+          "id": "s1188",
+          "name": "ball_shade_core_2",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 19
+          },
+          "color": "#4b692f",
+          "zIndex": 7,
+          "visible": true
+        },
+        {
+          "id": "s1189",
+          "name": "ball_shade_hl_0",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 12
+          },
+          "color": "#fbf236",
+          "zIndex": 8,
+          "visible": true
+        },
+        {
+          "id": "s1190",
+          "name": "ball_shade_hl_1",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 11
+          },
+          "color": "#fbf236",
+          "zIndex": 9,
+          "visible": true
+        },
+        {
+          "id": "s1191",
+          "name": "ball_shade_hl_2",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 10
+          },
+          "color": "#fbf236",
+          "zIndex": 10,
+          "visible": true
+        },
+        {
+          "id": "s1192",
+          "name": "seam_left_0",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 14
+          },
+          "color": "#fff1e8",
+          "zIndex": 11,
+          "visible": true
+        },
+        {
+          "id": "s1193",
+          "name": "seam_left_1",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 16
+          },
+          "color": "#fff1e8",
+          "zIndex": 12,
+          "visible": true
+        },
+        {
+          "id": "s1194",
+          "name": "seam_left_2",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 17
+          },
+          "color": "#fff1e8",
+          "zIndex": 13,
+          "visible": true
+        },
+        {
+          "id": "s1195",
+          "name": "seam_left_3",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 19
+          },
+          "color": "#fff1e8",
+          "zIndex": 14,
+          "visible": true
+        },
+        {
+          "id": "s1196",
+          "name": "seam_left_4",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 20
+          },
+          "color": "#fff1e8",
+          "zIndex": 15,
+          "visible": true
+        },
+        {
+          "id": "s1197",
+          "name": "seam_left_5",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 8
+          },
+          "color": "#fff1e8",
+          "zIndex": 16,
+          "visible": true
+        },
+        {
+          "id": "s1198",
+          "name": "seam_left_6",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 9
+          },
+          "color": "#fff1e8",
+          "zIndex": 17,
+          "visible": true
+        },
+        {
+          "id": "s1199",
+          "name": "seam_left_7",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 11
+          },
+          "color": "#fff1e8",
+          "zIndex": 18,
+          "visible": true
+        },
+        {
+          "id": "s1200",
+          "name": "seam_left_8",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 12
+          },
+          "color": "#fff1e8",
+          "zIndex": 19,
+          "visible": true
+        },
+        {
+          "id": "s1201",
+          "name": "seam_right_0",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 20
+          },
+          "color": "#fff1e8",
+          "zIndex": 20,
+          "visible": true
+        },
+        {
+          "id": "s1202",
+          "name": "seam_right_1",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 19
+          },
+          "color": "#fff1e8",
+          "zIndex": 21,
+          "visible": true
+        },
+        {
+          "id": "s1203",
+          "name": "seam_right_2",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 17
+          },
+          "color": "#fff1e8",
+          "zIndex": 22,
+          "visible": true
+        },
+        {
+          "id": "s1204",
+          "name": "seam_right_3",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 16
+          },
+          "color": "#fff1e8",
+          "zIndex": 23,
+          "visible": true
+        },
+        {
+          "id": "s1205",
+          "name": "seam_right_4",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 14
+          },
+          "color": "#fff1e8",
+          "zIndex": 24,
+          "visible": true
+        },
+        {
+          "id": "s1206",
+          "name": "seam_right_5",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 12
+          },
+          "color": "#fff1e8",
+          "zIndex": 25,
+          "visible": true
+        },
+        {
+          "id": "s1207",
+          "name": "seam_right_6",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 11
+          },
+          "color": "#fff1e8",
+          "zIndex": 26,
+          "visible": true
+        },
+        {
+          "id": "s1208",
+          "name": "seam_right_7",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 9
+          },
+          "color": "#fff1e8",
+          "zIndex": 27,
+          "visible": true
+        },
+        {
+          "id": "s1209",
+          "name": "seam_right_8",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 8
+          },
+          "color": "#fff1e8",
+          "zIndex": 28,
+          "visible": true
+        },
+        {
+          "id": "s1210",
+          "name": "seamhalo_0",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 29,
+          "visible": true
+        },
+        {
+          "id": "s1211",
+          "name": "seamhalo_1",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 30,
+          "visible": true
+        },
+        {
+          "id": "s1212",
+          "name": "seamhalo_2",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 31,
+          "visible": true
+        },
+        {
+          "id": "s1213",
+          "name": "seamhalo_3",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 32,
+          "visible": true
+        },
+        {
+          "id": "s1214",
+          "name": "seamhalo_4",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 33,
+          "visible": true
+        },
+        {
+          "id": "s1215",
+          "name": "seamhalo_5",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 34,
+          "visible": true
+        },
+        {
+          "id": "s1216",
+          "name": "seamhalo_6",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 17
+          },
+          "color": "#6abe30",
+          "zIndex": 35,
+          "visible": true
+        },
+        {
+          "id": "s1217",
+          "name": "seamhalo_7",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 17
+          },
+          "color": "#6abe30",
+          "zIndex": 36,
+          "visible": true
+        },
+        {
+          "id": "s1218",
+          "name": "seamhalo_8",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 18
+          },
+          "color": "#6abe30",
+          "zIndex": 37,
+          "visible": true
+        },
+        {
+          "id": "s1219",
+          "name": "seamhalo_9",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 19
+          },
+          "color": "#6abe30",
+          "zIndex": 38,
+          "visible": true
+        },
+        {
+          "id": "s1220",
+          "name": "seamhalo_10",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 19
+          },
+          "color": "#6abe30",
+          "zIndex": 39,
+          "visible": true
+        },
+        {
+          "id": "s1221",
+          "name": "seamhalo_11",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 40,
+          "visible": true
+        },
+        {
+          "id": "s1222",
+          "name": "seamhalo_12",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 18
+          },
+          "color": "#6abe30",
+          "zIndex": 41,
+          "visible": true
+        },
+        {
+          "id": "s1223",
+          "name": "seamhalo_13",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 42,
+          "visible": true
+        },
+        {
+          "id": "s1224",
+          "name": "seamhalo_14",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 8
+          },
+          "color": "#6abe30",
+          "zIndex": 43,
+          "visible": true
+        },
+        {
+          "id": "s1225",
+          "name": "seamhalo_15",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 8
+          },
+          "color": "#6abe30",
+          "zIndex": 44,
+          "visible": true
+        },
+        {
+          "id": "s1226",
+          "name": "seamhalo_16",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 9
+          },
+          "color": "#6abe30",
+          "zIndex": 45,
+          "visible": true
+        },
+        {
+          "id": "s1227",
+          "name": "seamhalo_17",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 9
+          },
+          "color": "#6abe30",
+          "zIndex": 46,
+          "visible": true
+        },
+        {
+          "id": "s1228",
+          "name": "seamhalo_18",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 10
+          },
+          "color": "#6abe30",
+          "zIndex": 47,
+          "visible": true
+        },
+        {
+          "id": "s1229",
+          "name": "seamhalo_19",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 11
+          },
+          "color": "#6abe30",
+          "zIndex": 48,
+          "visible": true
+        },
+        {
+          "id": "s1230",
+          "name": "seamhalo_20",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 11
+          },
+          "color": "#6abe30",
+          "zIndex": 49,
+          "visible": true
+        },
+        {
+          "id": "s1231",
+          "name": "seamhalo_21",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 10
+          },
+          "color": "#6abe30",
+          "zIndex": 50,
+          "visible": true
+        },
+        {
+          "id": "s1232",
+          "name": "seamhalo_22",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 51,
+          "visible": true
+        },
+        {
+          "id": "s1233",
+          "name": "seamhalo_23",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 52,
+          "visible": true
+        },
+        {
+          "id": "s1234",
+          "name": "seamhalo_24",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 53,
+          "visible": true
+        },
+        {
+          "id": "s1235",
+          "name": "seamhalo_25",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 54,
+          "visible": true
+        },
+        {
+          "id": "s1236",
+          "name": "seamhalo_26",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 19
+          },
+          "color": "#6abe30",
+          "zIndex": 55,
+          "visible": true
+        },
+        {
+          "id": "s1237",
+          "name": "seamhalo_27",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 19
+          },
+          "color": "#6abe30",
+          "zIndex": 56,
+          "visible": true
+        },
+        {
+          "id": "s1238",
+          "name": "seamhalo_28",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 18
+          },
+          "color": "#6abe30",
+          "zIndex": 57,
+          "visible": true
+        },
+        {
+          "id": "s1239",
+          "name": "seamhalo_29",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 17
+          },
+          "color": "#6abe30",
+          "zIndex": 58,
+          "visible": true
+        },
+        {
+          "id": "s1240",
+          "name": "seamhalo_30",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 17
+          },
+          "color": "#6abe30",
+          "zIndex": 59,
+          "visible": true
+        },
+        {
+          "id": "s1241",
+          "name": "seamhalo_31",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 18
+          },
+          "color": "#6abe30",
+          "zIndex": 60,
+          "visible": true
+        },
+        {
+          "id": "s1242",
+          "name": "seamhalo_32",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 61,
+          "visible": true
+        },
+        {
+          "id": "s1243",
+          "name": "seamhalo_33",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 62,
+          "visible": true
+        },
+        {
+          "id": "s1244",
+          "name": "seamhalo_34",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 63,
+          "visible": true
+        },
+        {
+          "id": "s1245",
+          "name": "seamhalo_35",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 64,
+          "visible": true
+        },
+        {
+          "id": "s1246",
+          "name": "seamhalo_36",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 65,
+          "visible": true
+        },
+        {
+          "id": "s1247",
+          "name": "seamhalo_37",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 66,
+          "visible": true
+        },
+        {
+          "id": "s1248",
+          "name": "seamhalo_38",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 67,
+          "visible": true
+        },
+        {
+          "id": "s1249",
+          "name": "seamhalo_39",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 68,
+          "visible": true
+        },
+        {
+          "id": "s1250",
+          "name": "seamhalo_40",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 11
+          },
+          "color": "#6abe30",
+          "zIndex": 69,
+          "visible": true
+        },
+        {
+          "id": "s1251",
+          "name": "seamhalo_41",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 11
+          },
+          "color": "#6abe30",
+          "zIndex": 70,
+          "visible": true
+        },
+        {
+          "id": "s1252",
+          "name": "seamhalo_42",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 10
+          },
+          "color": "#6abe30",
+          "zIndex": 71,
+          "visible": true
+        },
+        {
+          "id": "s1253",
+          "name": "seamhalo_43",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 9
+          },
+          "color": "#6abe30",
+          "zIndex": 72,
+          "visible": true
+        },
+        {
+          "id": "s1254",
+          "name": "seamhalo_44",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 9
+          },
+          "color": "#6abe30",
+          "zIndex": 73,
+          "visible": true
+        },
+        {
+          "id": "s1255",
+          "name": "seamhalo_45",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 10
+          },
+          "color": "#6abe30",
+          "zIndex": 74,
+          "visible": true
+        },
+        {
+          "id": "s1256",
+          "name": "seamhalo_46",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 8
+          },
+          "color": "#6abe30",
+          "zIndex": 75,
+          "visible": true
+        },
+        {
+          "id": "s1257",
+          "name": "seamhalo_47",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 8
+          },
+          "color": "#6abe30",
+          "zIndex": 76,
+          "visible": true
+        }
+      ]
+    },
+    "0,7": {
+      "name": null,
+      "shapes": [
+        {
+          "id": "s1258",
+          "name": "shadow",
+          "type": "ellipse",
+          "params": {
+            "cx": 16,
+            "cy": 30,
+            "rx": 8,
+            "ry": 2,
+            "filled": true
+          },
+          "color": "#222034",
+          "zIndex": 0,
+          "visible": true
+        },
+        {
+          "id": "s1259",
+          "name": "ball",
+          "type": "ellipse",
+          "params": {
+            "cx": 16,
+            "cy": 20,
+            "rx": 8,
+            "ry": 10,
+            "filled": true
+          },
+          "color": "#99e550",
+          "zIndex": 1,
+          "visible": true
+        },
+        {
+          "id": "s1260",
+          "name": "ball_shade_mid_0",
+          "type": "point",
+          "params": {
+            "x": 22,
+            "y": 19
+          },
+          "color": "#6abe30",
+          "zIndex": 2,
+          "visible": true
+        },
+        {
+          "id": "s1261",
+          "name": "ball_shade_mid_1",
+          "type": "point",
+          "params": {
+            "x": 22,
+            "y": 24
+          },
+          "color": "#6abe30",
+          "zIndex": 3,
+          "visible": true
+        },
+        {
+          "id": "s1262",
+          "name": "ball_shade_mid_2",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 27
+          },
+          "color": "#6abe30",
+          "zIndex": 4,
+          "visible": true
+        },
+        {
+          "id": "s1263",
+          "name": "ball_shade_mid_3",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 28
+          },
+          "color": "#6abe30",
+          "zIndex": 5,
+          "visible": true
+        },
+        {
+          "id": "s1264",
+          "name": "ball_shade_core_0",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 23
+          },
+          "color": "#4b692f",
+          "zIndex": 6,
+          "visible": true
+        },
+        {
+          "id": "s1265",
+          "name": "ball_shade_core_1",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 25
+          },
+          "color": "#4b692f",
+          "zIndex": 7,
+          "visible": true
+        },
+        {
+          "id": "s1266",
+          "name": "ball_shade_core_2",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 26
+          },
+          "color": "#4b692f",
+          "zIndex": 8,
+          "visible": true
+        },
+        {
+          "id": "s1267",
+          "name": "ball_shade_core_3",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 26
+          },
+          "color": "#4b692f",
+          "zIndex": 9,
+          "visible": true
+        },
+        {
+          "id": "s1268",
+          "name": "ball_shade_hl_0",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 17
+          },
+          "color": "#fbf236",
+          "zIndex": 10,
+          "visible": true
+        },
+        {
+          "id": "s1269",
+          "name": "ball_shade_hl_1",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 16
+          },
+          "color": "#fbf236",
+          "zIndex": 11,
+          "visible": true
+        },
+        {
+          "id": "s1270",
+          "name": "ball_shade_hl_2",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 15
+          },
+          "color": "#fbf236",
+          "zIndex": 12,
+          "visible": true
+        },
+        {
+          "id": "s1271",
+          "name": "seam_left_0",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 20
+          },
+          "color": "#fff1e8",
+          "zIndex": 13,
+          "visible": true
+        },
+        {
+          "id": "s1272",
+          "name": "seam_left_1",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 22
+          },
+          "color": "#fff1e8",
+          "zIndex": 14,
+          "visible": true
+        },
+        {
+          "id": "s1273",
+          "name": "seam_left_2",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 23
+          },
+          "color": "#fff1e8",
+          "zIndex": 15,
+          "visible": true
+        },
+        {
+          "id": "s1274",
+          "name": "seam_left_3",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 25
+          },
+          "color": "#fff1e8",
+          "zIndex": 16,
+          "visible": true
+        },
+        {
+          "id": "s1275",
+          "name": "seam_left_4",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 26
+          },
+          "color": "#fff1e8",
+          "zIndex": 17,
+          "visible": true
+        },
+        {
+          "id": "s1276",
+          "name": "seam_left_5",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 27
+          },
+          "color": "#fff1e8",
+          "zIndex": 18,
+          "visible": true
+        },
+        {
+          "id": "s1277",
+          "name": "seam_left_6",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 13
+          },
+          "color": "#fff1e8",
+          "zIndex": 19,
+          "visible": true
+        },
+        {
+          "id": "s1278",
+          "name": "seam_left_7",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 14
+          },
+          "color": "#fff1e8",
+          "zIndex": 20,
+          "visible": true
+        },
+        {
+          "id": "s1279",
+          "name": "seam_left_8",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 15
+          },
+          "color": "#fff1e8",
+          "zIndex": 21,
+          "visible": true
+        },
+        {
+          "id": "s1280",
+          "name": "seam_left_9",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 17
+          },
+          "color": "#fff1e8",
+          "zIndex": 22,
+          "visible": true
+        },
+        {
+          "id": "s1281",
+          "name": "seam_left_10",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 18
+          },
+          "color": "#fff1e8",
+          "zIndex": 23,
+          "visible": true
+        },
+        {
+          "id": "s1282",
+          "name": "seam_right_0",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 27
+          },
+          "color": "#fff1e8",
+          "zIndex": 24,
+          "visible": true
+        },
+        {
+          "id": "s1283",
+          "name": "seam_right_1",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 26
+          },
+          "color": "#fff1e8",
+          "zIndex": 25,
+          "visible": true
+        },
+        {
+          "id": "s1284",
+          "name": "seam_right_2",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 25
+          },
+          "color": "#fff1e8",
+          "zIndex": 26,
+          "visible": true
+        },
+        {
+          "id": "s1285",
+          "name": "seam_right_3",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 23
+          },
+          "color": "#fff1e8",
+          "zIndex": 27,
+          "visible": true
+        },
+        {
+          "id": "s1286",
+          "name": "seam_right_4",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 22
+          },
+          "color": "#fff1e8",
+          "zIndex": 28,
+          "visible": true
+        },
+        {
+          "id": "s1287",
+          "name": "seam_right_5",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 20
+          },
+          "color": "#fff1e8",
+          "zIndex": 29,
+          "visible": true
+        },
+        {
+          "id": "s1288",
+          "name": "seam_right_6",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 18
+          },
+          "color": "#fff1e8",
+          "zIndex": 30,
+          "visible": true
+        },
+        {
+          "id": "s1289",
+          "name": "seam_right_7",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 17
+          },
+          "color": "#fff1e8",
+          "zIndex": 31,
+          "visible": true
+        },
+        {
+          "id": "s1290",
+          "name": "seam_right_8",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 15
+          },
+          "color": "#fff1e8",
+          "zIndex": 32,
+          "visible": true
+        },
+        {
+          "id": "s1291",
+          "name": "seam_right_9",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 14
+          },
+          "color": "#fff1e8",
+          "zIndex": 33,
+          "visible": true
+        },
+        {
+          "id": "s1292",
+          "name": "seam_right_10",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 13
+          },
+          "color": "#fff1e8",
+          "zIndex": 34,
+          "visible": true
+        },
+        {
+          "id": "s1293",
+          "name": "seamhalo_0",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 35,
+          "visible": true
+        },
+        {
+          "id": "s1294",
+          "name": "seamhalo_1",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 36,
+          "visible": true
+        },
+        {
+          "id": "s1295",
+          "name": "seamhalo_2",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 21
+          },
+          "color": "#6abe30",
+          "zIndex": 37,
+          "visible": true
+        },
+        {
+          "id": "s1296",
+          "name": "seamhalo_3",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 19
+          },
+          "color": "#6abe30",
+          "zIndex": 38,
+          "visible": true
+        },
+        {
+          "id": "s1297",
+          "name": "seamhalo_4",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 22
+          },
+          "color": "#6abe30",
+          "zIndex": 39,
+          "visible": true
+        },
+        {
+          "id": "s1298",
+          "name": "seamhalo_5",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 22
+          },
+          "color": "#6abe30",
+          "zIndex": 40,
+          "visible": true
+        },
+        {
+          "id": "s1299",
+          "name": "seamhalo_6",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 23
+          },
+          "color": "#6abe30",
+          "zIndex": 41,
+          "visible": true
+        },
+        {
+          "id": "s1300",
+          "name": "seamhalo_7",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 23
+          },
+          "color": "#6abe30",
+          "zIndex": 42,
+          "visible": true
+        },
+        {
+          "id": "s1301",
+          "name": "seamhalo_8",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 24
+          },
+          "color": "#6abe30",
+          "zIndex": 43,
+          "visible": true
+        },
+        {
+          "id": "s1302",
+          "name": "seamhalo_9",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 25
+          },
+          "color": "#6abe30",
+          "zIndex": 44,
+          "visible": true
+        },
+        {
+          "id": "s1303",
+          "name": "seamhalo_10",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 25
+          },
+          "color": "#6abe30",
+          "zIndex": 45,
+          "visible": true
+        },
+        {
+          "id": "s1304",
+          "name": "seamhalo_11",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 24
+          },
+          "color": "#6abe30",
+          "zIndex": 46,
+          "visible": true
+        },
+        {
+          "id": "s1305",
+          "name": "seamhalo_12",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 26
+          },
+          "color": "#6abe30",
+          "zIndex": 47,
+          "visible": true
+        },
+        {
+          "id": "s1306",
+          "name": "seamhalo_13",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 26
+          },
+          "color": "#6abe30",
+          "zIndex": 48,
+          "visible": true
+        },
+        {
+          "id": "s1307",
+          "name": "seamhalo_14",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 27
+          },
+          "color": "#6abe30",
+          "zIndex": 49,
+          "visible": true
+        },
+        {
+          "id": "s1308",
+          "name": "seamhalo_15",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 27
+          },
+          "color": "#6abe30",
+          "zIndex": 50,
+          "visible": true
+        },
+        {
+          "id": "s1309",
+          "name": "seamhalo_16",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 28
+          },
+          "color": "#6abe30",
+          "zIndex": 51,
+          "visible": true
+        },
+        {
+          "id": "s1310",
+          "name": "seamhalo_17",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 52,
+          "visible": true
+        },
+        {
+          "id": "s1311",
+          "name": "seamhalo_18",
+          "type": "point",
+          "params": {
+            "x": 11,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 53,
+          "visible": true
+        },
+        {
+          "id": "s1312",
+          "name": "seamhalo_19",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 54,
+          "visible": true
+        },
+        {
+          "id": "s1313",
+          "name": "seamhalo_20",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 55,
+          "visible": true
+        },
+        {
+          "id": "s1314",
+          "name": "seamhalo_21",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 56,
+          "visible": true
+        },
+        {
+          "id": "s1315",
+          "name": "seamhalo_22",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 57,
+          "visible": true
+        },
+        {
+          "id": "s1316",
+          "name": "seamhalo_23",
+          "type": "point",
+          "params": {
+            "x": 12,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 58,
+          "visible": true
+        },
+        {
+          "id": "s1317",
+          "name": "seamhalo_24",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 59,
+          "visible": true
+        },
+        {
+          "id": "s1318",
+          "name": "seamhalo_25",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 17
+          },
+          "color": "#6abe30",
+          "zIndex": 60,
+          "visible": true
+        },
+        {
+          "id": "s1319",
+          "name": "seamhalo_26",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 17
+          },
+          "color": "#6abe30",
+          "zIndex": 61,
+          "visible": true
+        },
+        {
+          "id": "s1320",
+          "name": "seamhalo_27",
+          "type": "point",
+          "params": {
+            "x": 14,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 62,
+          "visible": true
+        },
+        {
+          "id": "s1321",
+          "name": "seamhalo_28",
+          "type": "point",
+          "params": {
+            "x": 15,
+            "y": 18
+          },
+          "color": "#6abe30",
+          "zIndex": 63,
+          "visible": true
+        },
+        {
+          "id": "s1322",
+          "name": "seamhalo_29",
+          "type": "point",
+          "params": {
+            "x": 13,
+            "y": 18
+          },
+          "color": "#6abe30",
+          "zIndex": 64,
+          "visible": true
+        },
+        {
+          "id": "s1323",
+          "name": "seamhalo_30",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 27
+          },
+          "color": "#6abe30",
+          "zIndex": 65,
+          "visible": true
+        },
+        {
+          "id": "s1324",
+          "name": "seamhalo_31",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 27
+          },
+          "color": "#6abe30",
+          "zIndex": 66,
+          "visible": true
+        },
+        {
+          "id": "s1325",
+          "name": "seamhalo_32",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 28
+          },
+          "color": "#6abe30",
+          "zIndex": 67,
+          "visible": true
+        },
+        {
+          "id": "s1326",
+          "name": "seamhalo_33",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 26
+          },
+          "color": "#6abe30",
+          "zIndex": 68,
+          "visible": true
+        },
+        {
+          "id": "s1327",
+          "name": "seamhalo_34",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 26
+          },
+          "color": "#6abe30",
+          "zIndex": 69,
+          "visible": true
+        },
+        {
+          "id": "s1328",
+          "name": "seamhalo_35",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 25
+          },
+          "color": "#6abe30",
+          "zIndex": 70,
+          "visible": true
+        },
+        {
+          "id": "s1329",
+          "name": "seamhalo_36",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 25
+          },
+          "color": "#6abe30",
+          "zIndex": 71,
+          "visible": true
+        },
+        {
+          "id": "s1330",
+          "name": "seamhalo_37",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 24
+          },
+          "color": "#6abe30",
+          "zIndex": 72,
+          "visible": true
+        },
+        {
+          "id": "s1331",
+          "name": "seamhalo_38",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 23
+          },
+          "color": "#6abe30",
+          "zIndex": 73,
+          "visible": true
+        },
+        {
+          "id": "s1332",
+          "name": "seamhalo_39",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 23
+          },
+          "color": "#6abe30",
+          "zIndex": 74,
+          "visible": true
+        },
+        {
+          "id": "s1333",
+          "name": "seamhalo_40",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 24
+          },
+          "color": "#6abe30",
+          "zIndex": 75,
+          "visible": true
+        },
+        {
+          "id": "s1334",
+          "name": "seamhalo_41",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 22
+          },
+          "color": "#6abe30",
+          "zIndex": 76,
+          "visible": true
+        },
+        {
+          "id": "s1335",
+          "name": "seamhalo_42",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 22
+          },
+          "color": "#6abe30",
+          "zIndex": 77,
+          "visible": true
+        },
+        {
+          "id": "s1336",
+          "name": "seamhalo_43",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 21
+          },
+          "color": "#6abe30",
+          "zIndex": 78,
+          "visible": true
+        },
+        {
+          "id": "s1337",
+          "name": "seamhalo_44",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 79,
+          "visible": true
+        },
+        {
+          "id": "s1338",
+          "name": "seamhalo_45",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 20
+          },
+          "color": "#6abe30",
+          "zIndex": 80,
+          "visible": true
+        },
+        {
+          "id": "s1339",
+          "name": "seamhalo_46",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 19
+          },
+          "color": "#6abe30",
+          "zIndex": 81,
+          "visible": true
+        },
+        {
+          "id": "s1340",
+          "name": "seamhalo_47",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 18
+          },
+          "color": "#6abe30",
+          "zIndex": 82,
+          "visible": true
+        },
+        {
+          "id": "s1341",
+          "name": "seamhalo_48",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 18
+          },
+          "color": "#6abe30",
+          "zIndex": 83,
+          "visible": true
+        },
+        {
+          "id": "s1342",
+          "name": "seamhalo_49",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 17
+          },
+          "color": "#6abe30",
+          "zIndex": 84,
+          "visible": true
+        },
+        {
+          "id": "s1343",
+          "name": "seamhalo_50",
+          "type": "point",
+          "params": {
+            "x": 17,
+            "y": 17
+          },
+          "color": "#6abe30",
+          "zIndex": 85,
+          "visible": true
+        },
+        {
+          "id": "s1344",
+          "name": "seamhalo_51",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 86,
+          "visible": true
+        },
+        {
+          "id": "s1345",
+          "name": "seamhalo_52",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 87,
+          "visible": true
+        },
+        {
+          "id": "s1346",
+          "name": "seamhalo_53",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 15
+          },
+          "color": "#6abe30",
+          "zIndex": 88,
+          "visible": true
+        },
+        {
+          "id": "s1347",
+          "name": "seamhalo_54",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 16
+          },
+          "color": "#6abe30",
+          "zIndex": 89,
+          "visible": true
+        },
+        {
+          "id": "s1348",
+          "name": "seamhalo_55",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 90,
+          "visible": true
+        },
+        {
+          "id": "s1349",
+          "name": "seamhalo_56",
+          "type": "point",
+          "params": {
+            "x": 18,
+            "y": 14
+          },
+          "color": "#6abe30",
+          "zIndex": 91,
+          "visible": true
+        },
+        {
+          "id": "s1350",
+          "name": "seamhalo_57",
+          "type": "point",
+          "params": {
+            "x": 19,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 92,
+          "visible": true
+        },
+        {
+          "id": "s1351",
+          "name": "seamhalo_58",
+          "type": "point",
+          "params": {
+            "x": 21,
+            "y": 13
+          },
+          "color": "#6abe30",
+          "zIndex": 93,
+          "visible": true
+        },
+        {
+          "id": "s1352",
+          "name": "seamhalo_59",
+          "type": "point",
+          "params": {
+            "x": 20,
+            "y": 12
+          },
+          "color": "#6abe30",
+          "zIndex": 94,
+          "visible": true
+        }
+      ]
+    }
+  },
+  "groups": {
+    "bounce": [
+      "0,0",
+      "0,1",
+      "0,2",
+      "0,3",
+      "0,4",
+      "0,5",
+      "0,6",
+      "0,7"
+    ]
+  }
+}

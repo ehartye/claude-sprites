@@ -1,0 +1,41 @@
+[
+  {"command": "clear", "cell": "0,0"}, {"command": "clear", "cell": "0,1"},
+  {"command": "clear", "cell": "0,2"}, {"command": "clear", "cell": "0,3"},
+
+  {"command": "name", "cell": "0,0", "as": "down_stand"},
+  {"command": "name", "cell": "0,1", "as": "down_step_l"},
+  {"command": "name", "cell": "0,2", "as": "down_pass"},
+  {"command": "name", "cell": "0,3", "as": "down_step_r"},
+
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 3, "y": 1, "w": 10, "h": 9, "color": "#000000", "name": "head_ol", "filled": true},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 4, "y": 0, "w": 8, "h": 1, "color": "#000000", "name": "head_ol_top", "filled": true},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 4, "y": 8, "w": 8, "h": 4, "color": "#000000", "name": "torso_ol", "filled": true},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 4, "y": 12, "w": 4, "h": 4, "color": "#000000", "name": "leg_l_ol", "filled": true},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 8, "y": 12, "w": 4, "h": 4, "color": "#000000", "name": "leg_r_ol", "filled": true},
+
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 4, "y": 1, "w": 8, "h": 8, "color": "#ffccaa", "name": "head", "filled": true},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 4, "y": 1, "w": 8, "h": 4, "color": "#ab5236", "name": "hair", "filled": true},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 6, "y": 6, "color": "#fff1e8", "name": "eye_l_top"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 6, "y": 7, "color": "#1d2b53", "name": "eye_l_bot"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 9, "y": 6, "color": "#fff1e8", "name": "eye_r_top"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 9, "y": 7, "color": "#1d2b53", "name": "eye_r_bot"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 5, "y": 9, "w": 6, "h": 3, "color": "#ff004d", "name": "tunic", "filled": true},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 5, "y": 12, "w": 2, "h": 2, "color": "#1d2b53", "name": "pant_l", "filled": true},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 9, "y": 12, "w": 2, "h": 2, "color": "#1d2b53", "name": "pant_r", "filled": true},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 4, "y": 14, "w": 3, "h": 1, "color": "#ab5236", "name": "shoe_l", "filled": true},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 9, "y": 14, "w": 3, "h": 1, "color": "#ab5236", "name": "shoe_r", "filled": true},
+
+  {"command": "copy", "from": "0,0", "to": "0,1"},
+  {"command": "resize", "shape": "pant_l", "cell": "0,1", "h": 1},
+  {"command": "move", "shape": "shoe_l", "cell": "0,1", "dx": 0, "dy": -1},
+  {"command": "resize", "shape": "leg_l_ol", "cell": "0,1", "h": 3},
+
+  {"command": "copy", "from": "0,0", "to": "0,2"},
+
+  {"command": "copy", "from": "0,0", "to": "0,3"},
+  {"command": "resize", "shape": "pant_r", "cell": "0,3", "h": 1},
+  {"command": "move", "shape": "shoe_r", "cell": "0,3", "dx": 0, "dy": -1},
+  {"command": "resize", "shape": "leg_r_ol", "cell": "0,3", "h": 3},
+
+  {"command": "group", "sub": "create", "name": "walk_down", "cells": ["0,0", "0,1", "0,2", "0,3"]}
+]

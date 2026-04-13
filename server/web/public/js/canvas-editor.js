@@ -329,11 +329,20 @@ export class CanvasEditor {
   _drawEllipse(ctx, ox, oy, z, cx, cy, rx, ry, filled) {
     if (rx <= 0 || ry <= 0) return;
     if (filled) {
+      const trimTips = rx >= 2 && ry >= 2;
       for (let y = -ry; y <= ry; y++) {
+        let leftX = null, rightX = null;
         for (let x = -rx; x <= rx; x++) {
           if ((x * x) / (rx * rx) + (y * y) / (ry * ry) <= 1) {
-            ctx.fillRect(ox + (cx + x) * z, oy + (cy + y) * z, z, z);
+            if (leftX === null) leftX = x;
+            rightX = x;
           }
+        }
+        if (leftX === null) continue;
+        const width = rightX - leftX + 1;
+        if (trimTips && width === 1 && (y === -ry || y === ry)) continue;
+        for (let x = leftX; x <= rightX; x++) {
+          ctx.fillRect(ox + (cx + x) * z, oy + (cy + y) * z, z, z);
         }
       }
     } else {

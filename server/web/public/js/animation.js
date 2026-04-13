@@ -280,27 +280,35 @@ export class AnimationPreview {
           }
           break;
         case 'circle':
-          if (p.filled) {
-            for (let y = -p.r; y <= p.r; y++) {
-              for (let x = -p.r; x <= p.r; x++) {
-                if (x * x + y * y <= p.r * p.r) {
-                  ctx.fillRect((p.cx + x) * scale, (p.cy + y) * scale, scale, scale);
-                }
-              }
-            }
-          }
+          if (p.filled) this._fillEllipse(ctx, scale, p.cx, p.cy, p.r, p.r);
           break;
         case 'ellipse':
-          if (p.filled) {
-            for (let y = -p.ry; y <= p.ry; y++) {
-              for (let x = -p.rx; x <= p.rx; x++) {
-                if ((x * x) / (p.rx * p.rx) + (y * y) / (p.ry * p.ry) <= 1) {
-                  ctx.fillRect((p.cx + x) * scale, (p.cy + y) * scale, scale, scale);
-                }
-              }
-            }
-          }
+          if (p.filled) this._fillEllipse(ctx, scale, p.cx, p.cy, p.rx, p.ry);
           break;
+      }
+    }
+  }
+
+  /**
+   * Filled ellipse rasterizer with N/S 1px tip trim. Matches the server
+   * renderer so preview = export.
+   */
+  _fillEllipse(ctx, scale, cx, cy, rx, ry) {
+    if (rx <= 0 || ry <= 0) return;
+    const trimTips = rx >= 2 && ry >= 2;
+    for (let y = -ry; y <= ry; y++) {
+      let leftX = null, rightX = null;
+      for (let x = -rx; x <= rx; x++) {
+        if ((x * x) / (rx * rx) + (y * y) / (ry * ry) <= 1) {
+          if (leftX === null) leftX = x;
+          rightX = x;
+        }
+      }
+      if (leftX === null) continue;
+      const width = rightX - leftX + 1;
+      if (trimTips && width === 1 && (y === -ry || y === ry)) continue;
+      for (let x = leftX; x <= rightX; x++) {
+        ctx.fillRect((cx + x) * scale, (cy + y) * scale, scale, scale);
       }
     }
   }

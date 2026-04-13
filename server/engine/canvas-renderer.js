@@ -107,11 +107,21 @@ export class CanvasRenderer {
   _drawEllipse(ctx, cx, cy, rx, ry, filled) {
     if (rx <= 0 || ry <= 0) return;
     if (filled) {
+      // Trim 1px N/S "tips" on shapes large enough to spare a row.
+      const trimTips = rx >= 2 && ry >= 2;
       for (let y = -ry; y <= ry; y++) {
+        let leftX = null, rightX = null;
         for (let x = -rx; x <= rx; x++) {
           if ((x * x) / (rx * rx) + (y * y) / (ry * ry) <= 1) {
-            ctx.fillRect(cx + x, cy + y, 1, 1);
+            if (leftX === null) leftX = x;
+            rightX = x;
           }
+        }
+        if (leftX === null) continue;
+        const width = rightX - leftX + 1;
+        if (trimTips && width === 1 && (y === -ry || y === ry)) continue;
+        for (let x = leftX; x <= rightX; x++) {
+          ctx.fillRect(cx + x, cy + y, 1, 1);
         }
       }
     } else {

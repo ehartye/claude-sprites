@@ -1,0 +1,86 @@
+[
+  {"command": "clear", "cell": "0,0"},
+  {"command": "clear", "cell": "0,1"},
+  {"command": "clear", "cell": "0,2"},
+  {"command": "clear", "cell": "0,3"},
+
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 5, "y": 0, "w": 6, "h": 1, "color": "#663931", "name": "head_ol_cap"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 4, "y": 1, "w": 8, "h": 1, "color": "#663931", "name": "head_ol_r1"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 3, "y": 2, "w": 1, "h": 3, "color": "#663931", "name": "head_ol_hair_l"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 12, "y": 2, "w": 1, "h": 3, "color": "#663931", "name": "head_ol_hair_r"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 3, "y": 5, "w": 1, "h": 3, "color": "#45283c", "name": "head_ol_face_l"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 12, "y": 5, "w": 1, "h": 3, "color": "#45283c", "name": "head_ol_face_r"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 4, "y": 8, "w": 8, "h": 1, "color": "#45283c", "name": "head_ol_chin"},
+
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 4, "y": 1, "w": 8, "h": 4, "color": "#8f563b", "name": "hair"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 3, "y": 5, "w": 1, "h": 1, "color": "#663931", "name": "bang_far_l"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 4, "y": 5, "w": 1, "h": 1, "color": "#663931", "name": "bang_l"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 11, "y": 5, "w": 1, "h": 1, "color": "#663931", "name": "bang_r"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 12, "y": 5, "w": 1, "h": 1, "color": "#663931", "name": "bang_far_r"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 4, "y": 5, "w": 8, "h": 3, "color": "#eec39a", "name": "face", "filled": true},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 4, "y": 5, "color": "#663931", "name": "bang_l_over"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 11, "y": 5, "color": "#663931", "name": "bang_r_over"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 4, "y": 8, "w": 8, "h": 1, "color": "#d9a066", "name": "jaw_shade"},
+
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 2, "y": 6, "color": "#45283c", "name": "ear_l_ol_out"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 2, "y": 7, "color": "#45283c", "name": "ear_l_ol_bot"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 3, "y": 8, "color": "#45283c", "name": "ear_l_ol_under"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 3, "y": 6, "color": "#eec39a", "name": "ear_l"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 3, "y": 7, "color": "#d9a066", "name": "ear_l_in"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 13, "y": 6, "color": "#45283c", "name": "ear_r_ol_out"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 13, "y": 7, "color": "#45283c", "name": "ear_r_ol_bot"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 12, "y": 8, "color": "#45283c", "name": "ear_r_ol_under"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 12, "y": 6, "color": "#eec39a", "name": "ear_r"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 12, "y": 7, "color": "#d9a066", "name": "ear_r_in"},
+
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 6, "y": 6, "color": "#ffffff", "name": "eye_l_top"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 6, "y": 7, "color": "#222034", "name": "eye_l_bot"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 9, "y": 6, "color": "#ffffff", "name": "eye_r_top"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 9, "y": 7, "color": "#222034", "name": "eye_r_bot"},
+
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 3, "y": 9, "w": 10, "h": 1, "color": "#222034", "name": "shoulder_ol_top"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 4, "y": 9, "w": 8, "h": 1, "color": "#ac3232", "name": "shoulder_line"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 4, "y": 9, "color": "#d95763", "name": "shoulder_hl_l"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 11, "y": 9, "color": "#d95763", "name": "shoulder_hl_r"},
+
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 2, "y": 10, "w": 1, "h": 2, "color": "#222034", "name": "arm_ol_l_outer"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 13, "y": 10, "w": 1, "h": 2, "color": "#222034", "name": "arm_ol_r_outer"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 4, "y": 10, "w": 1, "h": 2, "color": "#222034", "name": "torso_ol_l"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 11, "y": 10, "w": 1, "h": 2, "color": "#222034", "name": "torso_ol_r"},
+
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 5, "y": 10, "w": 6, "h": 2, "color": "#ac3232", "name": "tunic"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 5, "y": 10, "color": "#d95763", "name": "tunic_hl_l"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 10, "y": 10, "color": "#d95763", "name": "tunic_hl_r"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 3, "y": 10, "w": 1, "h": 1, "color": "#ac3232", "name": "sleeve_l"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 12, "y": 10, "w": 1, "h": 1, "color": "#ac3232", "name": "sleeve_r"},
+
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 3, "y": 11, "color": "#eec39a", "name": "hand_l"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 12, "y": 11, "color": "#eec39a", "name": "hand_r"},
+
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 5, "y": 11, "w": 6, "h": 1, "color": "#45283c", "name": "belt"},
+
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 4, "y": 12, "w": 8, "h": 4, "color": "#000000", "name": "lower_ol"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 5, "y": 12, "w": 2, "h": 2, "color": "#3f3f74", "name": "pant_l"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 9, "y": 12, "w": 2, "h": 2, "color": "#3f3f74", "name": "pant_r"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 3, "y": 14, "color": "#000000", "name": "toe_l_tip_ol"},
+  {"command": "draw", "type": "point", "cell": "0,0", "x": 12, "y": 14, "color": "#000000", "name": "toe_r_tip_ol"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 4, "y": 14, "w": 3, "h": 1, "color": "#45283c", "name": "shoe_l"},
+  {"command": "draw", "type": "rect", "cell": "0,0", "x": 9, "y": 14, "w": 3, "h": 1, "color": "#45283c", "name": "shoe_r"},
+
+  {"command": "copy", "from": "0,0", "to": "0,1"},
+  {"command": "resize", "shape": "pant_l", "cell": "0,1", "h": 1},
+  {"command": "move", "shape": "shoe_l", "cell": "0,1", "dx": 0, "dy": -1},
+
+  {"command": "copy", "from": "0,0", "to": "0,2"},
+
+  {"command": "copy", "from": "0,0", "to": "0,3"},
+  {"command": "resize", "shape": "pant_r", "cell": "0,3", "h": 1},
+  {"command": "move", "shape": "shoe_r", "cell": "0,3", "dx": 0, "dy": -1},
+
+  {"command": "name", "cell": "0,0", "as": "down_stand"},
+  {"command": "name", "cell": "0,1", "as": "down_step_l"},
+  {"command": "name", "cell": "0,2", "as": "down_pass"},
+  {"command": "name", "cell": "0,3", "as": "down_step_r"},
+
+  {"command": "group", "sub": "create", "name": "walk_down", "cells": ["0,0", "0,1", "0,2", "0,3"]}
+]
