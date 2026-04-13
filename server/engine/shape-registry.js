@@ -38,9 +38,15 @@ export class ShapeRegistry {
 
   remove(id) {
     const shape = this._byId.get(id);
-    if (!shape) return;
-    if (shape.name) this._byName.delete(shape.name);
-    this._byId.delete(id);
+    if (shape) {
+      if (shape.name) this._byName.delete(shape.name);
+      this._byId.delete(id);
+      return;
+    }
+    // Fallback: clean orphan byName entries whose shape is missing from byId.
+    for (const [name, s] of this._byName) {
+      if (s.id === id) this._byName.delete(name);
+    }
   }
 
   listByZ() {

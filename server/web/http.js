@@ -63,12 +63,12 @@ export async function startWebServer(state, port) {
     httpServer.on('error', (err) => {
       if (err.code === 'EADDRINUSE') {
         console.error(`Port ${port} in use, trying ${port + 1}`);
-        httpServer.listen(port + 1, resolve);
+        httpServer.listen(port + 1, '0.0.0.0', resolve);
       } else {
         reject(err);
       }
     });
-    httpServer.listen(port, resolve);
+    httpServer.listen(port, '0.0.0.0', resolve);
   });
 
   const actualPort = httpServer.address().port;
@@ -101,6 +101,7 @@ export async function startWebServer(state, port) {
           return;
         }
         const result = dispatchWebMessage(state, msg);
+        saveDraft(state);
         ws.send(JSON.stringify({ type: 'result', action: msg.action, data: result }));
       } catch (e) {
         ws.send(JSON.stringify({ type: 'error', message: e.message }));

@@ -57,9 +57,14 @@ export function sessionRoutes(state) {
     try {
       if (!state.project) return res.json({ ok: false, error: 'No active project' });
       const session = state.db.getSession(state.sessionId);
-      if (!session?.json_file) return res.json({ ok: false, error: 'No file path — use save-as' });
-      writeFileSync(session.json_file, JSON.stringify(state.project.toJSON(), null, 2));
-      res.json({ ok: true, data: `Saved to ${session.json_file}` });
+      let target = session?.json_file;
+      if (!target) {
+        mkdirSync(session.destination_folder, { recursive: true });
+        target = join(session.destination_folder, `${session.project_name}.json`);
+        state.db.updateSession(state.sessionId, { json_file: target });
+      }
+      writeFileSync(target, JSON.stringify(state.project.toJSON(), null, 2));
+      res.json({ ok: true, data: `Saved to ${target}` });
     } catch (e) { res.json({ ok: false, error: e.message }); }
   });
 

@@ -12,6 +12,11 @@ export class SessionDB {
   constructor(dbPath = DEFAULT_PATH) {
     mkdirSync(dirname(dbPath), { recursive: true });
     this.db = new Database(dbPath);
+    // WAL + synchronous=FULL ensures every commit is fsynced — force-kills
+    // can no longer lose the most recent writes. Minor perf cost, acceptable
+    // for this workload (draws are low-frequency vs fsync cost).
+    this.db.pragma('journal_mode = WAL');
+    this.db.pragma('synchronous = FULL');
     this._init();
   }
 
