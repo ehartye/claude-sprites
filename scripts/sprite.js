@@ -112,7 +112,8 @@ function mapCommandToApi(cmd) {
   switch (command) {
     case 'draw':
       return { method: 'POST', path: '/api/draw', body: {
-        type: params.type, cell: params.cell, color: params.color, shape_name: params.name,
+        type: params.type, cell: params.cell, color: params.color,
+        shape_name: params.name ?? params.shape_name,
         x: params.x, y: params.y,
         x1: params.x1, y1: params.y1, x2: params.x2, y2: params.y2,
         cx: params.cx, cy: params.cy,
@@ -120,6 +121,15 @@ function mapCommandToApi(cmd) {
         w: params.w, h: params.h,
         filled: params.filled,
         shape: params.shape, direction: params.direction, strength: params.strength,
+        count: params.count,
+        span_deg: params.span_deg,
+        radius_factor: params.radius_factor,
+        intensity: params.intensity,
+        from_deg: params.from_deg,
+        to_deg: params.to_deg,
+        clip_to: params.clip_to,
+        shape_prefix: params.shape_prefix,
+        shapes: params.shapes,
       }};
     case 'rename':
       return { method: 'POST', path: '/api/shape/name', body: {
