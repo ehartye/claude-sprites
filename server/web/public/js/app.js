@@ -5,7 +5,7 @@
 import { CanvasEditor } from './canvas-editor.js';
 import { WebSocketClient } from './websocket.js';
 import { ToolManager } from './tools.js';
-import { ShapePanel, GroupPanel } from './panels.js';
+import { ShapePanel, GroupPanel, ShapeGroupPanel } from './panels.js';
 import { CellNavigator } from './cell-nav.js';
 import { AnimationPreview } from './animation.js';
 
@@ -23,6 +23,7 @@ const ws = new WebSocketClient();
 const tools = new ToolManager();
 const shapePanel = new ShapePanel();
 const groupPanel = new GroupPanel();
+const shapeGroupPanel = new ShapeGroupPanel();
 const cellNav = new CellNavigator();
 const animPreview = new AnimationPreview({ mountId: 'anim-panel', size: 128, showOnionSkin: true });
 const fullPreview = new AnimationPreview({
@@ -108,6 +109,43 @@ function init() {
     onDelete: (name) => {
       ws.send({ action: 'delete_group', params: { name } });
     },
+    onAddCell: (name, cell) => {
+      apiPost('/api/group/cell/add', { name, cells: [cell] });
+    },
+    onRemoveCell: (name, cell) => {
+      apiPost('/api/group/cell/remove', { name, cells: [cell] });
+    },
+  });
+
+  shapeGroupPanel.init({
+    onCreate: (name, shapes) => {
+      apiPost('/api/group/shape/create', { cell: state.activeCell, name, shapes })
+        .then(refreshShapeGroups);
+    },
+    onCreatePattern: (name, pattern) => {
+      apiPost('/api/group/shape/create', { all_cells: true, pattern, name })
+        .then(refreshShapeGroups);
+    },
+    onAddShape: (name, shapes) => {
+      apiPost('/api/group/shape/add', { cell: state.activeCell, name, shapes })
+        .then(refreshShapeGroups);
+    },
+    onRemoveShape: (name, shapes) => {
+      apiPost('/api/group/shape/remove', { cell: state.activeCell, name, shapes })
+        .then(refreshShapeGroups);
+    },
+    onDelete: (name, { allCells }) => {
+      if (allCells) {
+        // Delete in every cell that has it
+        Promise.all(Object.entries(state.allShapeGroups || {})
+          .filter(([_, groups]) => groups[name])
+          .map(([cell]) => apiPost('/api/group/shape/delete', { cell, name }))
+        ).then(refreshShapeGroups);
+      } else {
+        apiPost('/api/group/shape/delete', { cell: state.activeCell, name })
+          .then(refreshShapeGroups);
+      }
+    },
   });
 
   cellNav.init({
@@ -164,6 +202,7 @@ function onProjectData(data) {
   cellNav.render();
   groupPanel.setGroups(data.groups || {});
   selectCell(state.activeCell);
+  refreshShapeGroups();
 }
 
 function onDrawUpdate(data) {
@@ -276,6 +315,33 @@ function selectCell(ref) {
   cellNav.setActive(ref);
   animPreview.setActiveCell(ref);
   editor.setOnionSkin(animPreview.getOnionSkinData());
+  groupPanel.setActiveCell(ref);
+  shapeGroupPanel.setActiveCell(ref);
+  refreshShapeGroups();
+}
+
+/* -- Shape groups -- */
+
+function apiPost(path, body) {
+  return fetch(path, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  }).then(r => r.json());
+}
+
+async function refreshShapeGroups() {
+  try {
+    const all = await fetch('/api/group/shape/list-all').then(r => r.json());
+    if (all.ok) {
+      state.allShapeGroups = all.data;
+      shapeGroupPanel.setAllCellGroups(all.data);
+      const cellGroups = (all.data && state.activeCell) ? (all.data[state.activeCell] || {}) : {};
+      shapeGroupPanel.setCellGroups(cellGroups);
+    }
+  } catch (e) {
+    console.error('refreshShapeGroups failed:', e);
+  }
 }
 
 function updateCellRef() {

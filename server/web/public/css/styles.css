@@ -416,9 +416,95 @@ body {
   transition: color 0.15s, border-color 0.15s;
 }
 
-.group-create-btn:hover {
+.group-create-btn:hover,
+.group-create-pattern-btn:hover {
   color: var(--accent);
   border-color: var(--accent);
+}
+
+.group-create-pattern-btn {
+  font-family: inherit;
+  font-size: 0.7rem;
+  width: 100%;
+  padding: 0.3rem;
+  margin-top: 0.2rem;
+  border: 1px dashed var(--border);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.group-btn-row {
+  display: inline-flex;
+  gap: 0.1rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+#group-items li:hover .group-btn-row,
+#shape-group-items li:hover .group-btn-row {
+  opacity: 1;
+}
+
+.group-toggle-btn {
+  font-family: inherit;
+  font-size: 0.7rem;
+  padding: 0 0.3rem;
+  border: none;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.group-toggle-btn:hover {
+  color: var(--accent);
+  background: rgba(100, 180, 255, 0.1);
+}
+
+.panel-hint {
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-left: 0.4rem;
+}
+
+#shape-group-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#shape-group-items li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+#shape-group-items li:hover { background: var(--bg-surface); }
+
+#shape-group-items li.shape-group-empty {
+  color: var(--text-muted);
+  font-style: italic;
+  cursor: default;
+  padding: 0.3rem 0.4rem;
+}
+
+#shape-group-items li.shape-group-empty:hover { background: transparent; }
+
+.shape-group-badge {
+  font-size: 0.65rem;
+  padding: 0 0.3rem;
+  color: var(--text-muted);
+  background: var(--bg-surface);
+  border-radius: 8px;
+  margin-left: 0.3rem;
 }
 
 /* === Shape List extras === */

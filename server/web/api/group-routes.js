@@ -94,6 +94,13 @@ export function groupRoutes(state) {
     } catch (e) { res.json({ ok: false, error: e.message }); }
   });
 
+  // All shape groups across every cell. UI uses this to compute cross-cell counts.
+  r.get('/group/shape/list-all', (_req, res) => {
+    try {
+      res.json({ ok: true, data: state.db.getAllShapeGroups(state.sessionId) });
+    } catch (e) { res.json({ ok: false, error: e.message }); }
+  });
+
   r.post('/group/shape/add', (req, res) => {
     try {
       const { cell, name, shapes: newShapes } = req.body;

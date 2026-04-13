@@ -155,10 +155,17 @@ export class GroupPanel {
    * @param {Function} opts.onCreate - Called when create button clicked
    * @param {Function} opts.onDelete - Called with group name
    */
-  init({ onSelect, onCreate, onDelete }) {
+  init({ onSelect, onCreate, onDelete, onAddCell, onRemoveCell }) {
     this._selectCb = onSelect;
     this._createCb = onCreate;
     this._deleteCb = onDelete;
+    this._addCellCb = onAddCell;
+    this._removeCellCb = onRemoveCell;
+  }
+
+  setActiveCell(ref) {
+    this._activeCell = ref;
+    this.render();
   }
 
   setGroups(groups) {
@@ -190,6 +197,24 @@ export class GroupPanel {
       nameSpan.textContent = `${name} (${cells.length})`;
       li.appendChild(nameSpan);
 
+      const btnRow = document.createElement('span');
+      btnRow.className = 'group-btn-row';
+
+      const hasCell = this._activeCell && cells.includes(this._activeCell);
+      const toggleBtn = document.createElement('button');
+      toggleBtn.className = 'group-toggle-btn';
+      toggleBtn.textContent = hasCell ? '−' : '+';
+      toggleBtn.title = hasCell
+        ? `Remove ${this._activeCell} from this group`
+        : `Add ${this._activeCell} to this group`;
+      toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!this._activeCell) return;
+        if (hasCell && this._removeCellCb) this._removeCellCb(name, this._activeCell);
+        else if (!hasCell && this._addCellCb) this._addCellCb(name, this._activeCell);
+      });
+      btnRow.appendChild(toggleBtn);
+
       const delBtn = document.createElement('button');
       delBtn.className = 'group-delete-btn';
       delBtn.textContent = 'x';
@@ -198,7 +223,9 @@ export class GroupPanel {
         e.stopPropagation();
         if (this._deleteCb) this._deleteCb(name);
       });
-      li.appendChild(delBtn);
+      btnRow.appendChild(delBtn);
+
+      li.appendChild(btnRow);
 
       li.addEventListener('click', () => this._select(name));
       ul.appendChild(li);
@@ -221,5 +248,161 @@ export class GroupPanel {
       li.classList.toggle('active', isAll ? !name : li.dataset.group === name);
     });
     if (this._selectCb) this._selectCb(name);
+  }
+}
+
+/**
+ * Shape-group panel — manages groups of shapes *within* the active cell.
+ * Shows a badge when a same-named group exists in other cells too.
+ */
+export class ShapeGroupPanel {
+  constructor() {
+    this._activeCell = null;
+    this._cellGroups = {};       // { groupName: [shapeName...] }  — for active cell
+    this._allCellCounts = {};    // { groupName: cellCount } — across entire session
+    this._callbacks = {};
+  }
+
+  init({ onCreate, onCreatePattern, onAddShape, onRemoveShape, onDelete, onSelect }) {
+    this._callbacks = { onCreate, onCreatePattern, onAddShape, onRemoveShape, onDelete, onSelect };
+  }
+
+  setActiveCell(ref) {
+    this._activeCell = ref;
+    const scope = document.getElementById('shape-group-scope');
+    if (scope) scope.textContent = ref ? `in ${ref}` : 'in —';
+    this.render();
+  }
+
+  setCellGroups(groups) { this._cellGroups = groups || {}; this.render(); }
+
+  setAllCellGroups(allGroups) {
+    // allGroups: { "0,0": {name:[shapes]}, "0,1": {...} }
+    const counts = {};
+    for (const groupMap of Object.values(allGroups || {})) {
+      for (const name of Object.keys(groupMap)) {
+        counts[name] = (counts[name] ?? 0) + 1;
+      }
+    }
+    this._allCellCounts = counts;
+    this.render();
+  }
+
+  render() {
+    const ul = document.getElementById('shape-group-items');
+    if (!ul) return;
+    ul.innerHTML = '';
+    ul.parentElement.querySelectorAll('.group-create-btn, .group-create-pattern-btn').forEach(el => el.remove());
+
+    const entries = Object.entries(this._cellGroups);
+    if (entries.length === 0) {
+      const empty = document.createElement('li');
+      empty.className = 'shape-group-empty';
+      empty.textContent = this._activeCell ? 'No shape groups in this cell.' : 'Select a cell.';
+      ul.appendChild(empty);
+    }
+
+    for (const [name, shapes] of entries) {
+      const li = document.createElement('li');
+      li.dataset.shapeGroup = name;
+
+      const main = document.createElement('span');
+      main.textContent = `${name} (${shapes.length})`;
+      li.appendChild(main);
+
+      const crossCount = this._allCellCounts[name] ?? 1;
+      if (crossCount > 1) {
+        const badge = document.createElement('span');
+        badge.className = 'shape-group-badge';
+        badge.textContent = `🔗${crossCount}`;
+        badge.title = `Also exists in ${crossCount - 1} other cell(s)`;
+        li.appendChild(badge);
+      }
+
+      const btnRow = document.createElement('span');
+      btnRow.className = 'group-btn-row';
+
+      const addBtn = document.createElement('button');
+      addBtn.className = 'group-toggle-btn';
+      addBtn.textContent = '+';
+      addBtn.title = 'Add shapes (comma-separated names)';
+      addBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const names = prompt(`Add shapes to "${name}" (comma-separated):`);
+        if (names && this._callbacks.onAddShape) {
+          this._callbacks.onAddShape(name, names.split(',').map(s => s.trim()).filter(Boolean));
+        }
+      });
+      btnRow.appendChild(addBtn);
+
+      const rmBtn = document.createElement('button');
+      rmBtn.className = 'group-toggle-btn';
+      rmBtn.textContent = '−';
+      rmBtn.title = 'Remove shapes (comma-separated names)';
+      rmBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const names = prompt(`Remove shapes from "${name}" (comma-separated):`);
+        if (names && this._callbacks.onRemoveShape) {
+          this._callbacks.onRemoveShape(name, names.split(',').map(s => s.trim()).filter(Boolean));
+        }
+      });
+      btnRow.appendChild(rmBtn);
+
+      const delBtn = document.createElement('button');
+      delBtn.className = 'group-delete-btn';
+      delBtn.textContent = 'x';
+      delBtn.title = crossCount > 1
+        ? 'Delete — you will be asked whether to delete in this cell only or all cells'
+        : 'Delete group (shapes remain)';
+      delBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!this._callbacks.onDelete) return;
+        if (crossCount > 1) {
+          const choice = prompt(
+            `"${name}" exists in ${crossCount} cells. Delete:\n  1 = this cell only\n  2 = all ${crossCount} cells\n  (anything else cancels)`,
+            '1'
+          );
+          if (choice === '1') this._callbacks.onDelete(name, { allCells: false });
+          else if (choice === '2') this._callbacks.onDelete(name, { allCells: true });
+        } else {
+          this._callbacks.onDelete(name, { allCells: false });
+        }
+      });
+      btnRow.appendChild(delBtn);
+
+      li.appendChild(btnRow);
+
+      li.addEventListener('click', () => {
+        if (this._callbacks.onSelect) this._callbacks.onSelect(name, shapes);
+      });
+      ul.appendChild(li);
+    }
+
+    const createBtn = document.createElement('button');
+    createBtn.className = 'group-create-btn';
+    createBtn.textContent = '+ New Group (this cell)';
+    createBtn.addEventListener('click', () => {
+      if (!this._activeCell) { alert('Select a cell first.'); return; }
+      const name = prompt('Group name:');
+      if (!name) return;
+      const shapes = prompt('Shape names (comma-separated):');
+      if (!shapes) return;
+      if (this._callbacks.onCreate) {
+        this._callbacks.onCreate(name, shapes.split(',').map(s => s.trim()).filter(Boolean));
+      }
+    });
+    ul.parentElement.appendChild(createBtn);
+
+    const patternBtn = document.createElement('button');
+    patternBtn.className = 'group-create-pattern-btn';
+    patternBtn.textContent = '+ New Group (all cells by pattern)';
+    patternBtn.addEventListener('click', () => {
+      const name = prompt('Group name:');
+      if (!name) return;
+      const pattern = prompt('Regex to match shape names (e.g. ^seam_):');
+      if (!pattern) return;
+      if (this._callbacks.onCreatePattern) this._callbacks.onCreatePattern(name, pattern);
+    });
+    ul.parentElement.appendChild(patternBtn);
   }
 }
