@@ -174,6 +174,36 @@ describe('CLI batch mode', () => {
     expect(stdout).toContain('Done: 1/1 succeeded');
   });
 
+  test('batch --vars substitutes placeholders in ops', async () => {
+    const commands = [
+      { command: 'draw', type: 'rect', cell: '{{cell}}', x: '{{x}}', y: 0, w: 2, h: 2, color: '#ffffff', name: 'vr1' },
+    ];
+    const batchFile = join(tmpDir, 'vars.json');
+    fs.writeFileSync(batchFile, JSON.stringify(commands));
+
+    const { stdout } = await cli('batch', batchFile, '--vars', 'cell=0,0,x=5');
+    expect(stdout).toContain('Done: 1/1 succeeded');
+
+    const shapes = await cli('shapes', '--cell', '0,0');
+    expect(shapes.stdout).toContain('vr1');
+  });
+
+  test('batch --vars errors on undefined placeholder', async () => {
+    const commands = [
+      { command: 'draw', type: 'rect', cell: '0,0', x: '{{missing}}', y: 0, w: 2, h: 2, color: '#ffffff', name: 'xfail' },
+    ];
+    const batchFile = join(tmpDir, 'vars-missing.json');
+    fs.writeFileSync(batchFile, JSON.stringify(commands));
+
+    try {
+      await cli('batch', batchFile, '--vars', 'cell=0,0');
+      expect.unreachable('should have failed');
+    } catch (e) {
+      expect(e.code).toBe(1);
+      expect(e.stderr).toMatch(/variable ['"]missing['"] not defined/);
+    }
+  });
+
   test('batch reads from stdin with --stdin flag', async () => {
     const commands = [
       { command: 'draw', type: 'point', cell: '0,0', x: 7, y: 7, color: '#ff004d', name: 'stdin_pt' },

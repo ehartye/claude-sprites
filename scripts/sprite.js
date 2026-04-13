@@ -58,6 +58,54 @@ function parseArgs(argv) {
 function num(v) { return v !== undefined ? Number(v) : undefined; }
 function bool(v) { return v === 'true' || v === true; }
 
+function parseVarsFlag(s) {
+  // Split on commas that precede "<ident>=", so values like "0,0" are preserved.
+  const out = {};
+  const str = String(s);
+  const parts = [];
+  const re = /,(?=\w+=)/g;
+  let last = 0;
+  let m;
+  while ((m = re.exec(str)) !== null) {
+    parts.push(str.slice(last, m.index));
+    last = m.index + 1;
+  }
+  parts.push(str.slice(last));
+  for (const kv of parts) {
+    if (!kv) continue;
+    const eq = kv.indexOf('=');
+    if (eq < 0) continue;
+    const k = kv.slice(0, eq).trim();
+    const v = kv.slice(eq + 1);
+    if (!k) continue;
+    const n = Number(v);
+    out[k] = (v !== '' && !Number.isNaN(n)) ? n : v;
+  }
+  return out;
+}
+
+function substituteVars(value, vars) {
+  if (value == null) return value;
+  if (typeof value === 'string') {
+    const whole = value.match(/^\{\{(\w+)\}\}$/);
+    if (whole) {
+      if (!(whole[1] in vars)) throw new Error(`variable "${whole[1]}" not defined`);
+      return vars[whole[1]];
+    }
+    return value.replace(/\{\{(\w+)\}\}/g, (_, k) => {
+      if (!(k in vars)) throw new Error(`variable "${k}" not defined`);
+      return String(vars[k]);
+    });
+  }
+  if (Array.isArray(value)) return value.map(v => substituteVars(v, vars));
+  if (typeof value === 'object') {
+    const o = {};
+    for (const k of Object.keys(value)) o[k] = substituteVars(value[k], vars);
+    return o;
+  }
+  return value;
+}
+
 function mapCommandToApi(cmd) {
   const { command, ...params } = cmd;
   switch (command) {
@@ -198,6 +246,8 @@ BATCH
   batch <path.json>           execute an array of commands; fails fast on first error
                               (stderr: "ERROR at op N/M: <label> — <message>", exit 1)
                               add --continue-on-error true to run all ops and summarize
+                              --vars k=v,k2=v2  substitute {{k}} placeholders in ops
+                                                (numeric when value parses as a number)
 
 Full reference: skills/sprite-editing/references/tool-reference.md
 `;
@@ -403,6 +453,7 @@ async function run() {
 
     case 'batch': {
       const continueOnError = bool(args['continue-on-error']);
+      const vars = args.vars ? parseVarsFlag(args.vars) : null;
       let commands;
 
       if (args.stdin) {
@@ -428,7 +479,22 @@ async function run() {
       let failed = 0;
 
       for (let i = 0; i < total; i++) {
-        const cmd = commands[i];
+        let cmd = commands[i];
+        if (vars) {
+          try { cmd = substituteVars(cmd, vars); }
+          catch (e) {
+            const label = describeBatchCommand(commands[i]);
+            process.stdout.write(`[${i + 1}/${total}] ${label}`);
+            console.log(` -> ERROR: ${e.message}`);
+            failed++;
+            if (!continueOnError) {
+              console.error(`ERROR at op ${i + 1}/${total}: ${label} \u2014 ${e.message}`);
+              process.exitCode = 1;
+              return;
+            }
+            continue;
+          }
+        }
         const label = describeBatchCommand(cmd);
         process.stdout.write(`[${i + 1}/${total}] ${label}`);
 
