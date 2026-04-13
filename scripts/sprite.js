@@ -232,6 +232,7 @@ SHAPES
 
 CELLS
   copy  --from R,C --to R,C        clear --cell         name --cell --as <name>
+  clone-cell --from R,C --to "R,C R,C ..."  (atomic fan-out; all-or-nothing)
   view  --cell                     view-anim <group>    undo/redo --cell
 
 GROUPS (cells)
@@ -377,6 +378,11 @@ async function run() {
     case 'copy':
       result = await api('POST', '/api/cell/copy', { from: args.from, to: args.to });
       break;
+    case 'clone-cell': {
+      const to = args.to?.split(/\s+/).filter(Boolean) ?? [];
+      result = await api('POST', '/api/cell/clone-fanout', { from: args.from, to });
+      break;
+    }
     case 'clear':
       result = await api('POST', '/api/cell/clear', { cell: args.cell });
       break;
