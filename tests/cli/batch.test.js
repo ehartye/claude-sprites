@@ -110,12 +110,15 @@ describe('CLI batch mode', () => {
       await cli('batch', batchFile);
       expect.unreachable('Should have thrown');
     } catch (e) {
+      // Exit code should be 1
+      expect(e.code).toBe(1);
       // Should show progress up to the failure
       expect(e.stdout).toContain('[1/3]');
       expect(e.stdout).toContain('[2/3]');
       // Should NOT have reached command 3
       expect(e.stdout).not.toContain('[3/3]');
-      expect(e.stderr || e.stdout).toContain('Error');
+      // Structured stderr: "ERROR at op N/M: <label> — <message>"
+      expect(e.stderr).toMatch(/ERROR at op 2\/3: .+ — .+/);
     }
   });
 

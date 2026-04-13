@@ -195,7 +195,9 @@ SHAPE GROUPS (within a cell)
   recolor-group <name> --cell --color [--all-cells true]
 
 BATCH
-  batch --file <path.json>    execute an array of commands atomically
+  batch <path.json>           execute an array of commands; fails fast on first error
+                              (stderr: "ERROR at op N/M: <label> — <message>", exit 1)
+                              add --continue-on-error true to run all ops and summarize
 
 Full reference: skills/sprite-editing/references/tool-reference.md
 `;
@@ -440,7 +442,7 @@ async function run() {
           console.log(` -> ERROR: ${e.message}`);
           failed++;
           if (!continueOnError) {
-            console.error(`Error at command ${i + 1}/${total}: ${e.message}`);
+            console.error(`ERROR at op ${i + 1}/${total}: ${label} \u2014 ${e.message}`);
             process.exitCode = 1;
             return;
           }
