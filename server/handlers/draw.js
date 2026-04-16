@@ -165,11 +165,14 @@ function handleHighlightShadow(state, type, params) {
   // Stash overrides so computeArcPixels picks them up (keeps signature small).
   targetShape.__overrideRadiusFactor = params.radius_factor ?? null;
   targetShape.__overrideSpanDeg = params.span_deg ?? null;
-  const pixels = (targetShape.type === 'circle' || targetShape.type === 'ellipse')
+  const rawPixels = (targetShape.type === 'circle' || targetShape.type === 'ellipse')
     ? computeArcPixels(targetShape, direction, count, type)
     : computeEdgePixels(bbox, direction, count);
   delete targetShape.__overrideRadiusFactor;
   delete targetShape.__overrideSpanDeg;
+  // Lighting effects should be contained within the bounds of the shape they
+  // light. Drop any pixel that falls outside the renderable target area.
+  const pixels = rawPixels.filter(pt => isRenderablyInsideShape(targetShape, pt.x, pt.y));
 
   const baseName = params.shape_name ?? `${params.shape}_${type === 'highlight' ? 'hl' : 'sh'}`;
   const shapeNames = [];
@@ -238,6 +241,26 @@ function handleSphereShade(state, params) {
 }
 
 /**
+ * Test whether (px, py) falls inside the *renderable* area of a shape — i.e.,
+ * mathematically inside AND not at a cardinal extreme that the rasterizer's
+ * tip-trim would skip. Used to keep auto-emitted lighting pixels inside the
+ * actual silhouette (no orphan pixels past the trimmed edge).
+ */
+function isRenderablyInsideShape(shape, px, py) {
+  if (!isInsideShape(shape, px, py)) return false;
+  const p = shape.params;
+  if (shape.type === 'circle') {
+    if (p.r >= 2 && px === p.cx && (py === p.cy - p.r || py === p.cy + p.r)) return false;
+    if (p.r >= 2 && py === p.cy && (px === p.cx - p.r || px === p.cx + p.r)) return false;
+  }
+  if (shape.type === 'ellipse') {
+    if (p.ry >= 2 && px === p.cx && (py === p.cy - p.ry || py === p.cy + p.ry)) return false;
+    if (p.rx >= 2 && py === p.cy && (px === p.cx - p.rx || px === p.cx + p.rx)) return false;
+  }
+  return true;
+}
+
+/**
  * Test whether (px, py) falls inside a mask shape's filled area.
  * Supports circle, ellipse, rect. Points/lines are treated as zero-area.
  */
@@ -303,20 +326,23 @@ function rasterizeShapeToSet(shape) {
       if (p.filled === false) {
         for (const pt of rasterizeEllipseOutline(p.cx, p.cy, rx, ry)) add(pt.x, pt.y);
       } else {
-        // Trim 1px N/S tips on shapes with rx >= 2 and ry >= 2.
-        const trimTips = rx >= 2 && ry >= 2;
+        const trimRow = ry >= 2;
+        const trimCol = rx >= 2;
+        const colHeight = new Array(2 * rx + 1).fill(0);
+        const rowWidth = new Array(2 * ry + 1).fill(0);
+        const inEllipse = (x, y) => (x * x) / (rx * rx) + (y * y) / (ry * ry) <= 1;
+        if (trimRow || trimCol) {
+          for (let yy = -ry; yy <= ry; yy++)
+            for (let xx = -rx; xx <= rx; xx++)
+              if (inEllipse(xx, yy)) { rowWidth[yy + ry]++; colHeight[xx + rx]++; }
+        }
         for (let y = -ry; y <= ry; y++) {
-          let leftX = null, rightX = null;
           for (let x = -rx; x <= rx; x++) {
-            if ((x * x) / (rx * rx) + (y * y) / (ry * ry) <= 1) {
-              if (leftX === null) leftX = x;
-              rightX = x;
-            }
+            if (!inEllipse(x, y)) continue;
+            if (trimRow && (y === -ry || y === ry) && rowWidth[y + ry] === 1) continue;
+            if (trimCol && (x === -rx || x === rx) && colHeight[x + rx] === 1) continue;
+            add(p.cx + x, p.cy + y);
           }
-          if (leftX === null) continue;
-          const width = rightX - leftX + 1;
-          if (trimTips && width === 1 && (y === -ry || y === ry)) continue;
-          for (let x = leftX; x <= rightX; x++) add(p.cx + x, p.cy + y);
         }
       }
       break;

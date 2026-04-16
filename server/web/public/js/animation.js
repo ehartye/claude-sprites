@@ -295,19 +295,21 @@ export class AnimationPreview {
    */
   _fillEllipse(ctx, scale, cx, cy, rx, ry) {
     if (rx <= 0 || ry <= 0) return;
-    const trimTips = rx >= 2 && ry >= 2;
+    const trimRow = ry >= 2;
+    const trimCol = rx >= 2;
+    const colHeight = new Array(2 * rx + 1).fill(0);
+    const rowWidth = new Array(2 * ry + 1).fill(0);
+    const inEllipse = (x, y) => (x * x) / (rx * rx) + (y * y) / (ry * ry) <= 1;
+    if (trimRow || trimCol) {
+      for (let y = -ry; y <= ry; y++)
+        for (let x = -rx; x <= rx; x++)
+          if (inEllipse(x, y)) { rowWidth[y + ry]++; colHeight[x + rx]++; }
+    }
     for (let y = -ry; y <= ry; y++) {
-      let leftX = null, rightX = null;
       for (let x = -rx; x <= rx; x++) {
-        if ((x * x) / (rx * rx) + (y * y) / (ry * ry) <= 1) {
-          if (leftX === null) leftX = x;
-          rightX = x;
-        }
-      }
-      if (leftX === null) continue;
-      const width = rightX - leftX + 1;
-      if (trimTips && width === 1 && (y === -ry || y === ry)) continue;
-      for (let x = leftX; x <= rightX; x++) {
+        if (!inEllipse(x, y)) continue;
+        if (trimRow && (y === -ry || y === ry) && rowWidth[y + ry] === 1) continue;
+        if (trimCol && (x === -rx || x === rx) && colHeight[x + rx] === 1) continue;
         ctx.fillRect((cx + x) * scale, (cy + y) * scale, scale, scale);
       }
     }

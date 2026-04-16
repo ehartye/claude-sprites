@@ -144,206 +144,93 @@
       "name": null,
       "shapes": [
         {
-          "id": "s201",
-          "name": "shadow",
-          "type": "ellipse",
-          "params": {
-            "cx": 16,
-            "cy": 28,
-            "rx": 8,
-            "ry": 2,
-            "filled": true
-          },
-          "color": "#222034",
-          "zIndex": 48,
-          "visible": true
-        },
-        {
-          "id": "s202",
+          "id": "s495",
           "name": "rim",
           "type": "ellipse",
           "params": {
             "cx": 16,
             "cy": 14,
-            "rx": 11,
-            "ry": 12,
+            "rx": 10,
+            "ry": 11,
             "filled": true
           },
-          "color": "#8f563b",
-          "zIndex": 49,
+          "color": "#663931",
+          "zIndex": 149,
           "visible": true
         },
         {
-          "id": "s305",
+          "id": "s496",
           "name": "face",
           "type": "ellipse",
           "params": {
             "cx": 16,
             "cy": 14,
-            "rx": 10,
+            "rx": 9,
             "ry": 10,
             "filled": true
           },
           "color": "#fbf236",
-          "zIndex": 50,
+          "zIndex": 150,
           "visible": true
         },
         {
-          "id": "s204",
-          "name": "face_hl_0",
-          "type": "point",
-          "params": {
-            "x": 11,
-            "y": 11
-          },
-          "color": "#ffffff",
-          "zIndex": 51,
-          "visible": true
-        },
-        {
-          "id": "s205",
-          "name": "face_hl_1",
-          "type": "point",
-          "params": {
-            "x": 12,
-            "y": 10
-          },
-          "color": "#ffffff",
-          "zIndex": 52,
-          "visible": true
-        },
-        {
-          "id": "s206",
-          "name": "face_hl_2",
-          "type": "point",
-          "params": {
-            "x": 13,
-            "y": 9
-          },
-          "color": "#ffffff",
-          "zIndex": 53,
-          "visible": true
-        },
-        {
-          "id": "s207",
-          "name": "face_sh_0",
-          "type": "point",
-          "params": {
-            "x": 22,
-            "y": 17
-          },
-          "color": "#eec39a",
-          "zIndex": 54,
-          "visible": true
-        },
-        {
-          "id": "s208",
-          "name": "face_sh_1",
-          "type": "point",
-          "params": {
-            "x": 21,
-            "y": 18
-          },
-          "color": "#eec39a",
-          "zIndex": 55,
-          "visible": true
-        },
-        {
-          "id": "s209",
-          "name": "face_sh_2",
-          "type": "point",
-          "params": {
-            "x": 20,
-            "y": 19
-          },
-          "color": "#eec39a",
-          "zIndex": 56,
-          "visible": true
-        },
-        {
-          "id": "s210",
-          "name": "face_sh_3",
-          "type": "point",
-          "params": {
-            "x": 19,
-            "y": 20
-          },
-          "color": "#eec39a",
-          "zIndex": 57,
-          "visible": true
-        },
-        {
-          "id": "s211",
-          "name": "emboss_hl",
+          "id": "s497",
+          "name": "em_top",
           "type": "rect",
           "params": {
             "x": 14,
-            "y": 9,
-            "w": 1,
-            "h": 10,
+            "y": 8,
+            "w": 5,
+            "h": 1,
             "filled": true
           },
-          "color": "#fff1e8",
-          "zIndex": 58,
+          "color": "#663931",
+          "zIndex": 151,
           "visible": true
         },
         {
-          "id": "s212",
-          "name": "emboss_sh",
+          "id": "s498",
+          "name": "em_bot",
           "type": "rect",
           "params": {
-            "x": 18,
+            "x": 14,
+            "y": 20,
+            "w": 5,
+            "h": 1,
+            "filled": true
+          },
+          "color": "#663931",
+          "zIndex": 152,
+          "visible": true
+        },
+        {
+          "id": "s499",
+          "name": "em_left",
+          "type": "rect",
+          "params": {
+            "x": 13,
             "y": 9,
             "w": 1,
-            "h": 10,
+            "h": 11,
             "filled": true
           },
-          "color": "#df7126",
-          "zIndex": 59,
+          "color": "#663931",
+          "zIndex": 153,
           "visible": true
         },
         {
-          "id": "s299",
-          "name": null,
-          "type": "line",
+          "id": "s500",
+          "name": "em_right",
+          "type": "rect",
           "params": {
-            "x1": 13,
-            "y1": 20,
-            "x2": 13,
-            "y2": 8
-          },
-          "color": "rope",
-          "zIndex": 62,
-          "visible": true
-        },
-        {
-          "id": "s303",
-          "name": null,
-          "type": "ellipse",
-          "params": {
-            "cx": 16,
-            "cy": 4,
-            "rx": 0,
-            "ry": 6,
+            "x": 19,
+            "y": 9,
+            "w": 1,
+            "h": 11,
             "filled": true
           },
-          "color": "golden-fizz",
-          "zIndex": 66,
-          "visible": true
-        },
-        {
-          "id": "s304",
-          "name": null,
-          "type": "ellipse",
-          "params": {
-            "cx": 16,
-            "cy": 4,
-            "rx": 0,
-            "ry": 2,
-            "filled": true
-          },
-          "color": "golden-fizz",
-          "zIndex": 67,
+          "color": "#663931",
+          "zIndex": 154,
           "visible": true
         }
       ]
@@ -352,162 +239,93 @@
       "name": null,
       "shapes": [
         {
-          "id": "s213",
-          "name": "shadow",
-          "type": "ellipse",
-          "params": {
-            "cx": 16,
-            "cy": 28,
-            "rx": 6,
-            "ry": 2,
-            "filled": true
-          },
-          "color": "#222034",
-          "zIndex": 48,
-          "visible": true
-        },
-        {
-          "id": "s214",
+          "id": "s501",
           "name": "rim",
           "type": "ellipse",
           "params": {
             "cx": 16,
             "cy": 14,
-            "rx": 9,
-            "ry": 12,
+            "rx": 8,
+            "ry": 11,
             "filled": true
           },
-          "color": "#8f563b",
-          "zIndex": 49,
+          "color": "#663931",
+          "zIndex": 123,
           "visible": true
         },
         {
-          "id": "s215",
+          "id": "s502",
           "name": "face",
           "type": "ellipse",
           "params": {
             "cx": 16,
             "cy": 14,
-            "rx": 8,
+            "rx": 7,
             "ry": 10,
             "filled": true
           },
           "color": "#fbf236",
-          "zIndex": 50,
+          "zIndex": 124,
           "visible": true
         },
         {
-          "id": "s216",
-          "name": "face_hl_0",
-          "type": "point",
+          "id": "s503",
+          "name": "em_top",
+          "type": "rect",
           "params": {
-            "x": 12,
-            "y": 11
+            "x": 15,
+            "y": 8,
+            "w": 3,
+            "h": 1,
+            "filled": true
           },
-          "color": "#ffffff",
-          "zIndex": 51,
+          "color": "#663931",
+          "zIndex": 125,
           "visible": true
         },
         {
-          "id": "s217",
-          "name": "face_hl_1",
-          "type": "point",
+          "id": "s504",
+          "name": "em_bot",
+          "type": "rect",
           "params": {
-            "x": 13,
-            "y": 10
+            "x": 15,
+            "y": 20,
+            "w": 3,
+            "h": 1,
+            "filled": true
           },
-          "color": "#ffffff",
-          "zIndex": 52,
+          "color": "#663931",
+          "zIndex": 126,
           "visible": true
         },
         {
-          "id": "s218",
-          "name": "face_hl_2",
-          "type": "point",
+          "id": "s505",
+          "name": "em_left",
+          "type": "rect",
           "params": {
             "x": 14,
-            "y": 9
+            "y": 9,
+            "w": 1,
+            "h": 11,
+            "filled": true
           },
-          "color": "#ffffff",
-          "zIndex": 53,
+          "color": "#663931",
+          "zIndex": 127,
           "visible": true
         },
         {
-          "id": "s219",
-          "name": "face_sh_0",
-          "type": "point",
-          "params": {
-            "x": 21,
-            "y": 17
-          },
-          "color": "#eec39a",
-          "zIndex": 54,
-          "visible": true
-        },
-        {
-          "id": "s220",
-          "name": "face_sh_1",
-          "type": "point",
-          "params": {
-            "x": 20,
-            "y": 18
-          },
-          "color": "#eec39a",
-          "zIndex": 55,
-          "visible": true
-        },
-        {
-          "id": "s221",
-          "name": "face_sh_2",
-          "type": "point",
-          "params": {
-            "x": 19,
-            "y": 19
-          },
-          "color": "#eec39a",
-          "zIndex": 56,
-          "visible": true
-        },
-        {
-          "id": "s222",
-          "name": "face_sh_3",
-          "type": "point",
+          "id": "s506",
+          "name": "em_right",
+          "type": "rect",
           "params": {
             "x": 18,
-            "y": 20
-          },
-          "color": "#eec39a",
-          "zIndex": 57,
-          "visible": true
-        },
-        {
-          "id": "s223",
-          "name": "emboss_hl",
-          "type": "rect",
-          "params": {
-            "x": 14,
             "y": 9,
             "w": 1,
-            "h": 10,
+            "h": 11,
             "filled": true
           },
-          "color": "#fff1e8",
-          "zIndex": 58,
-          "visible": true
-        },
-        {
-          "id": "s224",
-          "name": "emboss_sh",
-          "type": "rect",
-          "params": {
-            "x": 17,
-            "y": 9,
-            "w": 1,
-            "h": 10,
-            "filled": true
-          },
-          "color": "#df7126",
-          "zIndex": 59,
+          "color": "#663931",
+          "zIndex": 128,
           "visible": true
         }
       ]
@@ -516,162 +334,93 @@
       "name": null,
       "shapes": [
         {
-          "id": "s225",
-          "name": "shadow",
-          "type": "ellipse",
-          "params": {
-            "cx": 16,
-            "cy": 28,
-            "rx": 4,
-            "ry": 2,
-            "filled": true
-          },
-          "color": "#222034",
-          "zIndex": 48,
-          "visible": true
-        },
-        {
-          "id": "s226",
+          "id": "s507",
           "name": "rim",
           "type": "ellipse",
           "params": {
             "cx": 16,
             "cy": 14,
-            "rx": 6,
-            "ry": 12,
+            "rx": 5,
+            "ry": 11,
             "filled": true
           },
-          "color": "#8f563b",
-          "zIndex": 49,
+          "color": "#663931",
+          "zIndex": 123,
           "visible": true
         },
         {
-          "id": "s227",
+          "id": "s508",
           "name": "face",
           "type": "ellipse",
           "params": {
             "cx": 16,
             "cy": 14,
-            "rx": 5,
+            "rx": 4,
             "ry": 10,
             "filled": true
           },
           "color": "#fbf236",
-          "zIndex": 50,
+          "zIndex": 124,
           "visible": true
         },
         {
-          "id": "s228",
-          "name": "face_hl_0",
-          "type": "point",
+          "id": "s509",
+          "name": "em_top",
+          "type": "rect",
           "params": {
-            "x": 14,
-            "y": 11
+            "x": 16,
+            "y": 8,
+            "w": 1,
+            "h": 1,
+            "filled": true
           },
-          "color": "#ffffff",
-          "zIndex": 51,
+          "color": "#663931",
+          "zIndex": 125,
           "visible": true
         },
         {
-          "id": "s229",
-          "name": "face_hl_1",
-          "type": "point",
+          "id": "s510",
+          "name": "em_bot",
+          "type": "rect",
           "params": {
-            "x": 14,
-            "y": 10
+            "x": 16,
+            "y": 20,
+            "w": 1,
+            "h": 1,
+            "filled": true
           },
-          "color": "#ffffff",
-          "zIndex": 52,
+          "color": "#663931",
+          "zIndex": 126,
           "visible": true
         },
         {
-          "id": "s230",
-          "name": "face_hl_2",
-          "type": "point",
-          "params": {
-            "x": 15,
-            "y": 9
-          },
-          "color": "#ffffff",
-          "zIndex": 53,
-          "visible": true
-        },
-        {
-          "id": "s231",
-          "name": "face_sh_0",
-          "type": "point",
-          "params": {
-            "x": 19,
-            "y": 17
-          },
-          "color": "#eec39a",
-          "zIndex": 54,
-          "visible": true
-        },
-        {
-          "id": "s232",
-          "name": "face_sh_1",
-          "type": "point",
-          "params": {
-            "x": 19,
-            "y": 18
-          },
-          "color": "#eec39a",
-          "zIndex": 55,
-          "visible": true
-        },
-        {
-          "id": "s233",
-          "name": "face_sh_2",
-          "type": "point",
-          "params": {
-            "x": 18,
-            "y": 19
-          },
-          "color": "#eec39a",
-          "zIndex": 56,
-          "visible": true
-        },
-        {
-          "id": "s234",
-          "name": "face_sh_3",
-          "type": "point",
-          "params": {
-            "x": 17,
-            "y": 20
-          },
-          "color": "#eec39a",
-          "zIndex": 57,
-          "visible": true
-        },
-        {
-          "id": "s235",
-          "name": "emboss_hl",
+          "id": "s511",
+          "name": "em_left",
           "type": "rect",
           "params": {
             "x": 15,
-            "y": 10,
+            "y": 9,
             "w": 1,
-            "h": 8,
+            "h": 11,
             "filled": true
           },
-          "color": "#fff1e8",
-          "zIndex": 58,
+          "color": "#663931",
+          "zIndex": 127,
           "visible": true
         },
         {
-          "id": "s236",
-          "name": "emboss_sh",
+          "id": "s512",
+          "name": "em_right",
           "type": "rect",
           "params": {
             "x": 17,
-            "y": 10,
+            "y": 9,
             "w": 1,
-            "h": 8,
+            "h": 11,
             "filled": true
           },
-          "color": "#df7126",
-          "zIndex": 59,
+          "color": "#663931",
+          "zIndex": 128,
           "visible": true
         }
       ]
@@ -680,37 +429,22 @@
       "name": null,
       "shapes": [
         {
-          "id": "s237",
-          "name": "shadow",
-          "type": "ellipse",
-          "params": {
-            "cx": 16,
-            "cy": 28,
-            "rx": 2,
-            "ry": 2,
-            "filled": true
-          },
-          "color": "#222034",
-          "zIndex": 48,
-          "visible": true
-        },
-        {
-          "id": "s238",
+          "id": "s513",
           "name": "rim",
           "type": "ellipse",
           "params": {
             "cx": 16,
             "cy": 14,
             "rx": 3,
-            "ry": 12,
+            "ry": 11,
             "filled": true
           },
-          "color": "#8f563b",
-          "zIndex": 49,
+          "color": "#663931",
+          "zIndex": 123,
           "visible": true
         },
         {
-          "id": "s239",
+          "id": "s514",
           "name": "face",
           "type": "ellipse",
           "params": {
@@ -721,121 +455,67 @@
             "filled": true
           },
           "color": "#fbf236",
-          "zIndex": 50,
+          "zIndex": 124,
           "visible": true
         },
         {
-          "id": "s240",
-          "name": "face_hl_0",
-          "type": "point",
-          "params": {
-            "x": 15,
-            "y": 11
-          },
-          "color": "#ffffff",
-          "zIndex": 51,
-          "visible": true
-        },
-        {
-          "id": "s241",
-          "name": "face_hl_1",
-          "type": "point",
-          "params": {
-            "x": 15,
-            "y": 10
-          },
-          "color": "#ffffff",
-          "zIndex": 52,
-          "visible": true
-        },
-        {
-          "id": "s242",
-          "name": "face_hl_2",
-          "type": "point",
-          "params": {
-            "x": 15,
-            "y": 9
-          },
-          "color": "#ffffff",
-          "zIndex": 53,
-          "visible": true
-        },
-        {
-          "id": "s243",
-          "name": "face_sh_0",
-          "type": "point",
-          "params": {
-            "x": 17,
-            "y": 17
-          },
-          "color": "#eec39a",
-          "zIndex": 54,
-          "visible": true
-        },
-        {
-          "id": "s244",
-          "name": "face_sh_1",
-          "type": "point",
-          "params": {
-            "x": 17,
-            "y": 18
-          },
-          "color": "#eec39a",
-          "zIndex": 55,
-          "visible": true
-        },
-        {
-          "id": "s245",
-          "name": "face_sh_2",
-          "type": "point",
-          "params": {
-            "x": 17,
-            "y": 19
-          },
-          "color": "#eec39a",
-          "zIndex": 56,
-          "visible": true
-        },
-        {
-          "id": "s246",
-          "name": "face_sh_3",
-          "type": "point",
-          "params": {
-            "x": 17,
-            "y": 20
-          },
-          "color": "#eec39a",
-          "zIndex": 57,
-          "visible": true
-        },
-        {
-          "id": "s247",
-          "name": "emboss_hl",
+          "id": "s515",
+          "name": "em_top",
           "type": "rect",
           "params": {
-            "x": 0,
-            "y": 0,
-            "w": 1,
-            "h": 0,
+            "x": 16,
+            "y": 8,
+            "w": 0,
+            "h": 1,
             "filled": true
           },
-          "color": "#fff1e8",
-          "zIndex": 58,
+          "color": "#663931",
+          "zIndex": 125,
           "visible": true
         },
         {
-          "id": "s248",
-          "name": "emboss_sh",
+          "id": "s516",
+          "name": "em_bot",
           "type": "rect",
           "params": {
-            "x": 0,
-            "y": 0,
-            "w": 1,
-            "h": 0,
+            "x": 16,
+            "y": 20,
+            "w": 0,
+            "h": 1,
             "filled": true
           },
-          "color": "#df7126",
-          "zIndex": 59,
+          "color": "#663931",
+          "zIndex": 126,
+          "visible": true
+        },
+        {
+          "id": "s517",
+          "name": "em_left",
+          "type": "rect",
+          "params": {
+            "x": 16,
+            "y": 9,
+            "w": 1,
+            "h": 11,
+            "filled": true
+          },
+          "color": "#663931",
+          "zIndex": 127,
+          "visible": true
+        },
+        {
+          "id": "s518",
+          "name": "em_right",
+          "type": "rect",
+          "params": {
+            "x": 16,
+            "y": 9,
+            "w": 1,
+            "h": 11,
+            "filled": true
+          },
+          "color": "#663931",
+          "zIndex": 128,
           "visible": true
         }
       ]
@@ -844,37 +524,22 @@
       "name": null,
       "shapes": [
         {
-          "id": "s249",
-          "name": "shadow",
-          "type": "ellipse",
-          "params": {
-            "cx": 16,
-            "cy": 28,
-            "rx": 1,
-            "ry": 2,
-            "filled": true
-          },
-          "color": "#222034",
-          "zIndex": 48,
-          "visible": true
-        },
-        {
-          "id": "s250",
+          "id": "s519",
           "name": "rim",
           "type": "ellipse",
           "params": {
             "cx": 16,
             "cy": 14,
-            "rx": 1,
-            "ry": 12,
+            "rx": 2,
+            "ry": 11,
             "filled": true
           },
-          "color": "#8f563b",
-          "zIndex": 49,
+          "color": "#663931",
+          "zIndex": 113,
           "visible": true
         },
         {
-          "id": "s251",
+          "id": "s520",
           "name": "face",
           "type": "ellipse",
           "params": {
@@ -884,122 +549,68 @@
             "ry": 10,
             "filled": true
           },
-          "color": "#8f563b",
-          "zIndex": 50,
-          "visible": true
-        },
-        {
-          "id": "s252",
-          "name": "face_hl_0",
-          "type": "point",
-          "params": {
-            "x": 16,
-            "y": 11
-          },
-          "color": "#df7126",
-          "zIndex": 51,
-          "visible": true
-        },
-        {
-          "id": "s253",
-          "name": "face_hl_1",
-          "type": "point",
-          "params": {
-            "x": 16,
-            "y": 10
-          },
-          "color": "#df7126",
-          "zIndex": 52,
-          "visible": true
-        },
-        {
-          "id": "s254",
-          "name": "face_hl_2",
-          "type": "point",
-          "params": {
-            "x": 16,
-            "y": 9
-          },
-          "color": "#df7126",
-          "zIndex": 53,
-          "visible": true
-        },
-        {
-          "id": "s255",
-          "name": "face_sh_0",
-          "type": "point",
-          "params": {
-            "x": 17,
-            "y": 17
-          },
           "color": "#663931",
-          "zIndex": 54,
+          "zIndex": 114,
           "visible": true
         },
         {
-          "id": "s256",
-          "name": "face_sh_1",
-          "type": "point",
-          "params": {
-            "x": 17,
-            "y": 18
-          },
-          "color": "#663931",
-          "zIndex": 55,
-          "visible": true
-        },
-        {
-          "id": "s257",
-          "name": "face_sh_2",
-          "type": "point",
-          "params": {
-            "x": 16,
-            "y": 19
-          },
-          "color": "#663931",
-          "zIndex": 56,
-          "visible": true
-        },
-        {
-          "id": "s258",
-          "name": "face_sh_3",
-          "type": "point",
-          "params": {
-            "x": 16,
-            "y": 20
-          },
-          "color": "#663931",
-          "zIndex": 57,
-          "visible": true
-        },
-        {
-          "id": "s259",
-          "name": "emboss_hl",
+          "id": "s521",
+          "name": "em_top",
           "type": "rect",
           "params": {
-            "x": 0,
-            "y": 0,
-            "w": 1,
-            "h": 0,
+            "x": 16,
+            "y": 8,
+            "w": 0,
+            "h": 1,
             "filled": true
           },
-          "color": "#fff1e8",
-          "zIndex": 58,
+          "color": "#663931",
+          "zIndex": 115,
           "visible": true
         },
         {
-          "id": "s260",
-          "name": "emboss_sh",
+          "id": "s522",
+          "name": "em_bot",
           "type": "rect",
           "params": {
-            "x": 0,
-            "y": 0,
-            "w": 1,
-            "h": 0,
+            "x": 16,
+            "y": 20,
+            "w": 0,
+            "h": 1,
             "filled": true
           },
-          "color": "#df7126",
-          "zIndex": 59,
+          "color": "#663931",
+          "zIndex": 116,
+          "visible": true
+        },
+        {
+          "id": "s523",
+          "name": "em_left",
+          "type": "rect",
+          "params": {
+            "x": 16,
+            "y": 9,
+            "w": 1,
+            "h": 11,
+            "filled": true
+          },
+          "color": "#663931",
+          "zIndex": 117,
+          "visible": true
+        },
+        {
+          "id": "s524",
+          "name": "em_right",
+          "type": "rect",
+          "params": {
+            "x": 16,
+            "y": 9,
+            "w": 1,
+            "h": 11,
+            "filled": true
+          },
+          "color": "#663931",
+          "zIndex": 118,
           "visible": true
         }
       ]
@@ -1008,37 +619,22 @@
       "name": null,
       "shapes": [
         {
-          "id": "s261",
-          "name": "shadow",
-          "type": "ellipse",
-          "params": {
-            "cx": 16,
-            "cy": 28,
-            "rx": 2,
-            "ry": 2,
-            "filled": true
-          },
-          "color": "#222034",
-          "zIndex": 48,
-          "visible": true
-        },
-        {
-          "id": "s262",
+          "id": "s525",
           "name": "rim",
           "type": "ellipse",
           "params": {
             "cx": 16,
             "cy": 14,
             "rx": 3,
-            "ry": 12,
+            "ry": 11,
             "filled": true
           },
-          "color": "#8f563b",
-          "zIndex": 49,
+          "color": "#663931",
+          "zIndex": 123,
           "visible": true
         },
         {
-          "id": "s263",
+          "id": "s526",
           "name": "face",
           "type": "ellipse",
           "params": {
@@ -1049,121 +645,67 @@
             "filled": true
           },
           "color": "#fbf236",
-          "zIndex": 50,
+          "zIndex": 124,
           "visible": true
         },
         {
-          "id": "s264",
-          "name": "face_hl_0",
-          "type": "point",
-          "params": {
-            "x": 15,
-            "y": 11
-          },
-          "color": "#ffffff",
-          "zIndex": 51,
-          "visible": true
-        },
-        {
-          "id": "s265",
-          "name": "face_hl_1",
-          "type": "point",
-          "params": {
-            "x": 15,
-            "y": 10
-          },
-          "color": "#ffffff",
-          "zIndex": 52,
-          "visible": true
-        },
-        {
-          "id": "s266",
-          "name": "face_hl_2",
-          "type": "point",
-          "params": {
-            "x": 15,
-            "y": 9
-          },
-          "color": "#ffffff",
-          "zIndex": 53,
-          "visible": true
-        },
-        {
-          "id": "s267",
-          "name": "face_sh_0",
-          "type": "point",
-          "params": {
-            "x": 17,
-            "y": 17
-          },
-          "color": "#eec39a",
-          "zIndex": 54,
-          "visible": true
-        },
-        {
-          "id": "s268",
-          "name": "face_sh_1",
-          "type": "point",
-          "params": {
-            "x": 17,
-            "y": 18
-          },
-          "color": "#eec39a",
-          "zIndex": 55,
-          "visible": true
-        },
-        {
-          "id": "s269",
-          "name": "face_sh_2",
-          "type": "point",
-          "params": {
-            "x": 17,
-            "y": 19
-          },
-          "color": "#eec39a",
-          "zIndex": 56,
-          "visible": true
-        },
-        {
-          "id": "s270",
-          "name": "face_sh_3",
-          "type": "point",
-          "params": {
-            "x": 17,
-            "y": 20
-          },
-          "color": "#eec39a",
-          "zIndex": 57,
-          "visible": true
-        },
-        {
-          "id": "s271",
-          "name": "emboss_hl",
+          "id": "s527",
+          "name": "em_top",
           "type": "rect",
           "params": {
-            "x": 0,
-            "y": 0,
-            "w": 1,
-            "h": 0,
+            "x": 16,
+            "y": 8,
+            "w": 0,
+            "h": 1,
             "filled": true
           },
-          "color": "#fff1e8",
-          "zIndex": 58,
+          "color": "#663931",
+          "zIndex": 125,
           "visible": true
         },
         {
-          "id": "s272",
-          "name": "emboss_sh",
+          "id": "s528",
+          "name": "em_bot",
           "type": "rect",
           "params": {
-            "x": 0,
-            "y": 0,
-            "w": 1,
-            "h": 0,
+            "x": 16,
+            "y": 20,
+            "w": 0,
+            "h": 1,
             "filled": true
           },
-          "color": "#df7126",
-          "zIndex": 59,
+          "color": "#663931",
+          "zIndex": 126,
+          "visible": true
+        },
+        {
+          "id": "s529",
+          "name": "em_left",
+          "type": "rect",
+          "params": {
+            "x": 16,
+            "y": 9,
+            "w": 1,
+            "h": 11,
+            "filled": true
+          },
+          "color": "#663931",
+          "zIndex": 127,
+          "visible": true
+        },
+        {
+          "id": "s530",
+          "name": "em_right",
+          "type": "rect",
+          "params": {
+            "x": 16,
+            "y": 9,
+            "w": 1,
+            "h": 11,
+            "filled": true
+          },
+          "color": "#663931",
+          "zIndex": 128,
           "visible": true
         }
       ]
@@ -1172,162 +714,93 @@
       "name": null,
       "shapes": [
         {
-          "id": "s273",
-          "name": "shadow",
-          "type": "ellipse",
-          "params": {
-            "cx": 16,
-            "cy": 28,
-            "rx": 4,
-            "ry": 2,
-            "filled": true
-          },
-          "color": "#222034",
-          "zIndex": 48,
-          "visible": true
-        },
-        {
-          "id": "s274",
+          "id": "s531",
           "name": "rim",
           "type": "ellipse",
           "params": {
             "cx": 16,
             "cy": 14,
-            "rx": 6,
-            "ry": 12,
+            "rx": 5,
+            "ry": 11,
             "filled": true
           },
-          "color": "#8f563b",
-          "zIndex": 49,
+          "color": "#663931",
+          "zIndex": 123,
           "visible": true
         },
         {
-          "id": "s275",
+          "id": "s532",
           "name": "face",
           "type": "ellipse",
           "params": {
             "cx": 16,
             "cy": 14,
-            "rx": 5,
+            "rx": 4,
             "ry": 10,
             "filled": true
           },
           "color": "#fbf236",
-          "zIndex": 50,
+          "zIndex": 124,
           "visible": true
         },
         {
-          "id": "s276",
-          "name": "face_hl_0",
-          "type": "point",
+          "id": "s533",
+          "name": "em_top",
+          "type": "rect",
           "params": {
-            "x": 14,
-            "y": 11
+            "x": 16,
+            "y": 8,
+            "w": 1,
+            "h": 1,
+            "filled": true
           },
-          "color": "#ffffff",
-          "zIndex": 51,
+          "color": "#663931",
+          "zIndex": 125,
           "visible": true
         },
         {
-          "id": "s277",
-          "name": "face_hl_1",
-          "type": "point",
+          "id": "s534",
+          "name": "em_bot",
+          "type": "rect",
           "params": {
-            "x": 14,
-            "y": 10
+            "x": 16,
+            "y": 20,
+            "w": 1,
+            "h": 1,
+            "filled": true
           },
-          "color": "#ffffff",
-          "zIndex": 52,
+          "color": "#663931",
+          "zIndex": 126,
           "visible": true
         },
         {
-          "id": "s278",
-          "name": "face_hl_2",
-          "type": "point",
-          "params": {
-            "x": 15,
-            "y": 9
-          },
-          "color": "#ffffff",
-          "zIndex": 53,
-          "visible": true
-        },
-        {
-          "id": "s279",
-          "name": "face_sh_0",
-          "type": "point",
-          "params": {
-            "x": 19,
-            "y": 17
-          },
-          "color": "#eec39a",
-          "zIndex": 54,
-          "visible": true
-        },
-        {
-          "id": "s280",
-          "name": "face_sh_1",
-          "type": "point",
-          "params": {
-            "x": 19,
-            "y": 18
-          },
-          "color": "#eec39a",
-          "zIndex": 55,
-          "visible": true
-        },
-        {
-          "id": "s281",
-          "name": "face_sh_2",
-          "type": "point",
-          "params": {
-            "x": 18,
-            "y": 19
-          },
-          "color": "#eec39a",
-          "zIndex": 56,
-          "visible": true
-        },
-        {
-          "id": "s282",
-          "name": "face_sh_3",
-          "type": "point",
-          "params": {
-            "x": 17,
-            "y": 20
-          },
-          "color": "#eec39a",
-          "zIndex": 57,
-          "visible": true
-        },
-        {
-          "id": "s283",
-          "name": "emboss_hl",
+          "id": "s535",
+          "name": "em_left",
           "type": "rect",
           "params": {
             "x": 15,
-            "y": 10,
+            "y": 9,
             "w": 1,
-            "h": 8,
+            "h": 11,
             "filled": true
           },
-          "color": "#fff1e8",
-          "zIndex": 58,
+          "color": "#663931",
+          "zIndex": 127,
           "visible": true
         },
         {
-          "id": "s284",
-          "name": "emboss_sh",
+          "id": "s536",
+          "name": "em_right",
           "type": "rect",
           "params": {
             "x": 17,
-            "y": 10,
+            "y": 9,
             "w": 1,
-            "h": 8,
+            "h": 11,
             "filled": true
           },
-          "color": "#df7126",
-          "zIndex": 59,
+          "color": "#663931",
+          "zIndex": 128,
           "visible": true
         }
       ]
@@ -1336,162 +809,93 @@
       "name": null,
       "shapes": [
         {
-          "id": "s285",
-          "name": "shadow",
-          "type": "ellipse",
-          "params": {
-            "cx": 16,
-            "cy": 28,
-            "rx": 6,
-            "ry": 2,
-            "filled": true
-          },
-          "color": "#222034",
-          "zIndex": 48,
-          "visible": true
-        },
-        {
-          "id": "s286",
+          "id": "s537",
           "name": "rim",
           "type": "ellipse",
           "params": {
             "cx": 16,
             "cy": 14,
-            "rx": 9,
-            "ry": 12,
+            "rx": 8,
+            "ry": 11,
             "filled": true
           },
-          "color": "#8f563b",
-          "zIndex": 49,
+          "color": "#663931",
+          "zIndex": 123,
           "visible": true
         },
         {
-          "id": "s287",
+          "id": "s538",
           "name": "face",
           "type": "ellipse",
           "params": {
             "cx": 16,
             "cy": 14,
-            "rx": 8,
+            "rx": 7,
             "ry": 10,
             "filled": true
           },
           "color": "#fbf236",
-          "zIndex": 50,
+          "zIndex": 124,
           "visible": true
         },
         {
-          "id": "s288",
-          "name": "face_hl_0",
-          "type": "point",
+          "id": "s539",
+          "name": "em_top",
+          "type": "rect",
           "params": {
-            "x": 12,
-            "y": 11
+            "x": 15,
+            "y": 8,
+            "w": 3,
+            "h": 1,
+            "filled": true
           },
-          "color": "#ffffff",
-          "zIndex": 51,
+          "color": "#663931",
+          "zIndex": 125,
           "visible": true
         },
         {
-          "id": "s289",
-          "name": "face_hl_1",
-          "type": "point",
+          "id": "s540",
+          "name": "em_bot",
+          "type": "rect",
           "params": {
-            "x": 13,
-            "y": 10
+            "x": 15,
+            "y": 20,
+            "w": 3,
+            "h": 1,
+            "filled": true
           },
-          "color": "#ffffff",
-          "zIndex": 52,
+          "color": "#663931",
+          "zIndex": 126,
           "visible": true
         },
         {
-          "id": "s290",
-          "name": "face_hl_2",
-          "type": "point",
+          "id": "s541",
+          "name": "em_left",
+          "type": "rect",
           "params": {
             "x": 14,
-            "y": 9
+            "y": 9,
+            "w": 1,
+            "h": 11,
+            "filled": true
           },
-          "color": "#ffffff",
-          "zIndex": 53,
+          "color": "#663931",
+          "zIndex": 127,
           "visible": true
         },
         {
-          "id": "s291",
-          "name": "face_sh_0",
-          "type": "point",
-          "params": {
-            "x": 21,
-            "y": 17
-          },
-          "color": "#eec39a",
-          "zIndex": 54,
-          "visible": true
-        },
-        {
-          "id": "s292",
-          "name": "face_sh_1",
-          "type": "point",
-          "params": {
-            "x": 20,
-            "y": 18
-          },
-          "color": "#eec39a",
-          "zIndex": 55,
-          "visible": true
-        },
-        {
-          "id": "s293",
-          "name": "face_sh_2",
-          "type": "point",
-          "params": {
-            "x": 19,
-            "y": 19
-          },
-          "color": "#eec39a",
-          "zIndex": 56,
-          "visible": true
-        },
-        {
-          "id": "s294",
-          "name": "face_sh_3",
-          "type": "point",
+          "id": "s542",
+          "name": "em_right",
+          "type": "rect",
           "params": {
             "x": 18,
-            "y": 20
-          },
-          "color": "#eec39a",
-          "zIndex": 57,
-          "visible": true
-        },
-        {
-          "id": "s295",
-          "name": "emboss_hl",
-          "type": "rect",
-          "params": {
-            "x": 14,
             "y": 9,
             "w": 1,
-            "h": 10,
+            "h": 11,
             "filled": true
           },
-          "color": "#fff1e8",
-          "zIndex": 58,
-          "visible": true
-        },
-        {
-          "id": "s296",
-          "name": "emboss_sh",
-          "type": "rect",
-          "params": {
-            "x": 17,
-            "y": 9,
-            "w": 1,
-            "h": 10,
-            "filled": true
-          },
-          "color": "#df7126",
-          "zIndex": 59,
+          "color": "#663931",
+          "zIndex": 128,
           "visible": true
         }
       ]

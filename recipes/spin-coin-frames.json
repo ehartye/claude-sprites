@@ -1,50 +1,50 @@
 [
   {
-    "cell": "0,0", "shadow_rx": 8,
-    "rim_rx": 11, "face_rx": 10, "face_color": "#fbf236",
-    "em_y": 9, "em_h": 10,
-    "em_hl_x": 14, "em_sh_x": 18
+    "cell": "0,0",
+    "rim_rx": 10, "face_rx": 9, "face_color": "#fbf236",
+    "em_top_x": 14, "em_top_w": 5,
+    "em_left_x": 13, "em_right_x": 19
   },
   {
-    "cell": "0,1", "shadow_rx": 6,
-    "rim_rx": 9, "face_rx": 8, "face_color": "#fbf236",
-    "em_y": 9, "em_h": 10,
-    "em_hl_x": 14, "em_sh_x": 17
+    "cell": "0,1",
+    "rim_rx": 8, "face_rx": 7, "face_color": "#fbf236",
+    "em_top_x": 15, "em_top_w": 3,
+    "em_left_x": 14, "em_right_x": 18
   },
   {
-    "cell": "0,2", "shadow_rx": 4,
-    "rim_rx": 6, "face_rx": 5, "face_color": "#fbf236",
-    "em_y": 10, "em_h": 8,
-    "em_hl_x": 15, "em_sh_x": 17
+    "cell": "0,2",
+    "rim_rx": 5, "face_rx": 4, "face_color": "#fbf236",
+    "em_top_x": 16, "em_top_w": 1,
+    "em_left_x": 15, "em_right_x": 17
   },
   {
-    "cell": "0,3", "shadow_rx": 2,
+    "cell": "0,3",
     "rim_rx": 3, "face_rx": 2, "face_color": "#fbf236",
-    "em_y": 0, "em_h": 0,
-    "em_hl_x": 0, "em_sh_x": 0
+    "em_top_x": 16, "em_top_w": 0,
+    "em_left_x": 16, "em_right_x": 16
   },
   {
-    "cell": "0,4", "shadow_rx": 1,
-    "rim_rx": 1, "face_rx": 1, "face_color": "#8f563b",
-    "em_y": 0, "em_h": 0,
-    "em_hl_x": 0, "em_sh_x": 0
+    "cell": "0,4",
+    "rim_rx": 2, "face_rx": 1, "face_color": "#663931",
+    "em_top_x": 16, "em_top_w": 0,
+    "em_left_x": 16, "em_right_x": 16
   },
   {
-    "cell": "0,5", "shadow_rx": 2,
+    "cell": "0,5",
     "rim_rx": 3, "face_rx": 2, "face_color": "#fbf236",
-    "em_y": 0, "em_h": 0,
-    "em_hl_x": 0, "em_sh_x": 0
+    "em_top_x": 16, "em_top_w": 0,
+    "em_left_x": 16, "em_right_x": 16
   },
   {
-    "cell": "0,6", "shadow_rx": 4,
-    "rim_rx": 6, "face_rx": 5, "face_color": "#fbf236",
-    "em_y": 10, "em_h": 8,
-    "em_hl_x": 15, "em_sh_x": 17
+    "cell": "0,6",
+    "rim_rx": 5, "face_rx": 4, "face_color": "#fbf236",
+    "em_top_x": 16, "em_top_w": 1,
+    "em_left_x": 15, "em_right_x": 17
   },
   {
-    "cell": "0,7", "shadow_rx": 6,
-    "rim_rx": 9, "face_rx": 8, "face_color": "#fbf236",
-    "em_y": 9, "em_h": 10,
-    "em_hl_x": 14, "em_sh_x": 17
+    "cell": "0,7",
+    "rim_rx": 8, "face_rx": 7, "face_color": "#fbf236",
+    "em_top_x": 15, "em_top_w": 3,
+    "em_left_x": 14, "em_right_x": 18
   }
 ]

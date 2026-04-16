@@ -2,15 +2,10 @@
   { "command": "clear", "cell": "{{cell}}" },
   {
     "command": "draw", "type": "ellipse", "cell": "{{cell}}",
-    "cx": 16, "cy": 28, "rx": "{{shadow_rx}}", "ry": 2,
-    "color": "#222034", "name": "shadow",
-    "cell_group": "spin"
-  },
-  {
-    "command": "draw", "type": "ellipse", "cell": "{{cell}}",
     "cx": 16, "cy": 14,
-    "rx": "{{rim_rx}}", "ry": 12,
-    "color": "#8f563b", "name": "rim",
+    "rx": "{{rim_rx}}", "ry": 11,
+    "color": "#663931", "name": "rim",
+    "cell_group": "spin",
     "group": "coin"
   },
   {
@@ -21,27 +16,27 @@
     "group": "coin"
   },
   {
-    "command": "draw", "type": "highlight", "cell": "{{cell}}",
-    "shape": "face", "direction": "top-left", "strength": 1,
-    "shape_name": "face_hl",
-    "group": "coin"
-  },
-  {
-    "command": "draw", "type": "shadow", "cell": "{{cell}}",
-    "shape": "face", "direction": "bottom-right", "strength": 1,
-    "shape_name": "face_sh",
+    "command": "draw", "type": "rect", "cell": "{{cell}}",
+    "x": "{{em_top_x}}", "y": 8, "w": "{{em_top_w}}", "h": 1,
+    "color": "#663931", "name": "em_top",
     "group": "coin"
   },
   {
     "command": "draw", "type": "rect", "cell": "{{cell}}",
-    "x": "{{em_hl_x}}", "y": "{{em_y}}", "w": 1, "h": "{{em_h}}",
-    "color": "#fff1e8", "name": "emboss_hl",
+    "x": "{{em_top_x}}", "y": 20, "w": "{{em_top_w}}", "h": 1,
+    "color": "#663931", "name": "em_bot",
     "group": "coin"
   },
   {
     "command": "draw", "type": "rect", "cell": "{{cell}}",
-    "x": "{{em_sh_x}}", "y": "{{em_y}}", "w": 1, "h": "{{em_h}}",
-    "color": "#df7126", "name": "emboss_sh",
+    "x": "{{em_left_x}}", "y": 9, "w": 1, "h": 11,
+    "color": "#663931", "name": "em_left",
+    "group": "coin"
+  },
+  {
+    "command": "draw", "type": "rect", "cell": "{{cell}}",
+    "x": "{{em_right_x}}", "y": 9, "w": 1, "h": 11,
+    "color": "#663931", "name": "em_right",
     "group": "coin"
   }
 ]
