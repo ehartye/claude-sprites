@@ -69,8 +69,9 @@ describe('Project', () => {
     proj.cells.getCell('0,0').name = 'idle';
     const atlas = proj.exportAseprite({ imageName: 'test.png' });
     expect(atlas.frames[0].frame).toEqual({ x: 0, y: 0, w: 16, h: 16 });
-    expect(atlas.frames[0].filename).toBe('idle');
+    expect(atlas.frames[0].filename).toBe('0');
     expect(atlas.frames[1].frame.x).toBe(16);
+    expect(atlas.frames.at(-1).filename).toBe('idle'); // named-cell alias
     expect(atlas.meta.size).toEqual({ w: 48, h: 32 });
   });
 });
