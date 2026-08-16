@@ -135,8 +135,8 @@ sprite.js resize ball --cell 0,1 --updates '{"rx":4,"ry":5}'   # stretch mid-air
 | `name` | `--cell --as <name>` | Give cell a readable name |
 | `ref set <image.png>` | `--cell [--opacity 0.35]` | Attach a tracing reference image: rendered dimmed **under** shapes in `view` output and the web UI editor, scaled to the cell, never included in exports. Use it to copy a pose or style from an existing image |
 | `ref clear` | `--cell` | Remove the reference |
-| `view` | `--cell [--png true] [--scale N]` | Render cell preview (includes the reference underlay if set). `--scale N` (1–32) nearest-neighbor upscales the PNG — use `--scale 8` to actually judge 16px art |
-| `view --sheet` | `[--scale N]` | Render the whole sheet to a temp PNG and print its path |
+| `view` | `--cell [--png true] [--scale N] [--out <file.png>]` | Render cell preview (includes the reference underlay if set). `--scale N` (1–32) nearest-neighbor upscales the PNG — use `--scale 8` to actually judge 16px art. `--out` writes the PNG exactly there (parents created; implies `--png`) |
+| `view --sheet` | `[--scale N] [--out <file.png>]` | Render the whole sheet to a PNG — a temp path by default, or exactly `--out` |
 | `undo` | `--cell` | Undo last operation in cell |
 | `redo` | `--cell` | Redo undone operation in cell |
 

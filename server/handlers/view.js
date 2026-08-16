@@ -17,6 +17,15 @@ function clampScale(s) {
   return Math.max(1, Math.min(32, n));
 }
 
+/** Resolve the output path: explicit --out (parents created) or a temp file. */
+function outPath(params, tmpDir, name) {
+  if (params.out) {
+    fs.mkdirSync(path.dirname(params.out), { recursive: true });
+    return params.out;
+  }
+  return tmpPath(tmpDir, name);
+}
+
 export function handleViewCell(state, params, tmpDir) {
   if (!state.project) throw new Error('No project open');
   const cell = state.project.cells.getCell(params.cell);
@@ -30,7 +39,7 @@ export function handleViewCell(state, params, tmpDir) {
 
   const renderer = getRenderer(state);
   const buf = renderer.renderCell(cell, viewOpts);
-  const p = tmpPath(tmpDir, `cell-${params.cell.replace(',', '-')}`);
+  const p = outPath(params, tmpDir, `cell-${params.cell.replace(',', '-')}`);
   fs.writeFileSync(p, buf);
   return { path: p };
 }
@@ -40,7 +49,7 @@ export function handleViewCells(state, params, tmpDir) {
   const cells = params.cells.map((ref) => state.project.cells.getCell(ref));
   const renderer = getRenderer(state);
   const buf = renderer.renderCells(cells, { scale: clampScale(params.scale) });
-  const p = tmpPath(tmpDir, 'cells');
+  const p = outPath(params, tmpDir, 'cells');
   fs.writeFileSync(p, buf);
   return { path: p };
 }
@@ -49,7 +58,7 @@ export function handleViewSheet(state, params, tmpDir) {
   if (!state.project) throw new Error('No project open');
   const renderer = getRenderer(state);
   const buf = renderer.renderSheet(state.project.cells, { scale: clampScale(params.scale) });
-  const p = tmpPath(tmpDir, 'sheet');
+  const p = outPath(params, tmpDir, 'sheet');
   fs.writeFileSync(p, buf);
   return { path: p };
 }

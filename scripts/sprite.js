@@ -350,7 +350,7 @@ CELLS
   rotate-cell --cell --deg 90|180|270           rotate every shape about cell center
   ref set <image.png> --cell [--opacity 0.35]   attach a tracing reference image
   ref clear --cell                              shown under shapes in view + web UI, never exported
-  view  --cell [--png true] [--scale N]   view --sheet [--scale N]
+  view  --cell [--png true] [--scale N] [--out f.png]   view --sheet [--scale N] [--out f.png]
   view-anim <group>                undo/redo --cell
 
 TWEEN
@@ -573,12 +573,13 @@ async function run() {
       result = await api('POST', '/api/cell/name', { cell: args.cell, name: args.as });
       break;
     case 'view': {
+      const out = args.out ? resolve(args.out) : undefined;
       if (bool(args.sheet)) {
-        result = await api('POST', '/api/view/sheet', { scale: num(args.scale) });
+        result = await api('POST', '/api/view/sheet', { scale: num(args.scale), out });
         break;
       }
-      const format = args.png ? 'png' : 'terminal';
-      result = await api('POST', '/api/cell/view', { cell: args.cell, format, scale: num(args.scale) });
+      const format = (args.png || args.out) ? 'png' : 'terminal';
+      result = await api('POST', '/api/cell/view', { cell: args.cell, format, scale: num(args.scale), out });
       if (result.ok && result.data?.terminal) {
         console.log(result.data.terminal);
         return;
