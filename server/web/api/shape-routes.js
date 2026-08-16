@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import { handleMoveShape, handleMoveShapeTo, handleResizeShape,
          handleRecolorShape, handleDeleteShape, handleCloneShape,
-         handleSetZ, handleShapeZDirection, handleNameShape } from '../../handlers/shape.js';
+         handleSetZ, handleShapeZDirection, handleNameShape,
+         handleFlipShape, handleRotateShape } from '../../handlers/shape.js';
 import { saveDraft } from '../http.js';
 
 export function shapeRoutes(state) {
@@ -20,6 +21,8 @@ export function shapeRoutes(state) {
   r.post('/shape/recolor', wrap(handleRecolorShape));
   r.post('/shape/delete',  wrap(handleDeleteShape));
   r.post('/shape/clone',   wrap(handleCloneShape));
+  r.post('/shape/flip',    wrap(handleFlipShape));
+  r.post('/shape/rotate',  wrap(handleRotateShape));
   r.post('/shape/set-z',   wrap(handleSetZ));
   r.post('/shape/z-dir',   wrap(handleShapeZDirection));
   return r;

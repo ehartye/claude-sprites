@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { handleShiftCell, handleMirrorCell, handleCopyCell,
          handleClearCell, handleNameCell, handleListCells,
-         handleCloneFanout } from '../../handlers/cell.js';
+         handleCloneFanout, handleRotateCell } from '../../handlers/cell.js';
 import { handleUndo, handleRedo } from '../../handlers/history.js';
 import { handleViewCell } from '../../handlers/view.js';
 import { saveDraft } from '../http.js';
@@ -21,6 +21,7 @@ export function cellRoutes(state) {
   r.post('/cell/name',   wrap(handleNameCell));
   r.post('/cell/shift',  wrap(handleShiftCell));
   r.post('/cell/mirror', wrap(handleMirrorCell));
+  r.post('/cell/rotate', wrap(handleRotateCell));
   r.post('/cell/undo',   wrap(handleUndo));
   r.post('/cell/redo',   wrap(handleRedo));
   r.get('/cells',        (_req, res) => {

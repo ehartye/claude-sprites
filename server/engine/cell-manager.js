@@ -1,4 +1,5 @@
 import { Cell } from './cell.js';
+import { rotateParams } from './transform.js';
 
 export class CellManager {
   constructor(cellSize, rows, cols) {
@@ -77,6 +78,14 @@ export class CellManager {
         else if ('y' in p && 'h' in p) { p.y = max - p.y - p.h + 1; }
         else if ('y' in p) { p.y = max - p.y; }
       }
+    }
+  }
+
+  rotateCell(ref, deg) {
+    const cell = this.getCell(ref);
+    const m = (this.cellSize - 1) / 2;
+    for (const shape of cell.shapes.listByZ()) {
+      rotateParams(shape.params, deg, m, m);
     }
   }
 

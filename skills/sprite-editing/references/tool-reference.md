@@ -114,6 +114,8 @@ sprite.js resize ball --cell 0,1 --updates '{"rx":4,"ry":5}'   # stretch mid-air
 | `recolor <name>` | shape name | `--cell --color` | Change color |
 | `clone <name>` | shape name | `--from --to [--as new_name]` | Copy shape across cells |
 | `delete <name>` | shape name | `--cell` | Permanently remove shape |
+| `flip <name>` | shape name | `--cell --axis horizontal\|vertical [--about self\|cell]` | Mirror one shape. `self` (default) flips in place about its own center; `cell` mirrors its position across the cell |
+| `rotate <name>` | shape name | `--cell --deg 90\|180\|270 [--about self\|cell]` | Rotate one shape CW (y-down). `self` (default) spins in place; `cell` orbits the cell center. 90° steps only — exact for pixel art |
 
 ## Cell Operations
 
@@ -122,6 +124,8 @@ sprite.js resize ball --cell 0,1 --updates '{"rx":4,"ry":5}'   # stretch mid-air
 | `copy` | `--from --to` | Deep copy all shapes between cells |
 | `clone-cell` | `--from R,C --to "R1,C1 R2,C2 ..."` | Atomic fan-out copy of one cell into many destinations (space-separated list, quoted) |
 | `clear` | `--cell` | Remove all shapes from cell |
+| `mirror` | `--cell --axis horizontal\|vertical` | Flip every shape across the cell — the standard way to derive walk-left frames from walk-right |
+| `rotate-cell` | `--cell --deg 90\|180\|270` | Rotate every shape about the cell center (CW, y-down) — e.g. spin frames from one drawn frame |
 | `name` | `--cell --as <name>` | Give cell a readable name |
 | `view` | `--cell` | Render cell preview |
 | `undo` | `--cell` | Undo last operation in cell |

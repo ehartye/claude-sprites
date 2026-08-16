@@ -74,6 +74,22 @@ export function handleMoveShapeTo(state, params) {
   state.broadcast?.({ type: 'shape_moved', cell: params.cell });
 }
 
+/** Flip a shape about its own bbox center (default) or the cell. */
+export function handleFlipShape(state, params) {
+  if (!state.project) throw new Error('No project open');
+  const cell = state.project.cells.getCell(params.cell);
+  cell.flipShape(params.name, params.axis, { about: params.about });
+  state.broadcast?.({ type: 'shape_flipped', cell: params.cell, name: params.name, axis: params.axis });
+}
+
+/** Rotate a shape 90/180/270 CW about its own bbox center (default) or the cell. */
+export function handleRotateShape(state, params) {
+  if (!state.project) throw new Error('No project open');
+  const cell = state.project.cells.getCell(params.cell);
+  cell.rotateShape(params.name, params.deg, { about: params.about });
+  state.broadcast?.({ type: 'shape_rotated', cell: params.cell, name: params.name, deg: params.deg });
+}
+
 /** Move a shape one step up or down in z-order by swapping with its neighbor. */
 export function handleShapeZDirection(state, params) {
   if (!state.project) throw new Error('No project open');

@@ -1,5 +1,6 @@
 import { Shape } from './shape.js';
 import { ShapeRegistry } from './shape-registry.js';
+import { flipParams, mirrorSum, rotateParams, rotatePivot } from './transform.js';
 
 export class Cell {
   constructor(size, opts = {}) {
@@ -74,6 +75,31 @@ export class Cell {
     const oldParams = { ...shape.params };
     this._exec({
       execute: () => { Object.assign(shape.params, updates); },
+      undo: () => { Object.assign(shape.params, oldParams); },
+    });
+  }
+
+  flipShape(ref, axis, opts = {}) {
+    const shape = this.shapes.get(ref);
+    if (!shape) throw new Error(`Shape "${ref}" not found`);
+    const about = opts.about ?? 'self';
+    const oldParams = { ...shape.params };
+    this._exec({
+      execute: () => flipParams(shape.params, axis, mirrorSum(shape.params, axis, about, this.size)),
+      undo: () => { Object.assign(shape.params, oldParams); },
+    });
+  }
+
+  rotateShape(ref, deg, opts = {}) {
+    const shape = this.shapes.get(ref);
+    if (!shape) throw new Error(`Shape "${ref}" not found`);
+    const about = opts.about ?? 'self';
+    const oldParams = { ...shape.params };
+    this._exec({
+      execute: () => {
+        const [px, py] = rotatePivot(shape.params, about, this.size);
+        rotateParams(shape.params, deg, px, py);
+      },
       undo: () => { Object.assign(shape.params, oldParams); },
     });
   }
