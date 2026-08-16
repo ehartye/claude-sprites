@@ -1,4 +1,5 @@
-import { networkInterfaces } from 'os';
+import { networkInterfaces, tmpdir } from 'os';
+import { join } from 'path';
 import { startWebServer } from './web/http.js';
 import { SessionDB } from './db/session.js';
 import { Project } from './engine/project.js';
@@ -22,6 +23,8 @@ const state = {
   project: null,
   sessionId: null,
   db,
+  // PNG view renders (view --png / view --sheet) are written here
+  tmpDir: join(tmpdir(), 'claude-sprites', 'views'),
 };
 
 // Restore last session
