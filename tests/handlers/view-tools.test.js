@@ -73,7 +73,7 @@ describe('View tools', () => {
     expect(fs.existsSync(outPath)).toBe(true);
     const atlas = JSON.parse(fs.readFileSync(outPath, 'utf-8'));
     expect(atlas.name).toBe('test');
-    expect(atlas.cellSize).toBe(16);
+    expect(atlas.cellWidth).toBe(16);
     expect(Object.keys(atlas.frames).length).toBe(4); // 2x2
   });
 

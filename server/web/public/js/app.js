@@ -179,26 +179,28 @@ function onProjectData(data) {
       state.palette[name] = color;
     }
   }
+  const cellW = data.cellWidth ?? data.cellSize ?? 16;
+  const cellH = data.cellHeight ?? data.cellSize ?? cellW;
   editor.setPalette(state.palette);
   editor.setBackground(data.background);
-  editor.setCellSize(data.cellSize || 16);
+  editor.setCellSize(cellW, cellH);
   shapePanel.setPalette(state.palette);
   cellNav.setPalette(state.palette);
   animPreview.setPalette(state.palette);
-  animPreview.setCellSize(data.cellSize || 16);
+  animPreview.setCellSize(cellW, cellH);
   animPreview.setCells(data.cells || {});
   fullPreview.setPalette(state.palette);
-  fullPreview.setCellSize(data.cellSize || 16);
+  fullPreview.setCellSize(cellW, cellH);
   fullPreview.setCells(data.cells || {});
 
   // Auto-zoom to fit nicely
   const container = document.getElementById('canvas-container');
   const maxDim = Math.min(container.clientWidth, container.clientHeight) * 0.75;
-  const idealZoom = Math.floor(maxDim / (data.cellSize || 16));
+  const idealZoom = Math.floor(maxDim / Math.max(cellW, cellH));
   editor.setZoom(Math.max(4, Math.min(24, idealZoom)));
 
   renderPalette();
-  cellNav.setGrid(data.grid.rows, data.grid.cols, data.cellSize || 16);
+  cellNav.setGrid(data.grid.rows, data.grid.cols, cellW, cellH);
   cellNav.setCells(data.cells || {});
   cellNav.render();
   groupPanel.setGroups(data.groups || {});

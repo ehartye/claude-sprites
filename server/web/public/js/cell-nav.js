@@ -6,7 +6,8 @@
 export class CellNavigator {
   constructor() {
     this._grid = { rows: 0, cols: 0 };
-    this._cellSize = 16;
+    this._cellW = 16;
+    this._cellH = 16;
     this._palette = {};
     this._cells = {};
     this._activeRef = '0,0';
@@ -23,9 +24,10 @@ export class CellNavigator {
     this._selectCb = onSelect;
   }
 
-  setGrid(rows, cols, cellSize = 16) {
+  setGrid(rows, cols, cellW = 16, cellH = cellW) {
     this._grid = { rows, cols };
-    this._cellSize = cellSize;
+    this._cellW = cellW;
+    this._cellH = cellH;
   }
 
   setPalette(paletteMap) {
@@ -66,7 +68,7 @@ export class CellNavigator {
       // Thumbnail canvas for cell preview
       const canvas = document.createElement('canvas');
       canvas.width = 48;
-      canvas.height = 48;
+      canvas.height = Math.round(48 * (this._cellH / this._cellW));
       canvas.className = 'cell-thumb-canvas';
       this._renderThumb(canvas, ref);
       thumb.appendChild(canvas);
@@ -108,16 +110,16 @@ export class CellNavigator {
    */
   _renderThumb(canvas, ref) {
     const ctx = canvas.getContext('2d');
-    const cellSize = this._cellSize;
-    const size = canvas.width;
-    const scale = size / cellSize;
+    const cellW = this._cellW;
+    const cellH = this._cellH;
+    const scale = canvas.width / cellW;
 
     // Checkerboard background — one square per pixel, theme-aware
     const style = getComputedStyle(document.documentElement);
     const colorA = style.getPropertyValue('--checker-a').trim();
     const colorB = style.getPropertyValue('--checker-b').trim();
-    for (let row = 0; row < cellSize; row++) {
-      for (let col = 0; col < cellSize; col++) {
+    for (let row = 0; row < cellH; row++) {
+      for (let col = 0; col < cellW; col++) {
         ctx.fillStyle = ((row + col) % 2 === 0) ? colorA : colorB;
         ctx.fillRect(col * scale, row * scale, scale, scale);
       }

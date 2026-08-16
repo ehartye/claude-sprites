@@ -8,7 +8,7 @@ The server auto-starts on first invocation. Port defaults to 3377 (override with
 
 | Command | Flags | Notes |
 |---------|-------|-------|
-| `new <name>` | `--size 16 --rows 4 --cols 4 --palette pico8` | Create project. Palettes: `pico8`, `gameboy`, `nes`, `cga` |
+| `new <name>` | `--size 16 --rows 4 --cols 4 --palette pico8` | Create project. `--size` takes `16` (square) or `16x32` (width x height — tall character cells). Palettes: `pico8`, `gameboy`, `nes`, `cga` |
 | `open <path>` | | Open saved project file |
 | `save` | | Persist project to SQLite |
 | `export` | | Export PNG + JSON atlas to working directory |

@@ -6,14 +6,16 @@ describe('CellManager', () => {
     const cm = new CellManager(16, 3, 4);
     expect(cm.rows).toBe(3);
     expect(cm.cols).toBe(4);
-    expect(cm.cellSize).toBe(16);
+    expect(cm.cellWidth).toBe(16);
+    expect(cm.cellHeight).toBe(16);
   });
 
   it('gets a cell by row,col', () => {
     const cm = new CellManager(16, 3, 4);
     const cell = cm.getCell('1,2');
     expect(cell).toBeDefined();
-    expect(cell.size).toBe(16);
+    expect(cell.width).toBe(16);
+    expect(cell.height).toBe(16);
   });
 
   it('throws on out-of-bounds', () => {

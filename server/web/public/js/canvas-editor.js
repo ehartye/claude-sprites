@@ -13,7 +13,8 @@ export class CanvasEditor {
     /** @type {CanvasRenderingContext2D} */
     this.ctx = null;
 
-    this.cellSize = 16;
+    this.cellW = 16;
+    this.cellH = 16;
     this.zoom = 16;
     this.panX = 0;
     this.panY = 0;
@@ -40,8 +41,9 @@ export class CanvasEditor {
     this._abortController = null;
   }
 
-  init(container, cellSize = 16) {
-    this.cellSize = cellSize;
+  init(container, cellW = 16, cellH = cellW) {
+    this.cellW = cellW;
+    this.cellH = cellH;
     this.canvas = document.getElementById('editor-canvas');
     this.ctx = this.canvas.getContext('2d');
 
@@ -66,8 +68,9 @@ export class CanvasEditor {
     this.render();
   }
 
-  setCellSize(size) {
-    this.cellSize = size;
+  setCellSize(w, h = w) {
+    this.cellW = w;
+    this.cellH = h;
     this.render();
   }
 
@@ -117,16 +120,17 @@ export class CanvasEditor {
     const cw = this.canvas.width;
     const ch = this.canvas.height;
     const z = this.zoom;
-    const gridPx = this.cellSize * z;
+    const gridW = this.cellW * z;
+    const gridH = this.cellH * z;
 
     ctx.clearRect(0, 0, cw, ch);
 
     // Offset to center the grid
-    const ox = Math.floor((cw - gridPx) / 2) + this.panX;
-    const oy = Math.floor((ch - gridPx) / 2) + this.panY;
+    const ox = Math.floor((cw - gridW) / 2) + this.panX;
+    const oy = Math.floor((ch - gridH) / 2) + this.panY;
 
     // Background
-    this._renderBackground(ctx, ox, oy, gridPx);
+    this._renderBackground(ctx, ox, oy, gridW, gridH);
 
     // Onion skin (rendered before main shapes at 30% opacity)
     if (this._onionSkinData) {
@@ -142,7 +146,7 @@ export class CanvasEditor {
     // Shapes — pass 2: clipped to grid at full opacity (overwrites in-bounds pixels)
     ctx.save();
     ctx.beginPath();
-    ctx.rect(ox, oy, gridPx, gridPx);
+    ctx.rect(ox, oy, gridW, gridH);
     ctx.clip();
     this._renderShapes(ctx, ox, oy, z);
     ctx.restore();
@@ -157,22 +161,22 @@ export class CanvasEditor {
     this._renderGrid(ctx, ox, oy, z);
   }
 
-  _renderBackground(ctx, ox, oy, gridPx) {
+  _renderBackground(ctx, ox, oy, gridW, gridH) {
     if (this._background.mode === 'chroma') {
       ctx.fillStyle = this._background.color;
-      ctx.fillRect(ox, oy, gridPx, gridPx);
+      ctx.fillRect(ox, oy, gridW, gridH);
     } else {
       // Checkerboard for transparent — read colors from CSS theme variables
       const style = getComputedStyle(document.documentElement);
       const colorA = style.getPropertyValue('--checker-a').trim();
       const colorB = style.getPropertyValue('--checker-b').trim();
       const tileSize = Math.max(4, this.zoom);
-      for (let y = 0; y < gridPx; y += tileSize) {
-        for (let x = 0; x < gridPx; x += tileSize) {
+      for (let y = 0; y < gridH; y += tileSize) {
+        for (let x = 0; x < gridW; x += tileSize) {
           const dark = ((Math.floor(x / tileSize) + Math.floor(y / tileSize)) % 2) === 0;
           ctx.fillStyle = dark ? colorA : colorB;
-          const w = Math.min(tileSize, gridPx - x);
-          const h = Math.min(tileSize, gridPx - y);
+          const w = Math.min(tileSize, gridW - x);
+          const h = Math.min(tileSize, gridH - y);
           ctx.fillRect(ox + x, oy + y, w, h);
         }
       }
@@ -361,7 +365,8 @@ export class CanvasEditor {
   }
 
   _renderGrid(ctx, ox, oy, z) {
-    const gridPx = this.cellSize * z;
+    const gridW = this.cellW * z;
+    const gridH = this.cellH * z;
     const style = getComputedStyle(document.documentElement);
     const gridColor = style.getPropertyValue('--grid-line').trim();
     const highlightColor = style.getPropertyValue('--grid-highlight').trim();
@@ -370,25 +375,32 @@ export class CanvasEditor {
     ctx.lineWidth = 1;
 
     ctx.beginPath();
-    for (let i = 0; i <= this.cellSize; i++) {
+    for (let i = 0; i <= this.cellW; i++) {
+      if (i > 0 && i < this.cellW && i % 8 === 0) continue;
       const pos = i * z;
-      if (i > 0 && i < this.cellSize && i % 8 === 0) continue;
       ctx.moveTo(ox + pos + 0.5, oy);
-      ctx.lineTo(ox + pos + 0.5, oy + gridPx);
+      ctx.lineTo(ox + pos + 0.5, oy + gridH);
+    }
+    for (let i = 0; i <= this.cellH; i++) {
+      if (i > 0 && i < this.cellH && i % 8 === 0) continue;
+      const pos = i * z;
       ctx.moveTo(ox, oy + pos + 0.5);
-      ctx.lineTo(ox + gridPx, oy + pos + 0.5);
+      ctx.lineTo(ox + gridW, oy + pos + 0.5);
     }
     ctx.stroke();
 
     // Quadrant boundaries every 8 pixels
     ctx.strokeStyle = highlightColor;
     ctx.beginPath();
-    for (let i = 8; i < this.cellSize; i += 8) {
+    for (let i = 8; i < this.cellW; i += 8) {
       const pos = i * z;
       ctx.moveTo(ox + pos + 0.5, oy);
-      ctx.lineTo(ox + pos + 0.5, oy + gridPx);
+      ctx.lineTo(ox + pos + 0.5, oy + gridH);
+    }
+    for (let i = 8; i < this.cellH; i += 8) {
+      const pos = i * z;
       ctx.moveTo(ox, oy + pos + 0.5);
-      ctx.lineTo(ox + gridPx, oy + pos + 0.5);
+      ctx.lineTo(ox + gridW, oy + pos + 0.5);
     }
     ctx.stroke();
   }
@@ -474,12 +486,13 @@ export class CanvasEditor {
     const rect = this.canvas.getBoundingClientRect();
     const cx = clientX - rect.left;
     const cy = clientY - rect.top;
-    const gridPx = this.cellSize * this.zoom;
-    const ox = Math.floor((this.canvas.width - gridPx) / 2) + this.panX;
-    const oy = Math.floor((this.canvas.height - gridPx) / 2) + this.panY;
+    const gridW = this.cellW * this.zoom;
+    const gridH = this.cellH * this.zoom;
+    const ox = Math.floor((this.canvas.width - gridW) / 2) + this.panX;
+    const oy = Math.floor((this.canvas.height - gridH) / 2) + this.panY;
     const px = Math.floor((cx - ox) / this.zoom);
     const py = Math.floor((cy - oy) / this.zoom);
-    return { x: px, y: py, inBounds: px >= 0 && px < this.cellSize && py >= 0 && py < this.cellSize };
+    return { x: px, y: py, inBounds: px >= 0 && px < this.cellW && py >= 0 && py < this.cellH };
   }
 
   /* -- Resize -- */
@@ -539,8 +552,8 @@ export class CanvasEditor {
         this._isMouseDown = false;
         if (this._pixelUpCb) {
           const px = this._canvasToPixel(e.clientX, e.clientY);
-          const x = Math.max(0, Math.min(this.cellSize - 1, px.x));
-          const y = Math.max(0, Math.min(this.cellSize - 1, px.y));
+          const x = Math.max(0, Math.min(this.cellW - 1, px.x));
+          const y = Math.max(0, Math.min(this.cellH - 1, px.y));
           this._pixelUpCb(x, y, e);
         }
       }

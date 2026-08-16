@@ -19,9 +19,10 @@ function bbox(p) {
   return { minX: p.x, maxX: p.x, minY: p.y, maxY: p.y };
 }
 
-/** Mirror sum m such that coord' = m - coord. about: 'self' | 'cell'. */
-export function mirrorSum(p, axis, about, cellSize) {
-  if (about === 'cell') return cellSize - 1;
+/** Mirror sum m such that coord' = m - coord. about: 'self' | 'cell'.
+ *  extent = cell dimension along the flip axis. */
+export function mirrorSum(p, axis, about, extent) {
+  if (about === 'cell') return extent - 1;
   const b = bbox(p);
   return axis === 'horizontal' ? b.minX + b.maxX : b.minY + b.maxY;
 }
@@ -43,10 +44,9 @@ export function flipParams(p, axis, m) {
 }
 
 /** Pivot point for rotation. about: 'self' (bbox center) | 'cell' (cell center). */
-export function rotatePivot(p, about, cellSize) {
+export function rotatePivot(p, about, cellWidth, cellHeight = cellWidth) {
   if (about === 'cell') {
-    const m = (cellSize - 1) / 2;
-    return [m, m];
+    return [(cellWidth - 1) / 2, (cellHeight - 1) / 2];
   }
   const b = bbox(p);
   return [(b.minX + b.maxX) / 2, (b.minY + b.maxY) / 2];

@@ -5,14 +5,17 @@ export class CellManager {
   constructor(cellSize, rows, cols) {
     if (rows > 10 || cols > 10) throw new Error('Grid max is 10x10');
     if (rows < 1 || cols < 1) throw new Error('Grid must be at least 1x1');
-    this.cellSize = cellSize;
+    // cellSize: number (square) or { w, h }
+    const { w, h } = typeof cellSize === 'object' ? { w: cellSize.w, h: cellSize.h ?? cellSize.w } : { w: cellSize, h: cellSize };
+    this.cellWidth = w;
+    this.cellHeight = h;
     this.rows = rows;
     this.cols = cols;
     this._grid = [];
     for (let r = 0; r < rows; r++) {
       this._grid[r] = [];
       for (let c = 0; c < cols; c++) {
-        this._grid[r][c] = new Cell(cellSize);
+        this._grid[r][c] = new Cell({ w, h });
       }
     }
   }
@@ -43,7 +46,7 @@ export class CellManager {
   copyCell(fromRef, toRef) {
     const src = this.getCell(fromRef);
     const { r, c } = this._parseCoord(toRef);
-    const dest = new Cell(this.cellSize);
+    const dest = new Cell({ w: this.cellWidth, h: this.cellHeight });
     for (const shape of src.shapes.listByZ()) {
       const clone = shape.clone();
       dest.shapes.add(clone);
@@ -64,7 +67,7 @@ export class CellManager {
 
   mirrorCell(ref, axis) {
     const cell = this.getCell(ref);
-    const max = this.cellSize - 1;
+    const max = (axis === 'horizontal' ? this.cellWidth : this.cellHeight) - 1;
     for (const shape of cell.shapes.listByZ()) {
       const p = shape.params;
       if (axis === 'horizontal') {
@@ -83,9 +86,10 @@ export class CellManager {
 
   rotateCell(ref, deg) {
     const cell = this.getCell(ref);
-    const m = (this.cellSize - 1) / 2;
+    const px = (this.cellWidth - 1) / 2;
+    const py = (this.cellHeight - 1) / 2;
     for (const shape of cell.shapes.listByZ()) {
-      rotateParams(shape.params, deg, m, m);
+      rotateParams(shape.params, deg, px, py);
     }
   }
 
@@ -121,7 +125,7 @@ export class CellManager {
     const cm = new CellManager(cellSize, json.rows, json.cols);
     for (const [coord, cellData] of Object.entries(json.cells)) {
       const { r, c } = cm._parseCoord(coord);
-      cm._grid[r][c] = Cell.fromJSON(cellData, cellSize);
+      cm._grid[r][c] = Cell.fromJSON(cellData, { w: cm.cellWidth, h: cm.cellHeight });
     }
     return cm;
   }

@@ -176,19 +176,19 @@ export class CanvasRenderer {
   }
 
   renderCellRaw(cell) {
-    const canvas = createCanvas(cell.size, cell.size);
+    const canvas = createCanvas(cell.width, cell.height);
     const ctx = canvas.getContext('2d');
-    this._applyBackground(ctx, cell.size, cell.size);
+    this._applyBackground(ctx, cell.width, cell.height);
     for (const shape of cell.shapes.listByZ()) {
       this._drawShape(ctx, shape);
     }
-    return ctx.getImageData(0, 0, cell.size, cell.size).data;
+    return ctx.getImageData(0, 0, cell.width, cell.height).data;
   }
 
   renderCell(cell) {
-    const canvas = createCanvas(cell.size, cell.size);
+    const canvas = createCanvas(cell.width, cell.height);
     const ctx = canvas.getContext('2d');
-    this._applyBackground(ctx, cell.size, cell.size);
+    this._applyBackground(ctx, cell.width, cell.height);
     for (const shape of cell.shapes.listByZ()) {
       this._drawShape(ctx, shape);
     }
@@ -198,10 +198,11 @@ export class CanvasRenderer {
   renderCells(cells, opts = {}) {
     const cols = opts.cols ?? cells.length;
     const rows = Math.ceil(cells.length / cols);
-    const size = cells[0].size;
+    const cellW = cells[0].width;
+    const cellH = cells[0].height;
     const gap = opts.gap ?? 1;
-    const w = cols * size + (cols - 1) * gap;
-    const h = rows * size + (rows - 1) * gap;
+    const w = cols * cellW + (cols - 1) * gap;
+    const h = rows * cellH + (rows - 1) * gap;
     const canvas = createCanvas(w, h);
     const ctx = canvas.getContext('2d');
     this._applyBackground(ctx, w, h);
@@ -209,11 +210,11 @@ export class CanvasRenderer {
     cells.forEach((cell, i) => {
       const r = Math.floor(i / cols);
       const c = i % cols;
-      const x = c * (size + gap);
-      const y = r * (size + gap);
-      const cellCanvas = createCanvas(size, size);
+      const x = c * (cellW + gap);
+      const y = r * (cellH + gap);
+      const cellCanvas = createCanvas(cellW, cellH);
       const cellCtx = cellCanvas.getContext('2d');
-      this._applyBackground(cellCtx, size, size);
+      this._applyBackground(cellCtx, cellW, cellH);
       for (const shape of cell.shapes.listByZ()) {
         this._drawShape(cellCtx, shape);
       }
