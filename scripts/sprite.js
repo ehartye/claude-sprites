@@ -238,6 +238,8 @@ SESSION
   new <name> [--size N | --size WxH] [--rows N --cols N --palette pico8|gameboy|nes|cga|db-16|db-32]
              [--dest <folder>]   parent folder for exports (default: <cwd>/assets/claude-sprites)
   open <path>            open saved project file
+  open --session <name|id>  reopen an earlier project from its stored draft
+  sessions               list recent projects (id, name, last updated)
   save                   persist project to SQLite
   export [--dest <folder>]  export gapless sheet PNG + Aseprite JSON atlas (<name>.atlas.json)
                          atlas has frameTags from cell groups, per-group fps durations, pivot slice
@@ -363,8 +365,20 @@ async function run() {
       break;
     }
     case 'open':
-      result = await api('POST', '/api/session/open', { path: sub });
+      result = args.session
+        ? await api('POST', '/api/session/open-session', { ref: args.session })
+        : await api('POST', '/api/session/open', { path: sub });
       break;
+    case 'sessions': {
+      result = await api('GET', '/api/session/list');
+      if (result.ok) {
+        for (const s of result.data) {
+          console.log(`${s.id}  ${s.project_name}  ${new Date(s.updated_at).toISOString()}`);
+        }
+        return;
+      }
+      break;
+    }
     case 'save':
       result = await api('POST', '/api/session/save', {});
       break;
