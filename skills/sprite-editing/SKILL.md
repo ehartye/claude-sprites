@@ -52,9 +52,9 @@ Use `sprite.js view --cell 0,0` or check the web UI frequently to verify your wo
 The efficient pattern for multi-frame animation:
 
 1. **Draw one frame completely** — get the composition right
-2. **Copy to remaining frames** — `sprite.js copy --from 0,0 --to 0,1`
-3. **Adjust per frame** — use `move-to` for absolute positioning or `move` for relative offsets
-4. **Group for playback** — `sprite.js group create walk 0,0 0,1 0,2 0,3`
+2. **Copy to remaining frames** — `sprite.js clone-cell --from 0,0 --to "0,1 0,2 0,3"`
+3. **Group for playback** — `sprite.js group create walk 0,0 0,1 0,2 0,3 --fps 8`
+4. **Tween the motion** — `sprite.js tween ball --group walk --to 12,8 --ease out` interpolates position (and/or params via `--to-updates '{"ry":2}'`) across all frames in one call; fall back to per-frame `move-to` only for non-interpolatable adjustments
 
 For position-only changes across frames, `sprite.js clone` copies a single shape from one cell to another — useful when only one element moves.
 
