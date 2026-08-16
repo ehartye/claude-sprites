@@ -239,6 +239,16 @@ export class CanvasRenderer {
     return ctx.getImageData(0, 0, cell.width, cell.height).data;
   }
 
+  /** PNG-encode, optionally nearest-neighbor upscaled by an integer factor. */
+  _finish(canvas, scale) {
+    if (!scale || scale === 1) return canvas.toBuffer('image/png');
+    const out = createCanvas(canvas.width * scale, canvas.height * scale);
+    const ctx = out.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(canvas, 0, 0, out.width, out.height);
+    return out.toBuffer('image/png');
+  }
+
   renderCell(cell, opts = {}) {
     const canvas = createCanvas(cell.width, cell.height);
     const ctx = canvas.getContext('2d');
@@ -247,7 +257,7 @@ export class CanvasRenderer {
     for (const shape of cell.shapes.listByZ()) {
       this._drawShape(ctx, shape);
     }
-    return canvas.toBuffer('image/png');
+    return this._finish(canvas, opts.scale);
   }
 
   renderCells(cells, opts = {}) {
@@ -276,7 +286,7 @@ export class CanvasRenderer {
       ctx.drawImage(cellCanvas, x, y);
     });
 
-    return canvas.toBuffer('image/png');
+    return this._finish(canvas, opts.scale);
   }
 
   renderSheet(cellManager, opts = {}) {
