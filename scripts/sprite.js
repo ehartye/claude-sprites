@@ -233,7 +233,7 @@ function describeBatchCommand(cmd) {
 const HELP_TEXT = `sprite — CLI for claude-sprites (server at ${BASE_URL})
 
 SESSION
-  new <name> [--size N --rows N --cols N --palette pico8|gameboy|nes|cga|db-16|db-32]
+  new <name> [--size N | --size WxH] [--rows N --cols N --palette pico8|gameboy|nes|cga|db-16|db-32]
   open <path>            open saved project file
   save                   persist project to SQLite
   export                 export PNG + JSON atlas to cwd
@@ -330,12 +330,19 @@ async function run() {
       console.log('restarted');
       return;
     }
-    case 'new':
+    case 'new': {
+      // --size accepts "16" (square) or "16x32" (width x height)
+      const sizeMatch = typeof args.size === 'string' ? args.size.match(/^(\d+)x(\d+)$/i) : null;
       result = await api('POST', '/api/session/new', {
-        name: sub, size: num(args.size), rows: num(args.rows),
+        name: sub,
+        ...(sizeMatch
+          ? { width: Number(sizeMatch[1]), height: Number(sizeMatch[2]) }
+          : { size: num(args.size) }),
+        rows: num(args.rows),
         cols: num(args.cols), palette: args.palette,
       });
       break;
+    }
     case 'open':
       result = await api('POST', '/api/session/open', { path: sub });
       break;

@@ -22,17 +22,19 @@ export function sessionRoutes(state) {
 
   r.post('/new', (req, res) => {
     try {
-      const { name, size = 16, rows = 4, cols = 4, palette = 'pico8' } = req.body;
+      const { name, size = 16, width, height, rows = 4, cols = 4, palette = 'pico8' } = req.body;
       if (!name) return res.json({ ok: false, error: 'name required' });
       const project_path = process.cwd();
       const destination_folder = join(project_path, 'assets', 'claude-sprites', name);
-      const project = Project.create({ name, cellSize: size, rows, cols, palette });
+      const w = width ?? size;
+      const h = height ?? w;
+      const project = Project.create({ name, cellWidth: w, cellHeight: h, rows, cols, palette });
       state.project = project;
       const draft_json = JSON.stringify(project.toJSON());
       const session = state.db.createSession({ project_name: name, project_path, destination_folder, json_file: null, draft_json });
       state.sessionId = session.id;
       state.broadcast?.({ type: 'project', data: project.toJSON() });
-      res.json({ ok: true, data: `Created "${name}" (${size}px ${rows}x${cols})` });
+      res.json({ ok: true, data: `Created "${name}" (${w}x${h}px ${rows}x${cols})` });
     } catch (e) { res.json({ ok: false, error: e.message }); }
   });
 

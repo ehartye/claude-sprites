@@ -21,6 +21,7 @@ sprite.js new myproject --size 16 --rows 4 --cols 4 --palette pico8
 ```
 
 - Default: 16x16 cells, 4x4 grid, pico8 palette
+- Non-square cells: `--size 16x32` (width x height) — the usual shape for tall characters
 - Built-in palettes: `pico8`, `gameboy`, `nes`, `cga`
 - Name cells immediately: `sprite.js name --cell 0,0 --as idle_1`
 - Check project state: `sprite.js status`

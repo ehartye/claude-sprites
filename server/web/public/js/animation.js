@@ -13,7 +13,8 @@ export class AnimationPreview {
     this._container = null;
 
     this._cells = {};
-    this._cellSize = 16;
+    this._cellW = 16;
+    this._cellH = 16;
     this._palette = {};
     this._frames = [];
     this._currentFrame = 0;
@@ -27,7 +28,7 @@ export class AnimationPreview {
     this._onionCb = null;
 
     this._mountId = opts.mountId ?? 'anim-panel';
-    this._size = opts.size ?? DEFAULT_this._size;
+    this._size = opts.size ?? DEFAULT_PREVIEW_SIZE;
     this._showOnionSkin = opts.showOnionSkin ?? true;
     this._responsive = opts.responsive ?? false;
     this._title = opts.title ?? 'Animation';
@@ -49,16 +50,20 @@ export class AnimationPreview {
     const rect = mount.getBoundingClientRect();
     const reserved = 80; // rough space for controls + header
     const available = Math.max(64, Math.min(rect.width, rect.height - reserved));
-    // Snap to integer multiple of cellSize so pixels stay crisp.
-    const target = Math.max(this._cellSize, Math.floor(available / this._cellSize) * this._cellSize);
-    if (target !== this._size) {
-      this._size = target;
-      this._canvas.width = target;
-      this._canvas.height = target;
-      this._canvas.style.width = `${target}px`;
-      this._canvas.style.height = `${target}px`;
-      this._renderFrame();
-    }
+    this._size = available;
+    if (this._applyCanvasSize()) this._renderFrame();
+  }
+
+  /** Snap the canvas to an integer pixel scale of the cell dims. Returns true if it changed. */
+  _applyCanvasSize() {
+    const s = Math.max(1, Math.floor(this._size / Math.max(this._cellW, this._cellH)));
+    const w = s * this._cellW, h = s * this._cellH;
+    if (this._canvas.width === w && this._canvas.height === h) return false;
+    this._canvas.width = w;
+    this._canvas.height = h;
+    this._canvas.style.width = `${w}px`;
+    this._canvas.style.height = `${h}px`;
+    return true;
   }
 
   _attachResize() {
@@ -70,7 +75,11 @@ export class AnimationPreview {
   }
 
   setPalette(paletteMap) { this._palette = paletteMap; }
-  setCellSize(size) { this._cellSize = size; }
+  setCellSize(w, h = w) {
+    this._cellW = w;
+    this._cellH = h;
+    if (this._canvas) this._applyCanvasSize();
+  }
   setCells(cells) { this._cells = cells || {}; }
   setActiveCell(ref) { this._activeCell = ref; }
   onOnionSkin(cb) { this._onionCb = cb; }
@@ -150,10 +159,9 @@ export class AnimationPreview {
     container.appendChild(header);
 
     this._canvas = document.createElement('canvas');
-    this._canvas.width = this._size;
-    this._canvas.height = this._size;
     this._canvas.className = 'anim-canvas';
     this._ctx = this._canvas.getContext('2d');
+    this._applyCanvasSize();
     container.appendChild(this._canvas);
 
     // Controls
@@ -238,15 +246,15 @@ export class AnimationPreview {
 
   _renderFrame() {
     const ctx = this._ctx;
-    ctx.clearRect(0, 0, this._size, this._size);
+    ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
 
     // Checkerboard background — one square per pixel, matching the cell grid
     const style = getComputedStyle(document.documentElement);
     const colorA = style.getPropertyValue('--checker-a').trim();
     const colorB = style.getPropertyValue('--checker-b').trim();
-    const tileSize = this._size / this._cellSize;
-    for (let row = 0; row < this._cellSize; row++) {
-      for (let col = 0; col < this._cellSize; col++) {
+    const tileSize = this._canvas.width / this._cellW;
+    for (let row = 0; row < this._cellH; row++) {
+      for (let col = 0; col < this._cellW; col++) {
         ctx.fillStyle = ((row + col) % 2 === 0) ? colorA : colorB;
         ctx.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
       }
@@ -256,7 +264,7 @@ export class AnimationPreview {
 
     const ref = this._frames[this._currentFrame];
     const shapes = this._getCellShapes(ref);
-    const scale = this._size / this._cellSize;
+    const scale = this._canvas.width / this._cellW;
 
     for (const shape of shapes) {
       ctx.fillStyle = this._resolveColor(shape.color);

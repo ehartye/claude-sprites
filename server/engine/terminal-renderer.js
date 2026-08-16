@@ -32,7 +32,8 @@ export class TerminalRenderer {
   }
 
   renderCell(cell) {
-    const size = cell.size;
+    const width = cell.width;
+    const height = cell.height;
     const imgData = this._canvasRenderer.renderCellRaw(cell);
     const shapes = cell.shapes.listByZ();
 
@@ -40,12 +41,12 @@ export class TerminalRenderer {
 
     // Column header
     const headerParts = ['  '];
-    if (size <= 16) {
-      for (let c = 0; c < size; c++) {
+    if (width <= 16) {
+      for (let c = 0; c < width; c++) {
         headerParts.push(` ${hexDigit(c)}`);
       }
     } else {
-      for (let c = 0; c < size; c++) {
+      for (let c = 0; c < width; c++) {
         if (c % 4 === 0) {
           const label = hexDigit(c);
           headerParts.push(label.length === 1 ? ` ${label}` : label);
@@ -57,11 +58,11 @@ export class TerminalRenderer {
     lines.push(headerParts.join(''));
 
     // Pixel rows
-    for (let y = 0; y < size; y++) {
-      const rowLabel = size <= 16 ? hexDigit(y) : hexDigit(y).padStart(2, '0');
+    for (let y = 0; y < height; y++) {
+      const rowLabel = height <= 16 ? hexDigit(y) : hexDigit(y).padStart(2, '0');
       const parts = [rowLabel + ' '];
-      for (let x = 0; x < size; x++) {
-        const idx = (y * size + x) * 4;
+      for (let x = 0; x < width; x++) {
+        const idx = (y * width + x) * 4;
         const a = imgData[idx + 3];
         if (a === 0) {
           parts.push(transparentBlock());

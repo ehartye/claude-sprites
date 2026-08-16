@@ -15,7 +15,7 @@ describe('Project', () => {
   it('creates a new project', () => {
     const proj = Project.create({ name: 'test', cellSize: 16, rows: 3, cols: 4 });
     expect(proj.name).toBe('test');
-    expect(proj.cellSize).toBe(16);
+    expect(proj.cellWidth).toBe(16);
     expect(proj.cells.rows).toBe(3);
     expect(proj.cells.cols).toBe(4);
     expect(proj.palette.list().length).toBe(0);
@@ -45,7 +45,7 @@ describe('Project', () => {
 
     const loaded = Project.load(TMP_FILE);
     expect(loaded.name).toBe('test');
-    expect(loaded.cellSize).toBe(16);
+    expect(loaded.cellWidth).toBe(16);
     expect(loaded.palette.getColor('red')).toBe('#ff0000');
     expect(loaded.cells.getCell('idle').shapes.getByName('box')).toBeDefined();
     expect(loaded.groups.get('anim')).toEqual(['0,0', '0,1']);
@@ -56,7 +56,7 @@ describe('Project', () => {
     const json = proj.toJSON();
     expect(json.version).toBe(1);
     expect(json.name).toBe('crab');
-    expect(json.cellSize).toBe(16);
+    expect(json.cellWidth).toBe(16);
     expect(json.grid).toEqual({ rows: 2, cols: 3 });
     expect(json.background).toEqual({ mode: 'transparent' });
     expect(json.palette).toEqual([]);
@@ -68,7 +68,7 @@ describe('Project', () => {
     const proj = Project.create({ name: 'test', cellSize: 16, rows: 2, cols: 3 });
     proj.cells.getCell('0,0').name = 'idle';
     const atlas = proj.exportAtlas();
-    expect(atlas.cellSize).toBe(16);
+    expect(atlas.cellWidth).toBe(16);
     expect(atlas.frames['0,0'].x).toBe(0);
     expect(atlas.frames['0,0'].y).toBe(0);
     expect(atlas.frames['0,0'].name).toBe('idle');

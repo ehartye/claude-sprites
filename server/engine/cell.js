@@ -4,7 +4,10 @@ import { flipParams, mirrorSum, rotateParams, rotatePivot } from './transform.js
 
 export class Cell {
   constructor(size, opts = {}) {
-    this.size = size;
+    // size: number (square) or { w, h }
+    const { w, h } = typeof size === 'object' ? { w: size.w, h: size.h ?? size.w } : { w: size, h: size };
+    this.width = w;
+    this.height = h;
     this.name = opts.name ?? null;
     this.shapes = new ShapeRegistry();
     this._undoStack = [];
@@ -85,7 +88,7 @@ export class Cell {
     const about = opts.about ?? 'self';
     const oldParams = { ...shape.params };
     this._exec({
-      execute: () => flipParams(shape.params, axis, mirrorSum(shape.params, axis, about, this.size)),
+      execute: () => flipParams(shape.params, axis, mirrorSum(shape.params, axis, about, axis === 'horizontal' ? this.width : this.height)),
       undo: () => { Object.assign(shape.params, oldParams); },
     });
   }
@@ -97,7 +100,7 @@ export class Cell {
     const oldParams = { ...shape.params };
     this._exec({
       execute: () => {
-        const [px, py] = rotatePivot(shape.params, about, this.size);
+        const [px, py] = rotatePivot(shape.params, about, this.width, this.height);
         rotateParams(shape.params, deg, px, py);
       },
       undo: () => { Object.assign(shape.params, oldParams); },

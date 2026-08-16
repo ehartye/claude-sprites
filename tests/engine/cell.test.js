@@ -4,7 +4,8 @@ import { Cell } from '../../server/engine/cell.js';
 describe('Cell', () => {
   it('creates with given size', () => {
     const cell = new Cell(16);
-    expect(cell.size).toBe(16);
+    expect(cell.width).toBe(16);
+    expect(cell.height).toBe(16);
     expect(cell.shapes.listByZ()).toEqual([]);
   });
 
