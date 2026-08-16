@@ -593,6 +593,13 @@ function _handleDrawInner(state, type, params) {
     return handleHighlightShadow(state, type, params);
   }
 
+  // Every remaining draw type paints with an explicit color. Failing here
+  // names the problem at authoring time; an undefined color otherwise
+  // surfaces later as an opaque crash when the sheet is rendered/exported.
+  if (params.color == null) {
+    throw new Error(`draw ${type}: color is required`);
+  }
+
   const cell = state.project.cells.getCell(params.cell);
 
   if (type === 'border') {

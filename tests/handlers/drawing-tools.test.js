@@ -18,6 +18,15 @@ describe('Drawing tools', () => {
     expect(cell.shapes.listByZ().length).toBe(1);
   });
 
+  it('rejects a missing color at draw time with a clear error', () => {
+    expect(() => handleDraw(state, 'point', { cell: '0,0', x: 5, y: 3 }))
+      .toThrow(/color is required/);
+    expect(() => handleDraw(state, 'rect', { cell: '0,0', x: 0, y: 0, w: 4, h: 4, color: undefined }))
+      .toThrow(/color is required/);
+    // nothing half-drawn
+    expect(state.project.cells.getCell('0,0').shapes.listByZ().length).toBe(0);
+  });
+
   it('draws a line', () => {
     const result = handleDraw(state, 'line', { cell: '0,0', x1: 0, y1: 0, x2: 10, y2: 10, color: '#ff0000' });
     expect(result.shapeId).toBeDefined();
