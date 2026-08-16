@@ -161,6 +161,22 @@ function mapCommandToApi(cmd) {
       return { method: 'POST', path: '/api/shape/clone', body: {
         from_cell: params.from, to_cell: params.to, shape: params.shape, new_name: params.as,
       }};
+    case 'flip':
+      return { method: 'POST', path: '/api/shape/flip', body: {
+        cell: params.cell, name: params.shape, axis: params.axis, about: params.about,
+      }};
+    case 'rotate':
+      return { method: 'POST', path: '/api/shape/rotate', body: {
+        cell: params.cell, name: params.shape, deg: params.deg, about: params.about,
+      }};
+    case 'mirror':
+      return { method: 'POST', path: '/api/cell/mirror', body: {
+        cell: params.cell, axis: params.axis,
+      }};
+    case 'rotate-cell':
+      return { method: 'POST', path: '/api/cell/rotate', body: {
+        cell: params.cell, deg: params.deg,
+      }};
     case 'copy':
       return { method: 'POST', path: '/api/cell/copy', body: {
         from: params.from, to: params.to,
@@ -199,6 +215,10 @@ function describeBatchCommand(cmd) {
     case 'recolor': return `recolor ${cmd.shape} (${cmd.cell})`;
     case 'delete': return `delete ${cmd.shape} (${cmd.cell})`;
     case 'clone': return `clone ${cmd.shape} ${cmd.from} -> ${cmd.to}`;
+    case 'flip': return `flip ${cmd.shape} ${cmd.axis} (${cmd.cell})`;
+    case 'rotate': return `rotate ${cmd.shape} ${cmd.deg}deg (${cmd.cell})`;
+    case 'mirror': return `mirror ${cmd.axis} (${cmd.cell})`;
+    case 'rotate-cell': return `rotate-cell ${cmd.deg}deg (${cmd.cell})`;
     case 'copy': return `copy ${cmd.from} -> ${cmd.to}`;
     case 'clear': return `clear (${cmd.cell})`;
     case 'rename': return `rename ${cmd.shape_id} -> ${cmd.name} (${cmd.cell})`;
@@ -248,10 +268,14 @@ SHAPES
   recolor <name> --cell --color
   clone   <name> --from R,C --to R,C [--as new]
   delete  <name> --cell
+  flip    <name> --cell --axis horizontal|vertical [--about self|cell]
+  rotate  <name> --cell --deg 90|180|270 [--about self|cell]   CW, y-down
 
 CELLS
   copy  --from R,C --to R,C        clear --cell         name --cell --as <name>
   clone-cell --from R,C --to "R,C R,C ..."  (atomic fan-out; all-or-nothing)
+  mirror --cell --axis horizontal|vertical      flip every shape across the cell
+  rotate-cell --cell --deg 90|180|270           rotate every shape about cell center
   view  --cell                     view-anim <group>    undo/redo --cell
 
 GROUPS (cells)
@@ -395,6 +419,12 @@ async function run() {
     case 'clone':
       result = await api('POST', '/api/shape/clone', { from_cell: args.from, to_cell: args.to, shape: sub, new_name: args.as });
       break;
+    case 'flip':
+      result = await api('POST', '/api/shape/flip', { cell: args.cell, name: sub, axis: args.axis, about: args.about });
+      break;
+    case 'rotate':
+      result = await api('POST', '/api/shape/rotate', { cell: args.cell, name: sub, deg: num(args.deg), about: args.about });
+      break;
 
     case 'copy':
       result = await api('POST', '/api/cell/copy', { from: args.from, to: args.to });
@@ -406,6 +436,12 @@ async function run() {
     }
     case 'clear':
       result = await api('POST', '/api/cell/clear', { cell: args.cell });
+      break;
+    case 'mirror':
+      result = await api('POST', '/api/cell/mirror', { cell: args.cell, axis: args.axis });
+      break;
+    case 'rotate-cell':
+      result = await api('POST', '/api/cell/rotate', { cell: args.cell, deg: num(args.deg) });
       break;
     case 'name':
       result = await api('POST', '/api/cell/name', { cell: args.cell, name: args.as });

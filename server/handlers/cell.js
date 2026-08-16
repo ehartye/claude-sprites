@@ -10,6 +10,12 @@ export function handleMirrorCell(state, params) {
   state.broadcast?.({ type: 'cell_mirrored', cell: params.cell, axis: params.axis });
 }
 
+export function handleRotateCell(state, params) {
+  if (!state.project) throw new Error('No project open');
+  state.project.cells.rotateCell(params.cell, params.deg);
+  state.broadcast?.({ type: 'cell_rotated', cell: params.cell, deg: params.deg });
+}
+
 export function handleCopyCell(state, params) {
   if (!state.project) throw new Error('No project open');
   state.project.cells.copyCell(params.from, params.to);

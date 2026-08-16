@@ -65,6 +65,8 @@ sprite.js resize   ball --cell 0,0 --updates '{"r":5}'  # change dimensions
 sprite.js recolor  ball --cell 0,0 --color "#00ff00"    # swap color
 sprite.js clone    ball --from 0,0 --to 0,1 --as ball2  # copy across cells
 sprite.js delete   ball --cell 0,0                      # remove shape
+sprite.js flip     limb --cell 0,0 --axis horizontal    # mirror in place (--about cell to mirror position too)
+sprite.js rotate   bar  --cell 0,0 --deg 90             # 90° CW steps (--about cell to orbit cell center)
 sprite.js undo     --cell 0,0                           # step back
 sprite.js redo     --cell 0,0                           # step forward
 ```
@@ -73,6 +75,8 @@ sprite.js redo     --cell 0,0                           # step forward
 
 ```
 sprite.js copy     --from 0,0 --to 0,1         # deep copy all shapes
+sprite.js mirror   --cell 0,0 --axis horizontal # flip whole cell (walk-left from walk-right)
+sprite.js rotate-cell --cell 0,0 --deg 90       # rotate whole cell (spin frames from one pose)
 sprite.js clear    --cell 0,0                   # remove all shapes
 sprite.js name     --cell 0,0 --as idle_1       # name a cell
 sprite.js view     --cell 0,0                   # render cell preview
