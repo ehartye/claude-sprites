@@ -105,6 +105,24 @@ sprite.js move-group face --cell 0,0 --dx 2 --dy 0               # move all shap
 sprite.js recolor-group face --cell 0,0 --color "#ff0000"         # recolor all shapes
 ```
 
+## Pixel technique notes
+
+Hard-won recipes from real builds:
+
+- **Outline a filled circle with a same-radius unfilled circle drawn after it**
+  — not a bigger backing disc. The renderer trims the 1px N/S/E/W tips of
+  filled circles/ellipses; a backing disc one radius larger leaves nub
+  artifacts at the cardinals where the trims disagree.
+- **Thick arcs are polygons, not stacked arcs.** Concentric 1px arcs leave
+  diagonal raster gaps. For a solid crescent (sword slash, moon, rainbow),
+  compute a filled polygon: outer arc swept one way, inner arc traced back.
+  A build-script helper makes this a one-liner (see the generator-script
+  pattern in the tool reference).
+- **Repeat cells in a group for 4-beat walk cycles.** Groups accept the same
+  cell more than once and export emits one frame per occurrence — so
+  `group create walkd 0,1 0,0 0,2 0,0` plays `step-L, pass, step-R, pass`
+  from three drawn frames. No duplicate art, no ping-pong tag needed.
+
 ## Export
 
 ```
