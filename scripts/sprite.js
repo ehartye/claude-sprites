@@ -284,6 +284,12 @@ CELLS
   rotate-cell --cell --deg 90|180|270           rotate every shape about cell center
   view  --cell                     view-anim <group>    undo/redo --cell
 
+TWEEN
+  tween <shape> --group <cellgroup> [--to X,Y] [--from X,Y] [--ease linear|in|out|in-out]
+                [--to-updates '{"r":1}'] [--from-updates '{"r":4}']
+                interpolate a shape's position and/or numeric params across every
+                frame of a cell group (draw frame 1, clone-cell fan-out, then tween)
+
 GROUPS (cells)
   group create <name> R,C R,C ... [--fps N]     group add/remove <name> R,C ...
   group delete <name>                 group list
@@ -518,6 +524,97 @@ async function run() {
         name: sub, cell: args.cell, all_cells: bool(args['all-cells']), color: args.color,
       });
       break;
+
+    case 'tween': {
+      const shapeName = sub;
+      const groupName = args.group;
+      if (!shapeName || !groupName) {
+        console.error('Usage: tween <shape> --group <cellgroup> [--to X,Y] [--from X,Y] [--to-updates JSON] [--from-updates JSON] [--ease linear|in|out|in-out]');
+        process.exitCode = 1;
+        return;
+      }
+      const groupResult = await api('GET', '/api/group/cell/list');
+      if (!groupResult.ok) { console.error(groupResult.error); process.exitCode = 1; return; }
+      const cellRefs = groupResult.data[groupName];
+      if (!cellRefs || cellRefs.length < 2) {
+        console.error(`Group "${groupName}" not found or has fewer than 2 cells`);
+        process.exitCode = 1;
+        return;
+      }
+
+      const EASE = {
+        'linear': t => t,
+        'in': t => t * t,
+        'out': t => 1 - (1 - t) * (1 - t),
+        'in-out': t => (t < 0.5 ? 2 * t * t : 1 - 2 * (1 - t) * (1 - t)),
+      };
+      const ease = EASE[args.ease ?? 'linear'];
+      if (!ease) { console.error(`Unknown ease "${args.ease}" (use linear|in|out|in-out)`); process.exitCode = 1; return; }
+
+      const parseXY = (s) => {
+        const m = String(s).match(/^(-?\d+),(-?\d+)$/);
+        return m ? { x: Number(m[1]), y: Number(m[2]) } : null;
+      };
+      const to = args.to ? parseXY(args.to) : null;
+      if (args.to && !to) { console.error('--to must be "X,Y"'); process.exitCode = 1; return; }
+      const from = args.from ? parseXY(args.from) : null;
+      if (args.from && !from) { console.error('--from must be "X,Y"'); process.exitCode = 1; return; }
+      let toUpdates = null, fromUpdates = null;
+      try { if (args['to-updates']) toUpdates = JSON.parse(args['to-updates']); }
+      catch { console.error('--to-updates must be a JSON object'); process.exitCode = 1; return; }
+      try { if (args['from-updates']) fromUpdates = JSON.parse(args['from-updates']); }
+      catch { console.error('--from-updates must be a JSON object'); process.exitCode = 1; return; }
+      if (!to && !toUpdates) { console.error('tween needs --to and/or --to-updates'); process.exitCode = 1; return; }
+
+      // Start values come from the shape's copy in the first frame unless overridden
+      const firstShapes = await api('GET', `/api/shapes?cell=${cellRefs[0]}`);
+      if (!firstShapes.ok) { console.error(firstShapes.error); process.exitCode = 1; return; }
+      const src = firstShapes.data.find(s => s.name === shapeName);
+      if (!src) { console.error(`Shape "${shapeName}" not found in ${cellRefs[0]}`); process.exitCode = 1; return; }
+      const p = src.params;
+      const anchor = 'cx' in p ? { x: p.cx, y: p.cy }
+        : 'x1' in p ? { x: p.x1, y: p.y1 }
+        : 'points' in p ? { x: p.points[0].x, y: p.points[0].y }
+        : { x: p.x, y: p.y };
+      const start = from ?? anchor;
+      let startUpdates = null;
+      if (toUpdates) {
+        startUpdates = fromUpdates ?? {};
+        for (const k of Object.keys(toUpdates)) {
+          if (!(k in startUpdates)) {
+            if (typeof p[k] !== 'number') {
+              console.error(`Cannot tween "${k}": not a numeric param of "${shapeName}"`);
+              process.exitCode = 1;
+              return;
+            }
+            startUpdates[k] = p[k];
+          }
+        }
+      }
+
+      const n = cellRefs.length;
+      for (let i = 0; i < n; i++) {
+        const t = ease(i / (n - 1));
+        const cell = cellRefs[i];
+        if (to) {
+          const x = Math.round(start.x + (to.x - start.x) * t);
+          const y = Math.round(start.y + (to.y - start.y) * t);
+          const r = await api('POST', '/api/shape/move-to', { cell, shape: shapeName, x, y });
+          if (!r.ok) { console.error(`ERROR at frame ${i + 1}/${n} (${cell}): ${r.error}`); process.exitCode = 1; return; }
+        }
+        if (toUpdates) {
+          const updates = {};
+          for (const k of Object.keys(toUpdates)) {
+            updates[k] = Math.round(startUpdates[k] + (toUpdates[k] - startUpdates[k]) * t);
+          }
+          const r = await api('POST', '/api/shape/resize', { cell, shape: shapeName, updates });
+          if (!r.ok) { console.error(`ERROR at frame ${i + 1}/${n} (${cell}): ${r.error}`); process.exitCode = 1; return; }
+        }
+        console.log(`[${i + 1}/${n}] ${cell} ok`);
+      }
+      console.log(`Tweened "${shapeName}" across ${n} frames of "${groupName}"`);
+      return;
+    }
 
     case 'view-anim': {
       const groupName = sub;

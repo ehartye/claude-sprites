@@ -134,6 +134,20 @@ sprite.js resize ball --cell 0,1 --updates '{"rx":4,"ry":5}'   # stretch mid-air
 | `undo` | `--cell` | Undo last operation in cell |
 | `redo` | `--cell` | Redo undone operation in cell |
 
+## Tween
+
+`tween <shape> --group <cellgroup>` interpolates a shape across every frame of a cell group in one call — the standard multi-frame motion workflow is: draw frame 1, `clone-cell` fan-out, `group create`, then tween.
+
+| Flag | Meaning |
+|------|---------|
+| `--to X,Y` | End position (anchor coords). Start defaults to the shape's position in the group's first frame |
+| `--from X,Y` | Override the start position |
+| `--to-updates '{"r":1}'` | End values for numeric shape params (r, rx/ry, w/h). Start values read from the first frame |
+| `--from-updates '{"r":4}'` | Override start param values |
+| `--ease linear\|in\|out\|in-out` | Easing curve (default linear). `out` decelerates (landing), `in` accelerates (falling) |
+
+Position and param tweens combine in one call — e.g. a ball that moves down while squashing: `tween ball --group drop --to 8,14 --to-updates '{"ry":2}' --ease in`.
+
 ## Cell Groups
 
 Cell groups organize frames into animation sequences (stored in SQLite).
