@@ -4,7 +4,7 @@ import { CellManager } from './cell-manager.js';
 import { GroupManager } from './group-manager.js';
 
 export class Project {
-  constructor({ name, cellWidth, cellHeight, cells, palette, groups, background }) {
+  constructor({ name, cellWidth, cellHeight, cells, palette, groups, background, pivot }) {
     this.name = name;
     this.cellWidth = cellWidth;
     this.cellHeight = cellHeight;
@@ -12,6 +12,7 @@ export class Project {
     this.palette = palette;
     this.groups = groups;
     this.background = background ?? { mode: 'transparent' };
+    this.pivot = pivot ?? null;
     this.path = null;
   }
 
@@ -37,6 +38,7 @@ export class Project {
       cellHeight: this.cellHeight,
       grid: { rows: this.cells.rows, cols: this.cells.cols },
       background: this.background,
+      pivot: this.pivot,
       palette: this.palette.toJSON(),
       cells: this.cells.toJSON().cells,
       groups: this.groups.toJSON(),
@@ -61,6 +63,7 @@ export class Project {
       palette: Palette.fromJSON(data.palette),
       groups: GroupManager.fromJSON(data.groups),
       background: data.background,
+      pivot: data.pivot,
     });
   }
 
@@ -71,27 +74,81 @@ export class Project {
     return proj;
   }
 
-  exportAtlas() {
-    const frames = {};
+  _asepriteFrame(filename, rect, duration) {
+    return {
+      filename,
+      frame: rect,
+      rotated: false,
+      trimmed: false,
+      spriteSourceSize: { x: 0, y: 0, w: rect.w, h: rect.h },
+      sourceSize: { w: rect.w, h: rect.h },
+      duration,
+    };
+  }
+
+  /**
+   * Aseprite JSON sprite-sheet atlas (json-array form) — the de-facto
+   * interchange format read by Unity, Godot, and Phaser importers.
+   * Base frames cover the grid row-major; each cell group is appended as its
+   * own contiguous frame run and tagged via meta.frameTags, so tags always
+   * reference a contiguous range regardless of where the group's cells sit
+   * in the grid.
+   */
+  exportAseprite({ imageName, groups = {}, fpsMap = {}, defaultFps = 8 } = {}) {
+    const frames = [];
+    const usedNames = new Set();
+    const baseIndex = new Map();
+    const defDur = Math.round(1000 / defaultFps);
     for (let r = 0; r < this.cells.rows; r++) {
       for (let c = 0; c < this.cells.cols; c++) {
-        const cell = this.cells.getCell(`${r},${c}`);
-        frames[`${r},${c}`] = {
-          x: c * this.cellWidth,
-          y: r * this.cellHeight,
-          w: this.cellWidth,
-          h: this.cellHeight,
-          name: cell.name,
-        };
+        const ref = `${r},${c}`;
+        const cell = this.cells.getCell(ref);
+        let filename = cell.name ?? ref;
+        if (usedNames.has(filename)) filename = `${filename} (${ref})`;
+        usedNames.add(filename);
+        const rect = { x: c * this.cellWidth, y: r * this.cellHeight, w: this.cellWidth, h: this.cellHeight };
+        baseIndex.set(ref, frames.length);
+        frames.push(this._asepriteFrame(filename, rect, defDur));
       }
     }
+
+    const frameTags = [];
+    for (const [name, cells] of Object.entries(groups)) {
+      if (!cells || cells.length === 0) continue;
+      const dur = Math.round(1000 / (fpsMap[name] ?? defaultFps));
+      const from = frames.length;
+      cells.forEach((ref, i) => {
+        const bi = baseIndex.get(ref);
+        if (bi === undefined) throw new Error(`Group "${name}" references unknown cell "${ref}"`);
+        frames.push(this._asepriteFrame(`${name} ${i}`, { ...frames[bi].frame }, dur));
+      });
+      frameTags.push({ name, from, to: frames.length - 1, direction: 'forward' });
+    }
+
+    const slices = this.pivot
+      ? [{
+          name: 'pivot',
+          color: '#0000ffff',
+          keys: [{
+            frame: 0,
+            bounds: { x: 0, y: 0, w: this.cellWidth, h: this.cellHeight },
+            pivot: { x: this.pivot.x, y: this.pivot.y },
+          }],
+        }]
+      : [];
+
     return {
-      name: this.name,
-      cellWidth: this.cellWidth,
-      cellHeight: this.cellHeight,
-      imageWidth: this.cells.cols * this.cellWidth,
-      imageHeight: this.cells.rows * this.cellHeight,
       frames,
+      meta: {
+        app: 'https://github.com/ehartye/claude-sprites',
+        version: '1.0',
+        image: imageName,
+        format: 'RGBA8888',
+        size: { w: this.cells.cols * this.cellWidth, h: this.cells.rows * this.cellHeight },
+        scale: '1',
+        frameTags,
+        slices,
+      },
     };
   }
 }

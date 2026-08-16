@@ -103,9 +103,13 @@ sprite.js recolor-group face --cell 0,0 --color "#ff0000"         # recolor all 
 ## Export
 
 ```
-sprite.js export   # export PNG + JSON atlas to working directory
-sprite.js save     # persist project to SQLite
+sprite.js pivot --anchor bottom-center   # set sprite origin (do this before export for characters)
+sprite.js group fps walk 10              # animation speed -> atlas frame durations
+sprite.js export                         # gapless sheet PNG + Aseprite JSON atlas (<name>.atlas.json)
+sprite.js save                           # persist project to SQLite
 ```
+
+The atlas is Aseprite-format JSON: cell groups become `meta.frameTags`, group fps becomes per-frame `duration`, and the pivot ships as a slice — Unity, Godot, and Phaser importers read it directly.
 
 ## Additional Resources
 

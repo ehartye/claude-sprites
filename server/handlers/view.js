@@ -68,7 +68,11 @@ export function handleExportPng(state, params) {
 
 export function handleExportJson(state, params) {
   if (!state.project) throw new Error('No project open');
-  const atlas = state.project.exportAtlas();
+  const atlas = state.project.exportAseprite({
+    imageName: `${state.project.name}.png`,
+    groups: state.db?.getCellGroups?.(state.sessionId) ?? {},
+    fpsMap: state.db?.getCellGroupFps?.(state.sessionId) ?? {},
+  });
   fs.writeFileSync(params.path, JSON.stringify(atlas, null, 2));
   return { path: params.path };
 }

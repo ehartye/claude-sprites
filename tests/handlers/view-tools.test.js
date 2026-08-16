@@ -72,9 +72,9 @@ describe('View tools', () => {
     handleExportJson(state, { path: outPath });
     expect(fs.existsSync(outPath)).toBe(true);
     const atlas = JSON.parse(fs.readFileSync(outPath, 'utf-8'));
-    expect(atlas.name).toBe('test');
-    expect(atlas.cellWidth).toBe(16);
-    expect(Object.keys(atlas.frames).length).toBe(4); // 2x2
+    expect(atlas.meta.image).toBe('test.png');
+    expect(atlas.frames).toHaveLength(4); // 2x2
+    expect(atlas.frames[0].frame).toEqual({ x: 0, y: 0, w: 16, h: 16 });
   });
 
   it('renders terminal format when format=terminal', () => {

@@ -224,13 +224,13 @@ export class CanvasRenderer {
     return canvas.toBuffer('image/png');
   }
 
-  renderSheet(cellManager) {
+  renderSheet(cellManager, opts = {}) {
     const cells = [];
     for (let r = 0; r < cellManager.rows; r++) {
       for (let c = 0; c < cellManager.cols; c++) {
         cells.push(cellManager.getCell(`${r},${c}`));
       }
     }
-    return this.renderCells(cells, { cols: cellManager.cols });
+    return this.renderCells(cells, { cols: cellManager.cols, ...opts });
   }
 }

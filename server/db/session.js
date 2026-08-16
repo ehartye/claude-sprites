@@ -46,6 +46,8 @@ export class SessionDB {
         PRIMARY KEY (session_id, cell, name)
       );
     `);
+    // fps column arrived after the table shipped; older DBs lack it.
+    try { this.db.exec('ALTER TABLE cell_groups ADD COLUMN fps INTEGER'); } catch { /* already present */ }
   }
 
   createSession({ project_name, project_path, destination_folder, json_file, draft_json }) {
@@ -82,9 +84,21 @@ export class SessionDB {
   }
 
   setCellGroup(sessionId, name, cells) {
+    // Upsert that leaves fps intact (INSERT OR REPLACE would null it out)
     this.db.prepare(`
-      INSERT OR REPLACE INTO cell_groups (session_id, name, cells) VALUES (?, ?, ?)
+      INSERT INTO cell_groups (session_id, name, cells) VALUES (?, ?, ?)
+      ON CONFLICT (session_id, name) DO UPDATE SET cells = excluded.cells
     `).run(sessionId, name, JSON.stringify(cells));
+  }
+
+  setCellGroupFps(sessionId, name, fps) {
+    this.db.prepare('UPDATE cell_groups SET fps = ? WHERE session_id = ? AND name = ?')
+      .run(fps, sessionId, name);
+  }
+
+  getCellGroupFps(sessionId) {
+    const rows = this.db.prepare('SELECT name, fps FROM cell_groups WHERE session_id = ? AND fps IS NOT NULL').all(sessionId);
+    return Object.fromEntries(rows.map(r => [r.name, r.fps]));
   }
 
   deleteCellGroup(sessionId, name) {

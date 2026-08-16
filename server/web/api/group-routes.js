@@ -15,10 +15,22 @@ export function groupRoutes(state) {
   // --- Cell groups (animation frame sets) ---
   r.post('/group/cell/create', (req, res) => {
     try {
-      const { name, cells } = req.body;
+      const { name, cells, fps } = req.body;
       state.db.setCellGroup(state.sessionId, name, cells);
+      if (fps != null) state.db.setCellGroupFps(state.sessionId, name, fps);
       syncCellGroups(state);
       res.json({ ok: true, data: `Created cell group "${name}"` });
+    } catch (e) { res.json({ ok: false, error: e.message }); }
+  });
+
+  r.post('/group/cell/fps', (req, res) => {
+    try {
+      const { name, fps } = req.body;
+      const groups = state.db.getCellGroups(state.sessionId);
+      if (!(name in groups)) return res.json({ ok: false, error: `Group "${name}" not found` });
+      if (!Number.isFinite(fps) || fps <= 0) return res.json({ ok: false, error: 'fps must be a positive number' });
+      state.db.setCellGroupFps(state.sessionId, name, fps);
+      res.json({ ok: true, data: `Group "${name}" fps set to ${fps}` });
     } catch (e) { res.json({ ok: false, error: e.message }); }
   });
 

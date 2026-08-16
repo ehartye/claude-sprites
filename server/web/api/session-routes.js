@@ -3,6 +3,7 @@ import { Project } from '../../engine/project.js';
 import { CanvasRenderer } from '../../engine/canvas-renderer.js';
 import { readFileSync, writeFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
+import { saveDraft } from '../http.js';
 
 export function sessionRoutes(state) {
   const r = Router();
@@ -70,19 +71,52 @@ export function sessionRoutes(state) {
     } catch (e) { res.json({ ok: false, error: e.message }); }
   });
 
+  r.post('/pivot', (req, res) => {
+    try {
+      if (!state.project) return res.json({ ok: false, error: 'No active project' });
+      const { x, y, anchor } = req.body;
+      let pivot;
+      if (anchor) {
+        const w = state.project.cellWidth, h = state.project.cellHeight;
+        const presets = {
+          'center': { x: Math.floor(w / 2), y: Math.floor(h / 2) },
+          'top-center': { x: Math.floor(w / 2), y: 0 },
+          'bottom-center': { x: Math.floor(w / 2), y: h - 1 },
+          'bottom-left': { x: 0, y: h - 1 },
+          'bottom-right': { x: w - 1, y: h - 1 },
+        };
+        pivot = presets[anchor];
+        if (!pivot) return res.json({ ok: false, error: `Unknown anchor "${anchor}" (use ${Object.keys(presets).join('|')})` });
+      } else if (x !== undefined && y !== undefined) {
+        pivot = { x, y };
+      } else {
+        return res.json({ ok: false, error: 'pivot requires --x and --y, or --anchor' });
+      }
+      state.project.pivot = pivot;
+      saveDraft(state);
+      res.json({ ok: true, data: `Pivot set to ${pivot.x},${pivot.y}` });
+    } catch (e) { res.json({ ok: false, error: e.message }); }
+  });
+
   r.post('/export', (req, res) => {
     try {
       if (!state.project) return res.json({ ok: false, error: 'No active project' });
       const session = state.db.getSession(state.sessionId);
       const dest = session.destination_folder;
       const renderer = new CanvasRenderer(state.project.palette, { background: state.project.background });
-      const png = renderer.renderSheet(state.project.cells);
+      // gap: 0 — the atlas rects are gapless, so the sheet must be too
+      const png = renderer.renderSheet(state.project.cells, { gap: 0 });
       mkdirSync(dest, { recursive: true });
       const pngPath = join(dest, `${session.project_name}.png`);
-      const jsonPath = join(dest, `${session.project_name}.json`);
+      const atlasPath = join(dest, `${session.project_name}.atlas.json`);
+      const atlas = state.project.exportAseprite({
+        imageName: `${session.project_name}.png`,
+        groups: state.db.getCellGroups(state.sessionId),
+        fpsMap: state.db.getCellGroupFps(state.sessionId),
+      });
       writeFileSync(pngPath, png);
-      writeFileSync(jsonPath, JSON.stringify(state.project.toJSON(), null, 2));
-      res.json({ ok: true, data: `Exported to ${dest}` });
+      writeFileSync(atlasPath, JSON.stringify(atlas, null, 2));
+      res.json({ ok: true, data: `Exported sheet ${pngPath} + atlas ${atlasPath}` });
     } catch (e) { res.json({ ok: false, error: e.message }); }
   });
 
