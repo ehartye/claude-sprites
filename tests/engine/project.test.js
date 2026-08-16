@@ -1,15 +1,21 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, afterAll } from 'vitest';
 import { Project } from '../../server/engine/project.js';
 import fs from 'fs';
+import os from 'os';
 import path from 'path';
 
-const TMP_DIR = path.join(process.cwd(), '.tmp');
+// A private temp dir — the repo's .tmp/ is shared scratch space this test
+// must not delete out from under other tooling.
+const TMP_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'sprites-project-test-'));
 const TMP_FILE = path.join(TMP_DIR, 'test.sprites');
 
 describe('Project', () => {
   afterEach(() => {
     if (fs.existsSync(TMP_FILE)) fs.unlinkSync(TMP_FILE);
-    if (fs.existsSync(TMP_DIR)) fs.rmdirSync(TMP_DIR);
+  });
+
+  afterAll(() => {
+    fs.rmSync(TMP_DIR, { recursive: true, force: true });
   });
 
   it('creates a new project', () => {

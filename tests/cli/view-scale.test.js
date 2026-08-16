@@ -77,6 +77,12 @@ describe('CLI view --scale / view --sheet', () => {
     expect(pngDims(path)).toEqual({ w: 66, h: 32 });
   });
 
+  test('bare --sheet followed by another flag parses as boolean true', async () => {
+    const { stdout } = await cli('view', '--sheet', '--scale', '2');
+    const { path } = JSON.parse(stdout);
+    expect(pngDims(path)).toEqual({ w: 66, h: 32 });
+  });
+
   test('view --out writes exactly where asked (and implies png)', async () => {
     const out = join(state.tmpDir, 'qa', 'cell-qa.png');
     const { stdout } = await cli('view', '--cell', '0,0', '--scale', '4', '--out', out);

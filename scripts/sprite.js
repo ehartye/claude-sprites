@@ -45,8 +45,16 @@ function parseArgs(argv) {
   while (i < argv.length) {
     if (argv[i].startsWith('--')) {
       const key = argv[i].slice(2);
-      args[key] = argv[i + 1] ?? true;
-      i += 2;
+      const next = argv[i + 1];
+      // A flag followed by another flag (or nothing) is a bare boolean:
+      // `view --sheet --scale 2` means sheet=true, not sheet='--scale'.
+      if (next === undefined || next.startsWith('--')) {
+        args[key] = true;
+        i += 1;
+      } else {
+        args[key] = next;
+        i += 2;
+      }
     } else {
       positional.push(argv[i]);
       i++;
