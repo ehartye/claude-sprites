@@ -40,6 +40,18 @@ describe('CellManager', () => {
     expect(dst.shapes.listByZ()[0].type).toBe('rect');
   });
 
+  it('draws on top of cloned shapes, not beneath them', () => {
+    const cm = new CellManager(16, 2, 2);
+    const src = cm.getCell('0,0');
+    src.draw('rect', { x: 0, y: 0, w: 16, h: 16, filled: true }, 'red');
+    src.draw('rect', { x: 4, y: 4, w: 8, h: 8, filled: true }, 'blue');
+    cm.copyCell('0,0', '0,1');
+    const dst = cm.getCell('0,1');
+    const added = dst.draw('rect', { x: 6, y: 6, w: 4, h: 4, filled: true }, 'green');
+    const maxCloned = Math.max(...dst.shapes.listByZ().filter(s => s !== added).map(s => s.zIndex));
+    expect(added.zIndex).toBeGreaterThan(maxCloned);
+  });
+
   it('shifts cell contents', () => {
     const cm = new CellManager(16, 2, 2);
     const cell = cm.getCell('0,0');

@@ -50,6 +50,9 @@ export class CellManager {
     for (const shape of src.shapes.listByZ()) {
       const clone = shape.clone();
       dest.shapes.add(clone);
+      // Keep the z counter above every cloned shape, or later draws on the
+      // destination would render beneath the clones.
+      if (clone.zIndex >= dest._nextZ) dest._nextZ = clone.zIndex + 1;
     }
     this._grid[r][c] = dest;
   }
