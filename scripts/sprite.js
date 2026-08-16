@@ -154,6 +154,20 @@ function mapCommandToApi(cmd) {
         default: throw new Error(`Unknown shape-group sub-command: ${params.sub}`);
       }
     }
+    case 'tween': {
+      const xy = (v) => {
+        if (v == null || typeof v === 'object') return v ?? undefined;
+        const m = String(v).match(/^(-?\d+),(-?\d+)$/);
+        if (!m) throw new Error(`tween "to"/"from" must be "X,Y" or {x,y}, got "${v}"`);
+        return { x: Number(m[1]), y: Number(m[2]) };
+      };
+      return { method: 'POST', path: '/api/shape/tween', body: {
+        group: params.group, shape: params.shape,
+        to: xy(params.to), from: xy(params.from),
+        to_updates: params.to_updates, from_updates: params.from_updates,
+        ease: params.ease,
+      }};
+    }
     case 'move-group':
       return { method: 'POST', path: '/api/group/shape/move', body: {
         name: params.name, cell: params.cell, all_cells: params.all_cells, dx: params.dx, dy: params.dy,
@@ -270,6 +284,7 @@ function describeBatchCommand(cmd) {
     case 'save': return 'save';
     case 'export': return 'export';
     case 'shape-group': return `shape-group ${cmd.sub} ${cmd.name}`;
+    case 'tween': return `tween ${cmd.shape} across ${cmd.group}`;
     case 'move-group': return `move-group ${cmd.name} (${cmd.cell})`;
     case 'recolor-group': return `recolor-group ${cmd.name} (${cmd.cell})`;
     case 'draw': return `draw ${cmd.type}${cmd.name ? ` -> ${cmd.name}` : ''} (${cmd.cell})`;
@@ -640,24 +655,6 @@ async function run() {
         process.exitCode = 1;
         return;
       }
-      const groupResult = await api('GET', '/api/group/cell/list');
-      if (!groupResult.ok) { console.error(groupResult.error); process.exitCode = 1; return; }
-      const cellRefs = groupResult.data[groupName];
-      if (!cellRefs || cellRefs.length < 2) {
-        console.error(`Group "${groupName}" not found or has fewer than 2 cells`);
-        process.exitCode = 1;
-        return;
-      }
-
-      const EASE = {
-        'linear': t => t,
-        'in': t => t * t,
-        'out': t => 1 - (1 - t) * (1 - t),
-        'in-out': t => (t < 0.5 ? 2 * t * t : 1 - 2 * (1 - t) * (1 - t)),
-      };
-      const ease = EASE[args.ease ?? 'linear'];
-      if (!ease) { console.error(`Unknown ease "${args.ease}" (use linear|in|out|in-out)`); process.exitCode = 1; return; }
-
       const parseXY = (s) => {
         const m = String(s).match(/^(-?\d+),(-?\d+)$/);
         return m ? { x: Number(m[1]), y: Number(m[2]) } : null;
@@ -671,56 +668,17 @@ async function run() {
       catch { console.error('--to-updates must be a JSON object'); process.exitCode = 1; return; }
       try { if (args['from-updates']) fromUpdates = JSON.parse(args['from-updates']); }
       catch { console.error('--from-updates must be a JSON object'); process.exitCode = 1; return; }
-      if (!to && !toUpdates) { console.error('tween needs --to and/or --to-updates'); process.exitCode = 1; return; }
 
-      // Start values come from the shape's copy in the first frame unless overridden
-      const firstShapes = await api('GET', `/api/shapes?cell=${cellRefs[0]}`);
-      if (!firstShapes.ok) { console.error(firstShapes.error); process.exitCode = 1; return; }
-      const src = firstShapes.data.find(s => s.name === shapeName);
-      if (!src) { console.error(`Shape "${shapeName}" not found in ${cellRefs[0]}`); process.exitCode = 1; return; }
-      const p = src.params;
-      const anchor = 'cx' in p ? { x: p.cx, y: p.cy }
-        : 'x1' in p ? { x: p.x1, y: p.y1 }
-        : 'points' in p ? { x: p.points[0].x, y: p.points[0].y }
-        : { x: p.x, y: p.y };
-      const start = from ?? anchor;
-      let startUpdates = null;
-      if (toUpdates) {
-        startUpdates = fromUpdates ?? {};
-        for (const k of Object.keys(toUpdates)) {
-          if (!(k in startUpdates)) {
-            if (typeof p[k] !== 'number') {
-              console.error(`Cannot tween "${k}": not a numeric param of "${shapeName}"`);
-              process.exitCode = 1;
-              return;
-            }
-            startUpdates[k] = p[k];
-          }
-        }
+      result = await api('POST', '/api/shape/tween', {
+        group: groupName, shape: shapeName,
+        to, from, to_updates: toUpdates, from_updates: fromUpdates,
+        ease: args.ease,
+      });
+      if (result.ok) {
+        console.log(`Tweened "${shapeName}" across ${result.data.frames} frames of "${groupName}"`);
+        return;
       }
-
-      const n = cellRefs.length;
-      for (let i = 0; i < n; i++) {
-        const t = ease(i / (n - 1));
-        const cell = cellRefs[i];
-        if (to) {
-          const x = Math.round(start.x + (to.x - start.x) * t);
-          const y = Math.round(start.y + (to.y - start.y) * t);
-          const r = await api('POST', '/api/shape/move-to', { cell, shape: shapeName, x, y });
-          if (!r.ok) { console.error(`ERROR at frame ${i + 1}/${n} (${cell}): ${r.error}`); process.exitCode = 1; return; }
-        }
-        if (toUpdates) {
-          const updates = {};
-          for (const k of Object.keys(toUpdates)) {
-            updates[k] = Math.round(startUpdates[k] + (toUpdates[k] - startUpdates[k]) * t);
-          }
-          const r = await api('POST', '/api/shape/resize', { cell, shape: shapeName, updates });
-          if (!r.ok) { console.error(`ERROR at frame ${i + 1}/${n} (${cell}): ${r.error}`); process.exitCode = 1; return; }
-        }
-        console.log(`[${i + 1}/${n}] ${cell} ok`);
-      }
-      console.log(`Tweened "${shapeName}" across ${n} frames of "${groupName}"`);
-      return;
+      break;
     }
 
     case 'view-anim': {

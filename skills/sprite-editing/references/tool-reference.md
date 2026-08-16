@@ -142,7 +142,7 @@ sprite.js resize ball --cell 0,1 --updates '{"rx":4,"ry":5}'   # stretch mid-air
 
 ## Tween
 
-`tween <shape> --group <cellgroup>` interpolates a shape across every frame of a cell group in one call — the standard multi-frame motion workflow is: draw frame 1, `clone-cell` fan-out, `group create`, then tween.
+`tween <shape> --group <cellgroup>` interpolates a shape across every frame of a cell group in one call — the standard multi-frame motion workflow is: draw frame 1, `clone-cell` fan-out, `group create`, then tween. Runs server-side, so it also works as a batch op (`{"command":"tween","shape":"ball","group":"drop","to":"8,14","ease":"in"}`).
 
 | Flag | Meaning |
 |------|---------|
@@ -215,7 +215,7 @@ sprite.js batch ops.json [--vars-file frames.json | --vars k=v,k=v] [--continue-
 ```
 
 - `ops.json` — array of `{ command, args }` objects. String values may contain `{{var}}` placeholders.
-- **A complete asset build fits in one file**: `new` (incl. `"WxH"` size and `dest`), all `draw` types, shape edits, `clone-cell`, `copy`, `mirror`/`rotate-cell`/`flip`/`rotate`, `group` (incl. `create` with `fps` and the `fps` sub-command), `shape-group` create/add/remove/delete, `move-group`/`recolor-group`, `pivot`, `ref` set/clear, `save`, `export` (with optional `dest`). Not batchable: `tween` (multi-call client-side interpolation) and `view`/`view-anim` (interactive output).
+- **A complete asset build fits in one file**: `new` (incl. `"WxH"` size and `dest`), all `draw` types, shape edits, `clone-cell`, `copy`, `mirror`/`rotate-cell`/`flip`/`rotate`, `tween` (`to` as `"X,Y"` or `{x,y}`), `group` (incl. `create` with `fps` and the `fps` sub-command), `shape-group` create/add/remove/delete, `move-group`/`recolor-group`, `pivot`, `ref` set/clear, `save`, `export` (with optional `dest`). Not batchable: `view`/`view-anim` (interactive output).
 - `--vars-file frames.json` — JSON array of per-iteration variable dicts. The whole op list replays once per dict.
 - `--vars k=v,k=v` — single-iteration inline shortcut.
 - **Type preservation:** a string exactly equal to `"{{foo}}"` becomes the raw value (number stays number). Embedded placeholders (`"0,{{i}}"`) stay strings.

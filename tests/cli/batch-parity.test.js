@@ -109,6 +109,7 @@ describe('CLI batch parity (full pipeline in one ops file)', () => {
       { command: 'group', sub: 'fps', name: 'spin', fps: 12 },
       { command: 'shape-group', sub: 'create', cell: '0,0', name: 'bits', shapes: ['orb'] },
       { command: 'move-group', name: 'bits', cell: '0,0', dx: 1, dy: 0 },
+      { command: 'tween', shape: 'orb', group: 'spin', to: '6,4', ease: 'linear' },
       { command: 'pivot', anchor: 'center' },
       { command: 'ref', sub: 'set', cell: '0,0', path: refPath, opacity: 0.4 },
       { command: 'ref', sub: 'clear', cell: '0,0' },
@@ -119,7 +120,7 @@ describe('CLI batch parity (full pipeline in one ops file)', () => {
     fs.writeFileSync(opsPath, JSON.stringify(ops));
 
     const { stdout } = await cli('batch', opsPath);
-    expect(stdout).toMatch(/12\/12 succeeded/);
+    expect(stdout).toMatch(/13\/13 succeeded/);
 
     // export landed under --dest parent
     const atlas = JSON.parse(fs.readFileSync(join(tmp, 'batchproj', 'batchproj.atlas.json'), 'utf-8'));
@@ -128,10 +129,16 @@ describe('CLI batch parity (full pipeline in one ops file)', () => {
     expect(atlas.frames[tag.from].duration).toBe(Math.round(1000 / 12)); // group fps op applied
     expect(atlas.meta.slices[0].keys[0].pivot).toEqual({ x: 4, y: 4 });  // pivot center of 8x8
 
-    // move-group applied
+    // move-group applied (frame 0 keeps the tween start = its own position)
     const r = await fetch(`http://localhost:${port}/api/shapes?cell=0,0`);
     const orb = (await r.json()).data.find(s => s.name === 'orb');
     expect(orb.params.cx).toBe(5);
+
+    // batched tween moved the last frame's copy to the target
+    const r1 = await fetch(`http://localhost:${port}/api/shapes?cell=0,1`);
+    const orb1 = (await r1.json()).data.find(s => s.name === 'orb');
+    expect(orb1.params.cx).toBe(6);
+    expect(orb1.params.cy).toBe(4);
 
     // save wrote the project file
     expect(fs.existsSync(join(tmp, 'batchproj', 'batchproj.json'))).toBe(true);
