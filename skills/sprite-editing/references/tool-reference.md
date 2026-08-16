@@ -184,6 +184,18 @@ Shape groups let you move or recolor multiple shapes within a cell at once (stor
 
 Use `--all-cells true` to apply the operation across every cell that contains the named shape group.
 
+**Palette-swap recipe (recolored variants of one character):** shape groups do **not** travel with `clone-cell`/`copy` — they are per-cell records. Draw the character once, `clone-cell` fan-out to the variant cells, then create the group in every cell at once with the pattern form and recolor per variant cell:
+
+```
+sprite.js clone-cell --from 0,0 --to "1,0 2,0 3,0"
+sprite.js shape-group create suit --all-cells true --pattern "^(head|body|skirt)$"
+sprite.js recolor-group suit --cell 1,0 --color "#ff77a8"   # pinky
+sprite.js recolor-group suit --cell 2,0 --color "#29adff"   # inky
+sprite.js recolor-group suit --cell 3,0 --color "#ffa300"   # clyde
+```
+
+One recolor op per variant instead of one per shape per variant.
+
 ## Move Anchor Reference
 
 When using `move-to <name> --x --y`:
