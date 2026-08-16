@@ -94,6 +94,7 @@ export class CanvasEditor {
 
   setBackground(bg) {
     this._background = bg || { mode: 'transparent' };
+    this.render();
   }
 
   setZoom(level) {

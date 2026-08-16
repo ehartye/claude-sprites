@@ -18,6 +18,7 @@
     "ws": "^8.20.0"
   },
   "devDependencies": {
+    "jsdom": "^30.0.1",
     "nodemon": "^3.1.14",
     "vitest": "^4.1.3"
   }
