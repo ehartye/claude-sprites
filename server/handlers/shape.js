@@ -69,6 +69,7 @@ export function handleMoveShapeTo(state, params) {
   let dx = 0, dy = 0;
   if ('cx' in p) { dx = params.x - p.cx; dy = params.y - p.cy; }
   else if ('x1' in p) { dx = params.x - p.x1; dy = params.y - p.y1; }
+  else if ('points' in p) { dx = params.x - p.points[0].x; dy = params.y - p.points[0].y; }
   else if ('x' in p) { dx = params.x - p.x; dy = params.y - p.y; }
   cell.moveShape(params.shape, dx, dy);
   state.broadcast?.({ type: 'shape_moved', cell: params.cell });

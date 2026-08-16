@@ -39,7 +39,11 @@ sprite.js draw ellipse --cell 0,0 --cx 8 --cy 8 --rx 6 --ry 3 --color "#0000ff" 
 sprite.js draw line    --cell 0,0 --x1 0 --y1 0 --x2 15 --y2 15 --color "#ff0000" --name limb
 sprite.js draw point   --cell 0,0 --x 5 --y 3 --color "#ffffff" --name highlight
 sprite.js draw fill    --cell 0,0 --x 0 --y 0 --color "#0000ff" --name flood
+sprite.js draw polygon --cell 0,0 --points "2,2 12,4 8,12" --filled true --color "#ff0000" --name blade
+sprite.js draw polyline --cell 0,0 --points "0,8 4,4 8,8 12,4" --color "#ffffff" --name zigzag
 ```
+
+Polygons/polylines move, flip, rotate, and group like any other named shape — prefer one named polygon over a pile of line/point shapes for angular forms.
 
 Use `sprite.js view --cell 0,0` or check the web UI frequently to verify your work.
 

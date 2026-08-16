@@ -119,6 +119,7 @@ function mapCommandToApi(cmd) {
         cx: params.cx, cy: params.cy,
         r: params.r, rx: params.rx, ry: params.ry,
         w: params.w, h: params.h,
+        points: params.points,
         filled: params.filled,
         shape: params.shape, direction: params.direction, strength: params.strength,
         count: params.count,
@@ -250,6 +251,8 @@ DRAWING  (draw <type> --cell R,C --color <hex|name> [--name <shape_name>])
   draw circle    --cx --cy --r [--filled true]
   draw ellipse   --cx --cy --rx --ry [--filled true]
   draw fill      --x --y                                       flood-fill
+  draw polygon   --points "x,y x,y x,y ..." [--filled true]    closed; scanline fill
+  draw polyline  --points "x,y x,y ..."                        open stroke
   draw highlight --shape <target> [--direction top-left|top|top-right|left|right|bottom-left|bottom|bottom-right] [--strength N] [--name <base>]
   draw shadow    --shape <target> [--direction ...] [--strength N] [--name <base>]
     highlight/shadow auto-compute lighter/darker color from palette ramps
@@ -368,6 +371,7 @@ async function run() {
         cx: num(args.cx), cy: num(args.cy),
         r: num(args.r), rx: num(args.rx), ry: num(args.ry),
         w: num(args.w), h: num(args.h),
+        points: args.points,
         filled: args.filled !== undefined ? bool(args.filled) : undefined,
         // highlight/shadow params
         shape: args.shape, direction: args.direction,

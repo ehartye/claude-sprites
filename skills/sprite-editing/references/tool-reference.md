@@ -27,6 +27,8 @@ All draw commands: `draw <type> --cell <coord> --color <hex> [--name <shape_name
 | `circle` | `--cx --cy --r [--filled true]` | Center |
 | `ellipse` | `--cx --cy --rx --ry [--filled true]` | Center |
 | `fill` | `--x --y` | Flood-fills contiguous same-color region |
+| `polygon` | `--points "x,y x,y x,y ..." [--filled true]` | Closed polygon: Bresenham outline + scanline fill. First point is the move anchor. Best for angular shapes (swords, arrows, ships, terrain) |
+| `polyline` | `--points "x,y x,y ..."` | Open multi-segment stroke (no closing edge, never filled) |
 | `highlight` | `--shape <target> [--direction <dir>] [--strength N] [--name <base>] [--count N --span-deg N --radius-factor F]` | Auto-places lighter pixels using palette ramp |
 | `shadow` | `--shape <target> [--direction <dir>] [--strength N] [--name <base>] [--count N --span-deg N --radius-factor F]` | Auto-places darker pixels using palette ramp |
 | `sphere-shade` | `--shape <target> [--direction <dir>] [--intensity low\|med\|high\|auto] [--name <base>]` | Compound 2–5 tier lighting on a circle/ellipse in one call |

@@ -4,7 +4,8 @@ export class Shape {
   constructor(type, params, color, opts = {}) {
     this.id = `s${nextId++}`;
     this.type = type;
-    this.params = { ...params };
+    // Deep copy: params may hold nested structures (polygon points)
+    this.params = structuredClone(params);
     this.color = color;
     this.name = opts.name ?? null;
     this.zIndex = opts.zIndex ?? 0;
@@ -12,7 +13,7 @@ export class Shape {
   }
 
   clone() {
-    return new Shape(this.type, { ...this.params }, this.color, {
+    return new Shape(this.type, this.params, this.color, {
       name: this.name,
       zIndex: this.zIndex,
       visible: this.visible,
@@ -24,7 +25,7 @@ export class Shape {
       id: this.id,
       name: this.name,
       type: this.type,
-      params: { ...this.params },
+      params: structuredClone(this.params),
       color: this.color,
       zIndex: this.zIndex,
       visible: this.visible,

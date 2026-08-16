@@ -239,6 +239,12 @@ export class CanvasEditor {
       case 'ellipse':
         this._drawEllipse(ctx, ox, oy, z, p.cx, p.cy, p.rx, p.ry, p.filled);
         break;
+      case 'polygon':
+        this._drawPolygon(ctx, ox, oy, z, p.points, p.filled, true);
+        break;
+      case 'polyline':
+        this._drawPolygon(ctx, ox, oy, z, p.points, false, false);
+        break;
     }
   }
 
@@ -278,7 +284,45 @@ export class CanvasEditor {
           ctx.fillRect(ox + p.x * z, oy + p.y * z, z, z);
           ctx.globalAlpha = 1;
           break;
+        case 'polygon':
+          this._drawPolygon(ctx, ox, oy, z, p.points, p.filled, true);
+          break;
+        case 'polyline':
+          this._drawPolygon(ctx, ox, oy, z, p.points, false, false);
+          break;
       }
+    }
+  }
+
+  // Scanline even-odd fill + Bresenham outline; mirrors the server renderer.
+  _drawPolygon(ctx, ox, oy, z, points, filled, close) {
+    if (!Array.isArray(points) || points.length < 2) return;
+    if (filled && close && points.length >= 3) {
+      let minY = Infinity, maxY = -Infinity;
+      for (const pt of points) { minY = Math.min(minY, pt.y); maxY = Math.max(maxY, pt.y); }
+      for (let y = minY; y <= maxY; y++) {
+        const xs = [];
+        for (let i = 0; i < points.length; i++) {
+          const a = points[i], b = points[(i + 1) % points.length];
+          if (a.y === b.y) continue;
+          if (y >= Math.min(a.y, b.y) && y < Math.max(a.y, b.y)) {
+            xs.push(a.x + ((y - a.y) * (b.x - a.x)) / (b.y - a.y));
+          }
+        }
+        xs.sort((m, n) => m - n);
+        for (let i = 0; i + 1 < xs.length; i += 2) {
+          for (let x = Math.ceil(xs[i]); x <= Math.floor(xs[i + 1]); x++) {
+            ctx.fillRect(ox + x * z, oy + y * z, z, z);
+          }
+        }
+      }
+    }
+    for (let i = 0; i < points.length - 1; i++) {
+      this._drawLine(ctx, ox, oy, z, points[i].x, points[i].y, points[i + 1].x, points[i + 1].y);
+    }
+    if (close && points.length >= 3) {
+      const last = points[points.length - 1];
+      this._drawLine(ctx, ox, oy, z, last.x, last.y, points[0].x, points[0].y);
     }
   }
 
@@ -434,6 +478,12 @@ export class CanvasEditor {
       case 'line':
         this._drawLine(ctx, ox, oy, z, p.x1 + dx, p.y1 + dy, p.x2 + dx, p.y2 + dy);
         break;
+      case 'polygon':
+      case 'polyline': {
+        const moved = (p.points || []).map(pt => ({ x: pt.x + dx, y: pt.y + dy }));
+        this._drawPolygon(ctx, ox, oy, z, moved, p.filled, shape.type === 'polygon');
+        break;
+      }
     }
     ctx.restore();
   }
@@ -461,6 +511,15 @@ export class CanvasEditor {
         bx = Math.min(p.x1, p.x2); by = Math.min(p.y1, p.y2);
         bw = Math.abs(p.x2 - p.x1) + 1; bh = Math.abs(p.y2 - p.y1) + 1;
         break;
+      case 'polygon':
+      case 'polyline': {
+        const xs = (p.points || []).map(pt => pt.x);
+        const ys = (p.points || []).map(pt => pt.y);
+        if (xs.length === 0) return;
+        bx = Math.min(...xs); by = Math.min(...ys);
+        bw = Math.max(...xs) - bx + 1; bh = Math.max(...ys) - by + 1;
+        break;
+      }
       default:
         return;
     }

@@ -62,6 +62,9 @@ export class CellManager {
       if ('x1' in p) { p.x1 += dx; p.y1 += dy; }
       if ('x2' in p) { p.x2 += dx; p.y2 += dy; }
       if ('cx' in p) { p.cx += dx; p.cy += dy; }
+      if ('points' in p) {
+        for (const pt of p.points) { pt.x += dx; pt.y += dy; }
+      }
     }
   }
 
@@ -71,12 +74,14 @@ export class CellManager {
     for (const shape of cell.shapes.listByZ()) {
       const p = shape.params;
       if (axis === 'horizontal') {
-        if ('x1' in p) { p.x1 = max - p.x1; p.x2 = max - p.x2; }
+        if ('points' in p) { for (const pt of p.points) pt.x = max - pt.x; }
+        else if ('x1' in p) { p.x1 = max - p.x1; p.x2 = max - p.x2; }
         else if ('cx' in p) { p.cx = max - p.cx; }
         else if ('x' in p && 'w' in p) { p.x = max - p.x - p.w + 1; }
         else if ('x' in p) { p.x = max - p.x; }
       } else {
-        if ('y1' in p) { p.y1 = max - p.y1; p.y2 = max - p.y2; }
+        if ('points' in p) { for (const pt of p.points) pt.y = max - pt.y; }
+        else if ('y1' in p) { p.y1 = max - p.y1; p.y2 = max - p.y2; }
         else if ('cy' in p) { p.cy = max - p.cy; }
         else if ('y' in p && 'h' in p) { p.y = max - p.y - p.h + 1; }
         else if ('y' in p) { p.y = max - p.y; }

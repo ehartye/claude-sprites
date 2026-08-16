@@ -52,6 +52,43 @@ export class CanvasRenderer {
       case 'fill':
         this._floodFill(ctx, p.x, p.y, color);
         break;
+      case 'polygon':
+        this._drawPolygon(ctx, p.points, p.filled, true);
+        break;
+      case 'polyline':
+        this._drawPolygon(ctx, p.points, false, false);
+        break;
+    }
+  }
+
+  // Scanline even-odd fill + Bresenham outline. close=true joins last->first.
+  _drawPolygon(ctx, points, filled, close) {
+    if (!Array.isArray(points) || points.length < 2) return;
+    if (filled && close && points.length >= 3) {
+      let minY = Infinity, maxY = -Infinity;
+      for (const pt of points) { minY = Math.min(minY, pt.y); maxY = Math.max(maxY, pt.y); }
+      for (let y = minY; y <= maxY; y++) {
+        const xs = [];
+        for (let i = 0; i < points.length; i++) {
+          const a = points[i], b = points[(i + 1) % points.length];
+          if (a.y === b.y) continue;
+          if (y >= Math.min(a.y, b.y) && y < Math.max(a.y, b.y)) {
+            xs.push(a.x + ((y - a.y) * (b.x - a.x)) / (b.y - a.y));
+          }
+        }
+        xs.sort((m, n) => m - n);
+        for (let i = 0; i + 1 < xs.length; i += 2) {
+          const x0 = Math.ceil(xs[i]), x1 = Math.floor(xs[i + 1]);
+          for (let x = x0; x <= x1; x++) ctx.fillRect(x, y, 1, 1);
+        }
+      }
+    }
+    for (let i = 0; i < points.length - 1; i++) {
+      this._drawLine(ctx, points[i].x, points[i].y, points[i + 1].x, points[i + 1].y);
+    }
+    if (close && points.length >= 3) {
+      const last = points[points.length - 1];
+      this._drawLine(ctx, last.x, last.y, points[0].x, points[0].y);
     }
   }
 
