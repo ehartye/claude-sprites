@@ -119,6 +119,7 @@ sprite.js resize ball --cell 0,1 --updates '{"rx":4,"ry":5}'   # stretch mid-air
 | `resize <name>` | shape name | `--cell --updates '{"w":10}'` | Merge param updates |
 | `recolor <name>` | shape name | `--cell --color` | Change color |
 | `clone <name>` | shape name | `--from --to [--as new_name]` | Copy shape across cells |
+| `duplicate <name>` | shape name | `--cell [--as new_name] [--mirror horizontal\|vertical]` | Copy a shape **within** its cell, optionally mirrored across it — the one-op way to make `wing_r` from `wing_l` |
 | `delete <name>` | shape name | `--cell` | Permanently remove shape |
 | `flip <name>` | shape name | `--cell --axis horizontal\|vertical [--about self\|cell]` | Mirror one shape. `self` (default) flips in place about its own center; `cell` mirrors its position across the cell |
 | `rotate <name>` | shape name | `--cell --deg 90\|180\|270 [--about self\|cell]` | Rotate one shape CW (y-down). `self` (default) spins in place; `cell` orbits the cell center. 90° steps only — exact for pixel art |
