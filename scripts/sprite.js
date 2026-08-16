@@ -154,6 +154,10 @@ function mapCommandToApi(cmd) {
         default: throw new Error(`Unknown shape-group sub-command: ${params.sub}`);
       }
     }
+    case 'duplicate':
+      return { method: 'POST', path: '/api/shape/duplicate', body: {
+        cell: params.cell, shape: params.shape, as: params.as, mirror: params.mirror,
+      }};
     case 'tween': {
       const xy = (v) => {
         if (v == null || typeof v === 'object') return v ?? undefined;
@@ -284,6 +288,7 @@ function describeBatchCommand(cmd) {
     case 'save': return 'save';
     case 'export': return 'export';
     case 'shape-group': return `shape-group ${cmd.sub} ${cmd.name}`;
+    case 'duplicate': return `duplicate ${cmd.shape}${cmd.mirror ? ` mirror-${cmd.mirror}` : ''} (${cmd.cell})`;
     case 'tween': return `tween ${cmd.shape} across ${cmd.group}`;
     case 'move-group': return `move-group ${cmd.name} (${cmd.cell})`;
     case 'recolor-group': return `recolor-group ${cmd.name} (${cmd.cell})`;
@@ -355,6 +360,7 @@ SHAPES
   recolor <name> --cell --color
   clone   <name> --from R,C --to R,C [--as new]
   delete  <name> --cell
+  duplicate <name> --cell [--as new] [--mirror horizontal|vertical]   copy in place, e.g. wing_l -> wing_r
   flip    <name> --cell --axis horizontal|vertical [--about self|cell]
   rotate  <name> --cell --deg 90|180|270 [--about self|cell]   CW, y-down
 
@@ -546,6 +552,9 @@ async function run() {
       break;
     case 'flip':
       result = await api('POST', '/api/shape/flip', { cell: args.cell, name: sub, axis: args.axis, about: args.about });
+      break;
+    case 'duplicate':
+      result = await api('POST', '/api/shape/duplicate', { cell: args.cell, shape: sub, as: args.as, mirror: args.mirror });
       break;
     case 'rotate':
       result = await api('POST', '/api/shape/rotate', { cell: args.cell, name: sub, deg: num(args.deg), about: args.about });

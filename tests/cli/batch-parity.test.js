@@ -110,6 +110,7 @@ describe('CLI batch parity (full pipeline in one ops file)', () => {
       { command: 'shape-group', sub: 'create', cell: '0,0', name: 'bits', shapes: ['orb'] },
       { command: 'move-group', name: 'bits', cell: '0,0', dx: 1, dy: 0 },
       { command: 'tween', shape: 'orb', group: 'spin', to: '6,4', ease: 'linear' },
+      { command: 'duplicate', shape: 'orb', cell: '0,0', as: 'orb2', mirror: 'horizontal' },
       { command: 'pivot', anchor: 'center' },
       { command: 'ref', sub: 'set', cell: '0,0', path: refPath, opacity: 0.4 },
       { command: 'ref', sub: 'clear', cell: '0,0' },
@@ -120,7 +121,7 @@ describe('CLI batch parity (full pipeline in one ops file)', () => {
     fs.writeFileSync(opsPath, JSON.stringify(ops));
 
     const { stdout } = await cli('batch', opsPath);
-    expect(stdout).toMatch(/13\/13 succeeded/);
+    expect(stdout).toMatch(/14\/14 succeeded/);
 
     // export landed under --dest parent
     const atlas = JSON.parse(fs.readFileSync(join(tmp, 'batchproj', 'batchproj.atlas.json'), 'utf-8'));
@@ -139,6 +140,10 @@ describe('CLI batch parity (full pipeline in one ops file)', () => {
     const orb1 = (await r1.json()).data.find(s => s.name === 'orb');
     expect(orb1.params.cx).toBe(6);
     expect(orb1.params.cy).toBe(4);
+
+    // batched duplicate --mirror produced the mirrored twin (8px cell: 7 - 5 = 2)
+    const orb2 = (await (await fetch(`http://localhost:${port}/api/shapes?cell=0,0`)).json()).data.find(s => s.name === 'orb2');
+    expect(orb2.params.cx).toBe(2);
 
     // save wrote the project file
     expect(fs.existsSync(join(tmp, 'batchproj', 'batchproj.json'))).toBe(true);

@@ -91,6 +91,20 @@ export function handleRotateShape(state, params) {
   state.broadcast?.({ type: 'shape_rotated', cell: params.cell, name: params.name, deg: params.deg });
 }
 
+/** Duplicate a shape within its cell, optionally mirrored across the cell —
+ *  the wing_l -> wing_r idiom as one op. */
+export function handleDuplicateShape(state, params) {
+  if (!state.project) throw new Error('No project open');
+  const cell = state.project.cells.getCell(params.cell);
+  const src = cell.shapes.get(params.shape);
+  if (!src) throw new Error(`Shape "${params.shape}" not found`);
+  const name = params.as ?? `${params.shape}_copy`;
+  const copy = cell.draw(src.type, src.params, src.color, name);
+  if (params.mirror) cell.flipShape(name, params.mirror, { about: 'cell' });
+  state.broadcast?.({ type: 'draw', cell: params.cell, shape: copy.toJSON() });
+  return { shapeId: copy.id, shapeName: name };
+}
+
 const TWEEN_EASE = {
   'linear': t => t,
   'in': t => t * t,
