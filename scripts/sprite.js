@@ -236,7 +236,10 @@ SESSION
   new <name> [--size N | --size WxH] [--rows N --cols N --palette pico8|gameboy|nes|cga|db-16|db-32]
   open <path>            open saved project file
   save                   persist project to SQLite
-  export                 export PNG + JSON atlas to cwd
+  export                 export gapless sheet PNG + Aseprite JSON atlas (<name>.atlas.json)
+                         atlas has frameTags from cell groups, per-group fps durations, pivot slice
+  pivot [--x N --y N | --anchor center|top-center|bottom-center|bottom-left|bottom-right]
+                         set the sprite pivot/origin exported in the atlas
   status                 show active project info
   restart                graceful shutdown + respawn of sprite server
 
@@ -279,8 +282,9 @@ CELLS
   view  --cell                     view-anim <group>    undo/redo --cell
 
 GROUPS (cells)
-  group create <name> R,C R,C ...     group add/remove <name> R,C ...
+  group create <name> R,C R,C ... [--fps N]     group add/remove <name> R,C ...
   group delete <name>                 group list
+  group fps <name> <N>                set playback fps (exported as frame durations)
 
 SHAPE GROUPS (within a cell)
   shape-group create <name> <shapes...> --cell
@@ -351,6 +355,9 @@ async function run() {
       break;
     case 'export':
       result = await api('POST', '/api/session/export', {});
+      break;
+    case 'pivot':
+      result = await api('POST', '/api/session/pivot', { x: num(args.x), y: num(args.y), anchor: args.anchor });
       break;
 
     case 'draw':
@@ -471,7 +478,8 @@ async function run() {
 
     case 'group':
       switch (sub) {
-        case 'create': result = await api('POST', '/api/group/cell/create', { name: name, cells: args.cells?.split(' ') ?? positional.slice(2) }); break;
+        case 'create': result = await api('POST', '/api/group/cell/create', { name: name, cells: args.cells?.split(' ') ?? positional.slice(2), fps: num(args.fps) }); break;
+        case 'fps':    result = await api('POST', '/api/group/cell/fps', { name: name, fps: num(positional[2]) }); break;
         case 'list':   result = await api('GET', '/api/group/cell/list'); break;
         case 'add':    result = await api('POST', '/api/group/cell/add', { name: name, cells: args.cells?.split(' ') ?? positional.slice(2) }); break;
         case 'remove': result = await api('POST', '/api/group/cell/remove', { name: name, cells: args.cells?.split(' ') ?? positional.slice(2) }); break;

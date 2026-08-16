@@ -64,14 +64,13 @@ describe('Project', () => {
     expect(json.groups).toEqual({});
   });
 
-  it('exports texture atlas JSON', () => {
+  it('exports an Aseprite atlas JSON', () => {
     const proj = Project.create({ name: 'test', cellSize: 16, rows: 2, cols: 3 });
     proj.cells.getCell('0,0').name = 'idle';
-    const atlas = proj.exportAtlas();
-    expect(atlas.cellWidth).toBe(16);
-    expect(atlas.frames['0,0'].x).toBe(0);
-    expect(atlas.frames['0,0'].y).toBe(0);
-    expect(atlas.frames['0,0'].name).toBe('idle');
-    expect(atlas.frames['0,1'].x).toBe(16);
+    const atlas = proj.exportAseprite({ imageName: 'test.png' });
+    expect(atlas.frames[0].frame).toEqual({ x: 0, y: 0, w: 16, h: 16 });
+    expect(atlas.frames[0].filename).toBe('idle');
+    expect(atlas.frames[1].frame.x).toBe(16);
+    expect(atlas.meta.size).toEqual({ w: 48, h: 32 });
   });
 });

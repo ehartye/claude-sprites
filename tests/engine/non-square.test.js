@@ -41,10 +41,9 @@ describe('Non-square cells', () => {
 
   it('lays out the atlas with per-axis cell dimensions', () => {
     const p = Project.create({ name: 't', cellWidth: 16, cellHeight: 32, rows: 2, cols: 3 });
-    const atlas = p.exportAtlas();
-    expect(atlas.frames['1,2']).toMatchObject({ x: 32, y: 32, w: 16, h: 32 });
-    expect(atlas.imageWidth).toBe(48);
-    expect(atlas.imageHeight).toBe(64);
+    const atlas = p.exportAseprite({ imageName: 't.png' });
+    expect(atlas.frames[5].frame).toEqual({ x: 32, y: 32, w: 16, h: 32 }); // cell 1,2
+    expect(atlas.meta.size).toEqual({ w: 48, h: 64 });
   });
 
   it('mirrors per-axis on a non-square cell', () => {
