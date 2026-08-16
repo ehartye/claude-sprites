@@ -184,6 +184,42 @@ function handleHighlightShadow(state, type, params) {
     shapeNames.push(name);
   }
 
+  // Optional checkerboard transition band adjacent to the solid band —
+  // classic pixel-art dither between the lit/shaded zone and the base color.
+  if (params.dither) {
+    const seen = new Set(pixels.map(pt => `${pt.x},${pt.y}`));
+    let ditherRaw;
+    if (targetShape.type === 'circle' || targetShape.type === 'ellipse') {
+      // Shift toward the zone between highlight and shadow, widen the sweep.
+      const rf = params.radius_factor ?? (type === 'highlight' ? 0.55 : 0.70);
+      targetShape.__overrideRadiusFactor = type === 'highlight'
+        ? Math.min(0.95, rf + 0.12)
+        : Math.max(0.2, rf - 0.12);
+      targetShape.__overrideSpanDeg = (params.span_deg ?? (type === 'highlight' ? 30 : 40)) * 1.6;
+      ditherRaw = computeArcPixels(targetShape, direction, Math.max(2, Math.round(count * 1.5)), type);
+      delete targetShape.__overrideRadiusFactor;
+      delete targetShape.__overrideSpanDeg;
+    } else {
+      // Rects: same edge run, one more step toward the center.
+      const inset = {
+        minX: bbox.minX + 1, minY: bbox.minY + 1,
+        maxX: bbox.maxX - 1, maxY: bbox.maxY - 1,
+        sizeMetric: bbox.sizeMetric,
+      };
+      ditherRaw = computeEdgePixels(inset, direction, count);
+    }
+    const ditherPixels = ditherRaw.filter(pt =>
+      (((pt.x + pt.y) % 2) + 2) % 2 === 0 &&
+      !seen.has(`${pt.x},${pt.y}`) &&
+      isRenderablyInsideShape(targetShape, pt.x, pt.y));
+    for (let i = 0; i < ditherPixels.length; i++) {
+      const name = `${baseName}_d_${i}`;
+      const shape = cell.draw('point', { x: ditherPixels[i].x, y: ditherPixels[i].y }, newColor, name);
+      state.broadcast?.({ type: 'draw', cell: params.cell, shape: shape.toJSON() });
+      shapeNames.push(name);
+    }
+  }
+
   return { shapeNames };
 }
 

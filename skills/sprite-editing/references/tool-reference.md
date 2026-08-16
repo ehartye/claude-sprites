@@ -68,6 +68,7 @@ Flags:
 - `--span-deg N` — arc span in degrees. Default: 30 (highlight), 40 (shadow).
 - `--radius-factor F` — fraction of radius from center (0–1). Default: 0.55 (highlight), 0.70 (shadow). Lower = deeper into shape. Higher = closer to silhouette.
 - `--name <base>` — override the auto-generated `<target>_hl_<i>` / `<target>_sh_<i>` naming.
+- `--dither true` — adds a checkerboard transition band adjacent to the solid band (toward the mid-zone on circles/ellipses, one step inward on rects), named `<base>_d_<i>`. Classic pixel-art softening between the lit/shaded zone and the base color.
 
 ### Sphere shading (compound)
 
