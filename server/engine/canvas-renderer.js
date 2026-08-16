@@ -1,4 +1,5 @@
-import { createCanvas } from 'canvas';
+import { createCanvas, Image } from 'canvas';
+import fs from 'fs';
 
 export class CanvasRenderer {
   constructor(palette, opts = {}) {
@@ -212,20 +213,37 @@ export class CanvasRenderer {
     ctx.putImageData(imgData, 0, 0);
   }
 
-  renderCellRaw(cell) {
+  /** Draw the cell's reference image (tracing underlay) scaled to the cell, if asked. */
+  _drawReference(ctx, cell, opts) {
+    if (!opts.withReference || !cell.reference) return;
+    try {
+      const img = new Image();
+      img.src = fs.readFileSync(cell.reference.path); // sync load (node-canvas)
+      ctx.save();
+      ctx.globalAlpha = cell.reference.opacity ?? 0.35;
+      ctx.drawImage(img, 0, 0, cell.width, cell.height);
+      ctx.restore();
+    } catch {
+      // missing/unreadable reference: render without it
+    }
+  }
+
+  renderCellRaw(cell, opts = {}) {
     const canvas = createCanvas(cell.width, cell.height);
     const ctx = canvas.getContext('2d');
     this._applyBackground(ctx, cell.width, cell.height);
+    this._drawReference(ctx, cell, opts);
     for (const shape of cell.shapes.listByZ()) {
       this._drawShape(ctx, shape);
     }
     return ctx.getImageData(0, 0, cell.width, cell.height).data;
   }
 
-  renderCell(cell) {
+  renderCell(cell, opts = {}) {
     const canvas = createCanvas(cell.width, cell.height);
     const ctx = canvas.getContext('2d');
     this._applyBackground(ctx, cell.width, cell.height);
+    this._drawReference(ctx, cell, opts);
     for (const shape of cell.shapes.listByZ()) {
       this._drawShape(ctx, shape);
     }

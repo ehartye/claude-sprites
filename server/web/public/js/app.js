@@ -50,7 +50,9 @@ function init() {
   // MCP tool broadcasts use specific event types — request full state refresh
   const refreshEvents = [
     'shape_named', 'shape_moved', 'shape_recolored', 'shape_deleted', 'shape_z', 'shape_resized',
-    'cell_shifted', 'cell_mirrored', 'cell_copied', 'cell_cleared', 'cell_named',
+    'shape_flipped', 'shape_rotated',
+    'cell_shifted', 'cell_mirrored', 'cell_rotated', 'cell_copied', 'cell_cleared', 'cell_named',
+    'cell_cloned_fanout', 'cell_reference',
     'group_created', 'group_cells_added', 'group_cells_removed', 'group_deleted',
     'palette', 'undo', 'redo',
   ];
@@ -313,6 +315,7 @@ function selectCell(ref) {
   state.activeCell = ref;
   const cell = findCell(ref);
   editor.setCell(cell);
+  editor.setReference(cell?.reference ?? null, ref);
   updateCellRef();
   refreshShapePanel();
   cellNav.setActive(ref);

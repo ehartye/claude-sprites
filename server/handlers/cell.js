@@ -1,3 +1,5 @@
+import fs from 'fs';
+
 export function handleShiftCell(state, params) {
   if (!state.project) throw new Error('No project open');
   state.project.cells.shiftCell(params.cell, params.dx, params.dy);
@@ -8,6 +10,20 @@ export function handleMirrorCell(state, params) {
   if (!state.project) throw new Error('No project open');
   state.project.cells.mirrorCell(params.cell, params.axis);
   state.broadcast?.({ type: 'cell_mirrored', cell: params.cell, axis: params.axis });
+}
+
+/** Attach (or clear, with path: null) a per-cell reference image for tracing. */
+export function handleSetReference(state, params) {
+  if (!state.project) throw new Error('No project open');
+  const cell = state.project.cells.getCell(params.cell);
+  if (params.path == null) {
+    cell.reference = null;
+  } else {
+    if (!fs.existsSync(params.path)) throw new Error(`Reference image not found: ${params.path}`);
+    cell.reference = { path: params.path, opacity: params.opacity ?? 0.35 };
+  }
+  state.broadcast?.({ type: 'cell_reference', cell: params.cell, reference: cell.reference });
+  return cell.reference ? `Reference set on ${params.cell} (opacity ${cell.reference.opacity})` : `Reference cleared on ${params.cell}`;
 }
 
 export function handleRotateCell(state, params) {

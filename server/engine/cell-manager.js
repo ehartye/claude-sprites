@@ -46,7 +46,7 @@ export class CellManager {
   copyCell(fromRef, toRef) {
     const src = this.getCell(fromRef);
     const { r, c } = this._parseCoord(toRef);
-    const dest = new Cell({ w: this.cellWidth, h: this.cellHeight });
+    const dest = new Cell({ w: this.cellWidth, h: this.cellHeight }, { reference: src.reference });
     for (const shape of src.shapes.listByZ()) {
       const clone = shape.clone();
       dest.shapes.add(clone);

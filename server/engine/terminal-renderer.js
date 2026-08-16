@@ -31,10 +31,10 @@ export class TerminalRenderer {
     this._canvasRenderer = new CanvasRenderer(palette);
   }
 
-  renderCell(cell) {
+  renderCell(cell, opts = {}) {
     const width = cell.width;
     const height = cell.height;
-    const imgData = this._canvasRenderer.renderCellRaw(cell);
+    const imgData = this._canvasRenderer.renderCellRaw(cell, opts);
     const shapes = cell.shapes.listByZ();
 
     const lines = [];
