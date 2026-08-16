@@ -531,6 +531,21 @@ export function handleDraw(state, type, params) {
   return result;
 }
 
+/** Accepts [{x,y},...], [[x,y],...], or the CLI string form "x,y x,y ...". */
+function parsePoints(input) {
+  if (Array.isArray(input)) {
+    return input.map(pt => (Array.isArray(pt) ? { x: pt[0], y: pt[1] } : { x: pt.x, y: pt.y }));
+  }
+  if (typeof input === 'string') {
+    return input.trim().split(/\s+/).filter(Boolean).map(pair => {
+      const [x, y] = pair.split(',').map(Number);
+      if (!Number.isFinite(x) || !Number.isFinite(y)) throw new Error(`Bad point "${pair}" (expected "x,y")`);
+      return { x, y };
+    });
+  }
+  throw new Error('points required ("x,y x,y ..." or an array of points)');
+}
+
 function _handleDrawInner(state, type, params) {
   if (!state.project) throw new Error('No project open');
 
@@ -590,6 +605,18 @@ function _handleDrawInner(state, type, params) {
     case 'fill':
       drawParams = { x: params.x, y: params.y };
       break;
+    case 'polygon': {
+      const points = parsePoints(params.points);
+      if (points.length < 3) throw new Error('polygon needs at least 3 points');
+      drawParams = { points, filled: params.filled ?? true };
+      break;
+    }
+    case 'polyline': {
+      const points = parsePoints(params.points);
+      if (points.length < 2) throw new Error('polyline needs at least 2 points');
+      drawParams = { points };
+      break;
+    }
     default:
       throw new Error(`Unknown draw type: ${type}`);
   }

@@ -2,6 +2,14 @@
 // CellManager (whole-cell). All mutate params in place.
 
 function bbox(p) {
+  if ('points' in p) {
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    for (const pt of p.points) {
+      minX = Math.min(minX, pt.x); maxX = Math.max(maxX, pt.x);
+      minY = Math.min(minY, pt.y); maxY = Math.max(maxY, pt.y);
+    }
+    return { minX, maxX, minY, maxY };
+  }
   if ('x1' in p) {
     return {
       minX: Math.min(p.x1, p.x2), maxX: Math.max(p.x1, p.x2),
@@ -29,12 +37,14 @@ export function mirrorSum(p, axis, about, extent) {
 
 export function flipParams(p, axis, m) {
   if (axis === 'horizontal') {
-    if ('x1' in p) { p.x1 = m - p.x1; p.x2 = m - p.x2; }
+    if ('points' in p) { for (const pt of p.points) pt.x = m - pt.x; }
+    else if ('x1' in p) { p.x1 = m - p.x1; p.x2 = m - p.x2; }
     else if ('cx' in p) { p.cx = m - p.cx; }
     else if ('w' in p) { p.x = m - p.x - p.w + 1; }
     else { p.x = m - p.x; }
   } else if (axis === 'vertical') {
-    if ('y1' in p) { p.y1 = m - p.y1; p.y2 = m - p.y2; }
+    if ('points' in p) { for (const pt of p.points) pt.y = m - pt.y; }
+    else if ('y1' in p) { p.y1 = m - p.y1; p.y2 = m - p.y2; }
     else if ('cy' in p) { p.cy = m - p.cy; }
     else if ('h' in p) { p.y = m - p.y - p.h + 1; }
     else { p.y = m - p.y; }
@@ -67,7 +77,9 @@ export function rotateParams(p, deg, px, py) {
     const [a, b] = rotRaw(x, y);
     return [Math.round(a), Math.round(b)];
   };
-  if ('x1' in p) {
+  if ('points' in p) {
+    for (const pt of p.points) [pt.x, pt.y] = rot(pt.x, pt.y);
+  } else if ('x1' in p) {
     [p.x1, p.y1] = rot(p.x1, p.y1);
     [p.x2, p.y2] = rot(p.x2, p.y2);
   } else if ('cx' in p) {

@@ -38,13 +38,16 @@ export class Cell {
   moveShape(ref, dx, dy) {
     const shape = this.shapes.get(ref);
     if (!shape) throw new Error(`Shape "${ref}" not found`);
-    const oldParams = { ...shape.params };
+    const oldParams = structuredClone(shape.params);
     const applyMove = () => {
       if ('x' in shape.params) shape.params.x += dx;
       if ('y' in shape.params) shape.params.y += dy;
       if ('x1' in shape.params) { shape.params.x1 += dx; shape.params.y1 += dy; }
       if ('x2' in shape.params) { shape.params.x2 += dx; shape.params.y2 += dy; }
       if ('cx' in shape.params) { shape.params.cx += dx; shape.params.cy += dy; }
+      if ('points' in shape.params) {
+        for (const pt of shape.params.points) { pt.x += dx; pt.y += dy; }
+      }
     };
     this._exec({
       execute: applyMove,
@@ -75,7 +78,7 @@ export class Cell {
   updateShapeParams(ref, updates) {
     const shape = this.shapes.get(ref);
     if (!shape) throw new Error(`Shape "${ref}" not found`);
-    const oldParams = { ...shape.params };
+    const oldParams = structuredClone(shape.params);
     this._exec({
       execute: () => { Object.assign(shape.params, updates); },
       undo: () => { Object.assign(shape.params, oldParams); },
@@ -86,7 +89,7 @@ export class Cell {
     const shape = this.shapes.get(ref);
     if (!shape) throw new Error(`Shape "${ref}" not found`);
     const about = opts.about ?? 'self';
-    const oldParams = { ...shape.params };
+    const oldParams = structuredClone(shape.params);
     this._exec({
       execute: () => flipParams(shape.params, axis, mirrorSum(shape.params, axis, about, axis === 'horizontal' ? this.width : this.height)),
       undo: () => { Object.assign(shape.params, oldParams); },
@@ -97,7 +100,7 @@ export class Cell {
     const shape = this.shapes.get(ref);
     if (!shape) throw new Error(`Shape "${ref}" not found`);
     const about = opts.about ?? 'self';
-    const oldParams = { ...shape.params };
+    const oldParams = structuredClone(shape.params);
     this._exec({
       execute: () => {
         const [px, py] = rotatePivot(shape.params, about, this.width, this.height);

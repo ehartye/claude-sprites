@@ -164,6 +164,38 @@ export class CellNavigator {
             }
           }
           break;
+        case 'polygon':
+        case 'polyline': {
+          const pts = p.points || [];
+          const close = shape.type === 'polygon';
+          if (close && p.filled && pts.length >= 3) {
+            let minY = Infinity, maxY = -Infinity;
+            for (const pt of pts) { minY = Math.min(minY, pt.y); maxY = Math.max(maxY, pt.y); }
+            for (let y = minY; y <= maxY; y++) {
+              const xs = [];
+              for (let i = 0; i < pts.length; i++) {
+                const a = pts[i], b = pts[(i + 1) % pts.length];
+                if (a.y === b.y) continue;
+                if (y >= Math.min(a.y, b.y) && y < Math.max(a.y, b.y)) {
+                  xs.push(a.x + ((y - a.y) * (b.x - a.x)) / (b.y - a.y));
+                }
+              }
+              xs.sort((m, n) => m - n);
+              for (let i = 0; i + 1 < xs.length; i += 2) {
+                for (let x = Math.ceil(xs[i]); x <= Math.floor(xs[i + 1]); x++) {
+                  ctx.fillRect(x * scale, y * scale, scale, scale);
+                }
+              }
+            }
+          }
+          for (let i = 0; i < pts.length - 1; i++) {
+            this._thumbLine(ctx, scale, pts[i].x, pts[i].y, pts[i + 1].x, pts[i + 1].y);
+          }
+          if (close && pts.length >= 3) {
+            this._thumbLine(ctx, scale, pts[pts.length - 1].x, pts[pts.length - 1].y, pts[0].x, pts[0].y);
+          }
+          break;
+        }
       }
     }
   }
