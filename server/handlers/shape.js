@@ -91,6 +91,71 @@ export function handleRotateShape(state, params) {
   state.broadcast?.({ type: 'shape_rotated', cell: params.cell, name: params.name, deg: params.deg });
 }
 
+const TWEEN_EASE = {
+  'linear': t => t,
+  'in': t => t * t,
+  'out': t => 1 - (1 - t) * (1 - t),
+  'in-out': t => (t < 0.5 ? 2 * t * t : 1 - 2 * (1 - t) * (1 - t)),
+};
+
+/**
+ * Interpolate a shape's position and/or numeric params across every frame of
+ * a cell group in one call. Start values default to the shape's state in the
+ * group's first frame. Composes move-to/resize per frame, so each frame's
+ * edit stays individually undoable.
+ */
+export function handleTweenShape(state, params) {
+  if (!state.project) throw new Error('No project open');
+  const { group, shape: shapeName, to, from, to_updates, from_updates } = params;
+  const cells = state.db?.getCellGroups?.(state.sessionId)?.[group];
+  if (!cells || cells.length < 2) throw new Error(`Group "${group}" not found or has fewer than 2 cells`);
+  const ease = TWEEN_EASE[params.ease ?? 'linear'];
+  if (!ease) throw new Error(`Unknown ease "${params.ease}" (use linear|in|out|in-out)`);
+  if (!to && !to_updates) throw new Error('tween needs "to" and/or "to_updates"');
+
+  const src = state.project.cells.getCell(cells[0]).shapes.get(shapeName);
+  if (!src) throw new Error(`Shape "${shapeName}" not found in ${cells[0]}`);
+  const p = src.params;
+  const anchor = 'cx' in p ? { x: p.cx, y: p.cy }
+    : 'x1' in p ? { x: p.x1, y: p.y1 }
+    : 'points' in p ? { x: p.points[0].x, y: p.points[0].y }
+    : { x: p.x, y: p.y };
+  const start = from ?? anchor;
+
+  let startUpdates = null;
+  if (to_updates) {
+    startUpdates = { ...(from_updates ?? {}) };
+    for (const k of Object.keys(to_updates)) {
+      if (!(k in startUpdates)) {
+        if (typeof p[k] !== 'number') throw new Error(`Cannot tween "${k}": not a numeric param of "${shapeName}"`);
+        startUpdates[k] = p[k];
+      }
+    }
+  }
+
+  const n = cells.length;
+  for (let i = 0; i < n; i++) {
+    const t = ease(i / (n - 1));
+    const cell = cells[i];
+    if (to) {
+      handleMoveShapeTo(state, {
+        cell,
+        shape: shapeName,
+        x: Math.round(start.x + (to.x - start.x) * t),
+        y: Math.round(start.y + (to.y - start.y) * t),
+      });
+    }
+    if (to_updates) {
+      const updates = {};
+      for (const k of Object.keys(to_updates)) {
+        updates[k] = Math.round(startUpdates[k] + (to_updates[k] - startUpdates[k]) * t);
+      }
+      handleResizeShape(state, { cell, shape: shapeName, updates });
+    }
+  }
+  return { frames: n };
+}
+
 /** Move a shape one step up or down in z-order by swapping with its neighbor. */
 export function handleShapeZDirection(state, params) {
   if (!state.project) throw new Error('No project open');
