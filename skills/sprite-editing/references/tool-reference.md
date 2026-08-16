@@ -14,7 +14,7 @@ The server auto-starts on first invocation. Port defaults to 3377 (override with
 | `sessions` | | List recent projects (id, name, last updated) — the way back after `new` switches projects |
 | `save` | | Persist project to SQLite |
 | `export` | `[--dest <folder>]` | Export gapless sheet PNG + **Aseprite JSON atlas** (`<name>.atlas.json`) to the project's asset folder (or exactly `--dest` for this export only). The atlas carries `meta.frameTags` (one per cell group, as a contiguous appended frame run), per-frame `duration` from each group's fps, and the pivot as a slice — consumable directly by Unity/Godot/Phaser importers |
-| `pivot` | `--x N --y N` \| `--anchor center\|top-center\|bottom-center\|bottom-left\|bottom-right` | Set the sprite origin exported in the atlas (characters usually want `bottom-center`) |
+| `pivot` | `--x N --y N` \| `--anchor center\|top-center\|bottom-center\|bottom-left\|bottom-right` | Set the sprite origin exported in the atlas (characters usually want `bottom-center`). Unity/Godot importers read the exported pivot slice; **Phaser ignores slices** — set `sprite.setOrigin(...)` in game code |
 | `status` | | Show current project info |
 
 ## Drawing
@@ -135,7 +135,8 @@ sprite.js resize ball --cell 0,1 --updates '{"rx":4,"ry":5}'   # stretch mid-air
 | `name` | `--cell --as <name>` | Give cell a readable name |
 | `ref set <image.png>` | `--cell [--opacity 0.35]` | Attach a tracing reference image: rendered dimmed **under** shapes in `view` output and the web UI editor, scaled to the cell, never included in exports. Use it to copy a pose or style from an existing image |
 | `ref clear` | `--cell` | Remove the reference |
-| `view` | `--cell` | Render cell preview (includes the reference underlay if set) |
+| `view` | `--cell [--png true] [--scale N]` | Render cell preview (includes the reference underlay if set). `--scale N` (1–32) nearest-neighbor upscales the PNG — use `--scale 8` to actually judge 16px art |
+| `view --sheet` | `[--scale N]` | Render the whole sheet to a temp PNG and print its path |
 | `undo` | `--cell` | Undo last operation in cell |
 | `redo` | `--cell` | Redo undone operation in cell |
 

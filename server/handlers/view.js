@@ -12,11 +12,16 @@ function tmpPath(tmpDir, name) {
   return path.join(tmpDir, `${name}-${Date.now()}.png`);
 }
 
+function clampScale(s) {
+  const n = Math.round(Number(s) || 1);
+  return Math.max(1, Math.min(32, n));
+}
+
 export function handleViewCell(state, params, tmpDir) {
   if (!state.project) throw new Error('No project open');
   const cell = state.project.cells.getCell(params.cell);
   // Single-cell views include the tracing reference; export paths never do.
-  const viewOpts = { withReference: true };
+  const viewOpts = { withReference: true, scale: clampScale(params.scale) };
 
   if (params.format === 'terminal') {
     const termRenderer = new TerminalRenderer(state.project.palette);
@@ -34,7 +39,7 @@ export function handleViewCells(state, params, tmpDir) {
   if (!state.project) throw new Error('No project open');
   const cells = params.cells.map((ref) => state.project.cells.getCell(ref));
   const renderer = getRenderer(state);
-  const buf = renderer.renderCells(cells);
+  const buf = renderer.renderCells(cells, { scale: clampScale(params.scale) });
   const p = tmpPath(tmpDir, 'cells');
   fs.writeFileSync(p, buf);
   return { path: p };
@@ -43,7 +48,7 @@ export function handleViewCells(state, params, tmpDir) {
 export function handleViewSheet(state, params, tmpDir) {
   if (!state.project) throw new Error('No project open');
   const renderer = getRenderer(state);
-  const buf = renderer.renderSheet(state.project.cells);
+  const buf = renderer.renderSheet(state.project.cells, { scale: clampScale(params.scale) });
   const p = tmpPath(tmpDir, 'sheet');
   fs.writeFileSync(p, buf);
   return { path: p };

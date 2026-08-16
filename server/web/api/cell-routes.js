@@ -3,7 +3,7 @@ import { handleShiftCell, handleMirrorCell, handleCopyCell,
          handleClearCell, handleNameCell, handleListCells,
          handleCloneFanout, handleRotateCell, handleSetReference } from '../../handlers/cell.js';
 import { handleUndo, handleRedo } from '../../handlers/history.js';
-import { handleViewCell } from '../../handlers/view.js';
+import { handleViewCell, handleViewSheet } from '../../handlers/view.js';
 import { saveDraft } from '../http.js';
 
 export function cellRoutes(state) {
@@ -40,6 +40,12 @@ export function cellRoutes(state) {
   r.post('/cell/view',   (req, res) => {
     try {
       const result = handleViewCell(state, req.body, state.tmpDir);
+      res.json({ ok: true, data: result });
+    } catch (e) { res.json({ ok: false, error: e.message }); }
+  });
+  r.post('/view/sheet',  (req, res) => {
+    try {
+      const result = handleViewSheet(state, req.body, state.tmpDir);
       res.json({ ok: true, data: result });
     } catch (e) { res.json({ ok: false, error: e.message }); }
   });
