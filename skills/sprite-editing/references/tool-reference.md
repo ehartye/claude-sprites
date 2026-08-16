@@ -234,6 +234,7 @@ sprite.js batch ops.json [--vars-file frames.json | --vars k=v,k=v] [--continue-
 - **Type preservation:** a string exactly equal to `"{{foo}}"` becomes the raw value (number stays number). Embedded placeholders (`"0,{{i}}"`) stay strings.
 - **Fail-fast by default:** stops on first error with structured stderr (`ERROR at op 4/12: ...`). Use `--continue-on-error` for legacy best-effort behavior.
 - No arithmetic, no conditionals, no nested interpolation. Pre-compute numeric values in the vars file.
+- **Large builds (150+ ops): generate the batch file from a small JS script** instead of hand-writing JSON — helper functions (`draw()`, a per-archetype recipe that clones rows and recolor-groups variants) keep it maintainable, and the emitted `build.json` stays the reviewable, replayable artifact. Proven shape: horde-peril's `asset-src/gen-build.mjs` (9 sheets / 12 enemy variants / 234 ops from ~200 lines of generator).
 
 ## Server Control
 
