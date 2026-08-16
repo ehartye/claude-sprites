@@ -23,10 +23,12 @@ export function sessionRoutes(state) {
 
   r.post('/new', (req, res) => {
     try {
-      const { name, size = 16, width, height, rows = 4, cols = 4, palette = 'pico8' } = req.body;
+      const { name, size = 16, width, height, rows = 4, cols = 4, palette = 'pico8', cwd, dest } = req.body;
       if (!name) return res.json({ ok: false, error: 'name required' });
-      const project_path = process.cwd();
-      const destination_folder = join(project_path, 'assets', 'claude-sprites', name);
+      // Destination follows the CLI caller's cwd (or an explicit --dest parent),
+      // not wherever the server process happened to start.
+      const project_path = cwd ?? process.cwd();
+      const destination_folder = dest ? join(dest, name) : join(project_path, 'assets', 'claude-sprites', name);
       const w = width ?? size;
       const h = height ?? w;
       const project = Project.create({ name, cellWidth: w, cellHeight: h, rows, cols, palette });
@@ -102,7 +104,8 @@ export function sessionRoutes(state) {
     try {
       if (!state.project) return res.json({ ok: false, error: 'No active project' });
       const session = state.db.getSession(state.sessionId);
-      const dest = session.destination_folder;
+      // One-off destination override; the session's stored folder is untouched.
+      const dest = req.body?.dest ?? session.destination_folder;
       const renderer = new CanvasRenderer(state.project.palette, { background: state.project.background });
       // gap: 0 — the atlas rects are gapless, so the sheet must be too
       const png = renderer.renderSheet(state.project.cells, { gap: 0 });

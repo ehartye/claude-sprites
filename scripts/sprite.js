@@ -236,9 +236,10 @@ const HELP_TEXT = `sprite — CLI for claude-sprites (server at ${BASE_URL})
 
 SESSION
   new <name> [--size N | --size WxH] [--rows N --cols N --palette pico8|gameboy|nes|cga|db-16|db-32]
+             [--dest <folder>]   parent folder for exports (default: <cwd>/assets/claude-sprites)
   open <path>            open saved project file
   save                   persist project to SQLite
-  export                 export gapless sheet PNG + Aseprite JSON atlas (<name>.atlas.json)
+  export [--dest <folder>]  export gapless sheet PNG + Aseprite JSON atlas (<name>.atlas.json)
                          atlas has frameTags from cell groups, per-group fps durations, pivot slice
   pivot [--x N --y N | --anchor center|top-center|bottom-center|bottom-left|bottom-right]
                          set the sprite pivot/origin exported in the atlas
@@ -356,6 +357,8 @@ async function run() {
           : { size: num(args.size) }),
         rows: num(args.rows),
         cols: num(args.cols), palette: args.palette,
+        cwd: process.cwd(),
+        dest: args.dest ? resolve(args.dest) : undefined,
       });
       break;
     }
@@ -366,7 +369,9 @@ async function run() {
       result = await api('POST', '/api/session/save', {});
       break;
     case 'export':
-      result = await api('POST', '/api/session/export', {});
+      result = await api('POST', '/api/session/export', {
+        dest: args.dest ? resolve(args.dest) : undefined,
+      });
       break;
     case 'pivot':
       result = await api('POST', '/api/session/pivot', { x: num(args.x), y: num(args.y), anchor: args.anchor });
