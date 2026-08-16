@@ -74,6 +74,20 @@ export class CanvasEditor {
     this.render();
   }
 
+  /** Tracing reference underlay: refInfo = { opacity } from cell data, or null. */
+  setReference(refInfo, cellRef) {
+    if (!refInfo) {
+      this._refImage = null;
+      this.render();
+      return;
+    }
+    this._refOpacity = refInfo.opacity ?? 0.35;
+    const img = new window.Image();
+    img.onload = () => { this._refImage = img; this.render(); };
+    img.onerror = () => { this._refImage = null; this.render(); };
+    img.src = `/api/cell/reference-image?cell=${encodeURIComponent(cellRef)}&t=${Date.now()}`;
+  }
+
   setPalette(paletteMap) {
     this._palette = paletteMap;
   }
@@ -131,6 +145,15 @@ export class CanvasEditor {
 
     // Background
     this._renderBackground(ctx, ox, oy, gridW, gridH);
+
+    // Tracing reference underlay (below shapes, never exported)
+    if (this._refImage) {
+      ctx.save();
+      ctx.globalAlpha = this._refOpacity;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(this._refImage, ox, oy, gridW, gridH);
+      ctx.restore();
+    }
 
     // Onion skin (rendered before main shapes at 30% opacity)
     if (this._onionSkinData) {

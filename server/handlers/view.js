@@ -15,14 +15,16 @@ function tmpPath(tmpDir, name) {
 export function handleViewCell(state, params, tmpDir) {
   if (!state.project) throw new Error('No project open');
   const cell = state.project.cells.getCell(params.cell);
+  // Single-cell views include the tracing reference; export paths never do.
+  const viewOpts = { withReference: true };
 
   if (params.format === 'terminal') {
     const termRenderer = new TerminalRenderer(state.project.palette);
-    return { terminal: termRenderer.renderCell(cell) };
+    return { terminal: termRenderer.renderCell(cell, viewOpts) };
   }
 
   const renderer = getRenderer(state);
-  const buf = renderer.renderCell(cell);
+  const buf = renderer.renderCell(cell, viewOpts);
   const p = tmpPath(tmpDir, `cell-${params.cell.replace(',', '-')}`);
   fs.writeFileSync(p, buf);
   return { path: p };

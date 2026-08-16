@@ -2,7 +2,7 @@
 // scripts/sprite.js — CLI entry point for claude-sprites
 import { spawn } from 'child_process';
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { dirname, join, resolve } from 'path';
 import { readFileSync } from 'fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -282,6 +282,8 @@ CELLS
   clone-cell --from R,C --to "R,C R,C ..."  (atomic fan-out; all-or-nothing)
   mirror --cell --axis horizontal|vertical      flip every shape across the cell
   rotate-cell --cell --deg 90|180|270           rotate every shape about cell center
+  ref set <image.png> --cell [--opacity 0.35]   attach a tracing reference image
+  ref clear --cell                              shown under shapes in view + web UI, never exported
   view  --cell                     view-anim <group>    undo/redo --cell
 
 TWEEN
@@ -464,6 +466,22 @@ async function run() {
     case 'mirror':
       result = await api('POST', '/api/cell/mirror', { cell: args.cell, axis: args.axis });
       break;
+    case 'ref': {
+      if (sub === 'set') {
+        const refPath = positional[1];
+        if (!refPath) { console.error('Usage: ref set <image.png> --cell R,C [--opacity 0.35]'); process.exitCode = 1; return; }
+        result = await api('POST', '/api/cell/reference', {
+          cell: args.cell, path: resolve(refPath), opacity: num(args.opacity),
+        });
+      } else if (sub === 'clear') {
+        result = await api('POST', '/api/cell/reference', { cell: args.cell, path: null });
+      } else {
+        console.error('Usage: ref set <image.png> --cell R,C [--opacity 0.35] | ref clear --cell R,C');
+        process.exitCode = 1;
+        return;
+      }
+      break;
+    }
     case 'rotate-cell':
       result = await api('POST', '/api/cell/rotate', { cell: args.cell, deg: num(args.deg) });
       break;

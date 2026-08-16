@@ -80,6 +80,7 @@ sprite.js redo     --cell 0,0                           # step forward
 
 ```
 sprite.js copy     --from 0,0 --to 0,1         # deep copy all shapes
+sprite.js ref set art.png --cell 0,0            # tracing underlay in view/UI (never exported)
 sprite.js mirror   --cell 0,0 --axis horizontal # flip whole cell (walk-left from walk-right)
 sprite.js rotate-cell --cell 0,0 --deg 90       # rotate whole cell (spin frames from one pose)
 sprite.js clear    --cell 0,0                   # remove all shapes

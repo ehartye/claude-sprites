@@ -130,7 +130,9 @@ sprite.js resize ball --cell 0,1 --updates '{"rx":4,"ry":5}'   # stretch mid-air
 | `mirror` | `--cell --axis horizontal\|vertical` | Flip every shape across the cell — the standard way to derive walk-left frames from walk-right |
 | `rotate-cell` | `--cell --deg 90\|180\|270` | Rotate every shape about the cell center (CW, y-down) — e.g. spin frames from one drawn frame |
 | `name` | `--cell --as <name>` | Give cell a readable name |
-| `view` | `--cell` | Render cell preview |
+| `ref set <image.png>` | `--cell [--opacity 0.35]` | Attach a tracing reference image: rendered dimmed **under** shapes in `view` output and the web UI editor, scaled to the cell, never included in exports. Use it to copy a pose or style from an existing image |
+| `ref clear` | `--cell` | Remove the reference |
+| `view` | `--cell` | Render cell preview (includes the reference underlay if set) |
 | `undo` | `--cell` | Undo last operation in cell |
 | `redo` | `--cell` | Redo undone operation in cell |
 

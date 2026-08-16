@@ -9,6 +9,7 @@ export class Cell {
     this.width = w;
     this.height = h;
     this.name = opts.name ?? null;
+    this.reference = opts.reference ?? null; // { path, opacity } tracing underlay; never exported
     this.shapes = new ShapeRegistry();
     this._undoStack = [];
     this._redoStack = [];
@@ -149,12 +150,13 @@ export class Cell {
   toJSON() {
     return {
       name: this.name,
+      reference: this.reference,
       shapes: this.shapes.toJSON(),
     };
   }
 
   static fromJSON(json, size) {
-    const cell = new Cell(size, { name: json.name });
+    const cell = new Cell(size, { name: json.name, reference: json.reference ?? null });
     const shapes = ShapeRegistry.fromJSON(json.shapes);
     for (const shape of shapes.listByZ()) {
       cell.shapes.add(shape);
