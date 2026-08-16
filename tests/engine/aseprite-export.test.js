@@ -10,6 +10,9 @@ describe('Project.exportAseprite', () => {
     const p = makeProject();
     const atlas = p.exportAseprite({ imageName: 'hero.png' });
     expect(atlas.frames).toHaveLength(4);
+    // Phaser's createFromAseprite references frames by numeric index, so
+    // filenames are the frame's own array index (Aseprite "{frame}" convention)
+    expect(atlas.frames.map(f => f.filename)).toEqual(['0', '1', '2', '3']);
     const f = atlas.frames[3]; // cell 1,1
     expect(f.frame).toEqual({ x: 16, y: 16, w: 16, h: 16 });
     expect(f.rotated).toBe(false);
@@ -49,11 +52,17 @@ describe('Project.exportAseprite', () => {
     expect(atlas.frames).toHaveLength(4);
   });
 
-  it('uses cell names in filenames when set', () => {
+  it('appends alias frames for named cells after all tag runs', () => {
     const p = makeProject();
     p.cells.getCell('0,0').name = 'idle';
-    const atlas = p.exportAseprite({ imageName: 'hero.png' });
-    expect(atlas.frames[0].filename).toContain('idle');
+    const atlas = p.exportAseprite({ imageName: 'hero.png', groups: { walk: ['0,0', '0,1'] } });
+    // 4 base + 2 walk-tag frames + 1 alias
+    expect(atlas.frames).toHaveLength(7);
+    const alias = atlas.frames[6];
+    expect(alias.filename).toBe('idle');
+    expect(alias.frame).toEqual(atlas.frames[0].frame);
+    // tag indices are unaffected by aliases
+    expect(atlas.meta.frameTags[0]).toEqual({ name: 'walk', from: 4, to: 5, direction: 'forward' });
   });
 
   it('exports the pivot as an Aseprite slice with the pivot point', () => {

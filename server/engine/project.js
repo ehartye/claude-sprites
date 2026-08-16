@@ -96,19 +96,20 @@ export class Project {
    */
   exportAseprite({ imageName, groups = {}, fpsMap = {}, defaultFps = 8 } = {}) {
     const frames = [];
-    const usedNames = new Set();
     const baseIndex = new Map();
+    const namedCells = [];
     const defDur = Math.round(1000 / defaultFps);
+    // Frame filenames are the frame's own array index — the Aseprite
+    // "{frame}" convention that Phaser's createFromAseprite resolves
+    // tag ranges against.
     for (let r = 0; r < this.cells.rows; r++) {
       for (let c = 0; c < this.cells.cols; c++) {
         const ref = `${r},${c}`;
         const cell = this.cells.getCell(ref);
-        let filename = cell.name ?? ref;
-        if (usedNames.has(filename)) filename = `${filename} (${ref})`;
-        usedNames.add(filename);
         const rect = { x: c * this.cellWidth, y: r * this.cellHeight, w: this.cellWidth, h: this.cellHeight };
         baseIndex.set(ref, frames.length);
-        frames.push(this._asepriteFrame(filename, rect, defDur));
+        if (cell.name) namedCells.push({ name: cell.name, rect });
+        frames.push(this._asepriteFrame(String(frames.length), rect, defDur));
       }
     }
 
@@ -117,12 +118,22 @@ export class Project {
       if (!cells || cells.length === 0) continue;
       const dur = Math.round(1000 / (fpsMap[name] ?? defaultFps));
       const from = frames.length;
-      cells.forEach((ref, i) => {
+      for (const ref of cells) {
         const bi = baseIndex.get(ref);
         if (bi === undefined) throw new Error(`Group "${name}" references unknown cell "${ref}"`);
-        frames.push(this._asepriteFrame(`${name} ${i}`, { ...frames[bi].frame }, dur));
-      });
+        frames.push(this._asepriteFrame(String(frames.length), { ...frames[bi].frame }, dur));
+      }
       frameTags.push({ name, from, to: frames.length - 1, direction: 'forward' });
+    }
+
+    // Named cells become alias frames AFTER every tag run, so tools that look
+    // up frames by name (e.g. Phaser's add.image(x, y, key, 'girder')) work
+    // without disturbing the numeric tag indexing.
+    const usedNames = new Set();
+    for (const { name, rect } of namedCells) {
+      if (usedNames.has(name)) continue;
+      usedNames.add(name);
+      frames.push(this._asepriteFrame(name, { ...rect }, defDur));
     }
 
     const slices = this.pivot
