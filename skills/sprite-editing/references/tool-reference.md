@@ -10,6 +10,8 @@ The server auto-starts on first invocation. Port defaults to 3377 (override with
 |---------|-------|-------|
 | `new <name>` | `--size 16 --rows 4 --cols 4 --palette pico8 [--dest <folder>]` | Create project. `--size` takes `16` (square) or `16x32` (width x height — tall character cells). Exports land under the **CLI's** working directory (`assets/claude-sprites/<name>/`) or under `--dest <parent>` if given. Palettes: `pico8`, `gameboy`, `nes`, `cga` |
 | `open <path>` | | Open saved project file |
+| `open` | `--session <name\|id>` | Reopen an earlier project from its stored draft — no `save` needed. Cell groups come back with it |
+| `sessions` | | List recent projects (id, name, last updated) — the way back after `new` switches projects |
 | `save` | | Persist project to SQLite |
 | `export` | `[--dest <folder>]` | Export gapless sheet PNG + **Aseprite JSON atlas** (`<name>.atlas.json`) to the project's asset folder (or exactly `--dest` for this export only). The atlas carries `meta.frameTags` (one per cell group, as a contiguous appended frame run), per-frame `duration` from each group's fps, and the pivot as a slice — consumable directly by Unity/Godot/Phaser importers |
 | `pivot` | `--x N --y N` \| `--anchor center\|top-center\|bottom-center\|bottom-left\|bottom-right` | Set the sprite origin exported in the atlas (characters usually want `bottom-center`) |

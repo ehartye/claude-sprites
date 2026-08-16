@@ -71,16 +71,36 @@ export class SessionDB {
   }
 
   updateDraft(id, draft_json) {
-    this.db.prepare('UPDATE sessions SET draft_json = ?, updated_at = ? WHERE id = ?')
-      .run(draft_json, Date.now(), id);
+    // The written row must become the globally most-recent even when writes
+    // land within the same millisecond, so "most recently updated" ordering
+    // (listSessions, findSessionByName, getLastSession) never ties.
+    this.db.prepare(`
+      UPDATE sessions SET draft_json = ?,
+        updated_at = MAX(?, (SELECT MAX(updated_at) FROM sessions) + 1)
+      WHERE id = ?
+    `).run(draft_json, Date.now(), id);
   }
 
   updateSession(id, fields) {
     const entries = Object.entries(fields);
     const set = entries.map(([k]) => `${k} = ?`).join(', ');
     const vals = entries.map(([, v]) => v);
-    this.db.prepare(`UPDATE sessions SET ${set}, updated_at = ? WHERE id = ?`)
+    this.db.prepare(`UPDATE sessions SET ${set}, updated_at = MAX(?, (SELECT MAX(updated_at) FROM sessions) + 1) WHERE id = ?`)
       .run(...vals, Date.now(), id);
+  }
+
+  listSessions(limit = 20) {
+    return this.db.prepare(`
+      SELECT id, project_name, created_at, updated_at FROM sessions
+      ORDER BY updated_at DESC, rowid DESC LIMIT ?
+    `).all(limit);
+  }
+
+  findSessionByName(name) {
+    return this.db.prepare(`
+      SELECT * FROM sessions WHERE project_name = ?
+      ORDER BY updated_at DESC, rowid DESC LIMIT 1
+    `).get(name);
   }
 
   setCellGroup(sessionId, name, cells) {
