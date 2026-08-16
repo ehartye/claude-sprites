@@ -110,6 +110,58 @@ function substituteVars(value, vars) {
 function mapCommandToApi(cmd) {
   const { command, ...params } = cmd;
   switch (command) {
+    case 'new': {
+      const sizeMatch = typeof params.size === 'string' ? params.size.match(/^(\d+)x(\d+)$/i) : null;
+      return { method: 'POST', path: '/api/session/new', body: {
+        name: params.name,
+        ...(sizeMatch
+          ? { width: Number(sizeMatch[1]), height: Number(sizeMatch[2]) }
+          : { size: params.size }),
+        rows: params.rows, cols: params.cols, palette: params.palette,
+        cwd: process.cwd(),
+        dest: params.dest ? resolve(String(params.dest)) : undefined,
+      }};
+    }
+    case 'clone-cell': {
+      const to = Array.isArray(params.to) ? params.to : String(params.to).split(/\s+/).filter(Boolean);
+      return { method: 'POST', path: '/api/cell/clone-fanout', body: { from: params.from, to } };
+    }
+    case 'pivot':
+      return { method: 'POST', path: '/api/session/pivot', body: {
+        x: params.x, y: params.y, anchor: params.anchor,
+      }};
+    case 'ref':
+      return params.sub === 'clear'
+        ? { method: 'POST', path: '/api/cell/reference', body: { cell: params.cell, path: null } }
+        : { method: 'POST', path: '/api/cell/reference', body: {
+            cell: params.cell, path: resolve(String(params.path)), opacity: params.opacity,
+          }};
+    case 'save':
+      return { method: 'POST', path: '/api/session/save', body: {} };
+    case 'export':
+      return { method: 'POST', path: '/api/session/export', body: {
+        dest: params.dest ? resolve(String(params.dest)) : undefined,
+      }};
+    case 'shape-group': {
+      const body = { cell: params.cell, name: params.name };
+      switch (params.sub) {
+        case 'create': return { method: 'POST', path: '/api/group/shape/create', body: {
+          ...body, shapes: params.shapes, all_cells: params.all_cells, pattern: params.pattern,
+        }};
+        case 'add':    return { method: 'POST', path: '/api/group/shape/add', body: { ...body, shapes: params.shapes } };
+        case 'remove': return { method: 'POST', path: '/api/group/shape/remove', body: { ...body, shapes: params.shapes } };
+        case 'delete': return { method: 'POST', path: '/api/group/shape/delete', body };
+        default: throw new Error(`Unknown shape-group sub-command: ${params.sub}`);
+      }
+    }
+    case 'move-group':
+      return { method: 'POST', path: '/api/group/shape/move', body: {
+        name: params.name, cell: params.cell, all_cells: params.all_cells, dx: params.dx, dy: params.dy,
+      }};
+    case 'recolor-group':
+      return { method: 'POST', path: '/api/group/shape/recolor', body: {
+        name: params.name, cell: params.cell, all_cells: params.all_cells, color: params.color,
+      }};
     case 'draw':
       return { method: 'POST', path: '/api/draw', body: {
         type: params.type, cell: params.cell, color: params.color,
@@ -195,7 +247,8 @@ function mapCommandToApi(cmd) {
       const sub = params.sub;
       const name = params.name;
       switch (sub) {
-        case 'create': return { method: 'POST', path: '/api/group/cell/create', body: { name, cells: params.cells } };
+        case 'create': return { method: 'POST', path: '/api/group/cell/create', body: { name, cells: params.cells, fps: params.fps } };
+        case 'fps':    return { method: 'POST', path: '/api/group/cell/fps', body: { name, fps: params.fps } };
         case 'add':    return { method: 'POST', path: '/api/group/cell/add', body: { name, cells: params.cells } };
         case 'remove': return { method: 'POST', path: '/api/group/cell/remove', body: { name, cells: params.cells } };
         case 'delete': return { method: 'POST', path: '/api/group/cell/delete', body: { name } };
@@ -210,6 +263,15 @@ function mapCommandToApi(cmd) {
 
 function describeBatchCommand(cmd) {
   switch (cmd.command) {
+    case 'new': return `new ${cmd.name}`;
+    case 'clone-cell': return `clone-cell ${cmd.from} -> ${Array.isArray(cmd.to) ? cmd.to.join(' ') : cmd.to}`;
+    case 'pivot': return `pivot ${cmd.anchor ?? `${cmd.x},${cmd.y}`}`;
+    case 'ref': return `ref ${cmd.sub} (${cmd.cell})`;
+    case 'save': return 'save';
+    case 'export': return 'export';
+    case 'shape-group': return `shape-group ${cmd.sub} ${cmd.name}`;
+    case 'move-group': return `move-group ${cmd.name} (${cmd.cell})`;
+    case 'recolor-group': return `recolor-group ${cmd.name} (${cmd.cell})`;
     case 'draw': return `draw ${cmd.type}${cmd.name ? ` -> ${cmd.name}` : ''} (${cmd.cell})`;
     case 'move': return `move ${cmd.shape} (${cmd.cell})`;
     case 'move-to': return `move-to ${cmd.shape} (${cmd.cell})`;
