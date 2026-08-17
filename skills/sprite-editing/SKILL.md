@@ -5,7 +5,7 @@ description: This skill should be used when the user asks to draw, create, edit,
 
 # Sprite Sheet Editing
 
-CLI tools for pixel art creation in a cell-based sprite sheet. The web UI at `http://localhost:3377` shows real-time updates — tell the user they can open it alongside you.
+CLI tools for pixel art creation in a cell-based sprite sheet. The web UI at `http://localhost:3377` (or `$SPRITE_PORT` if set) shows real-time updates — tell the user they can open it alongside you.
 
 All commands use:
 ```
@@ -141,3 +141,4 @@ The atlas is Aseprite-format JSON: cell groups become `meta.frameTags`, group fp
 - **`sprite-motion` skill** — animation principles (squash/stretch, shadow-as-elevation, timing, key poses)
 - **`sprite-palette` skill** — palette selection, ramp-aware base colors, headroom, tradeoffs
 - **`sprite-composition` skill** — draw order / z-index discipline, naming conventions, groups, sheet layout
+- **`game-integration` skill** — wiring exports into Phaser/Unity/Godot, full-game asset builds, app icons from sprites
