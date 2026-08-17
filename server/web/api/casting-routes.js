@@ -11,14 +11,14 @@ export function castingRoutes(state) {
   let seq = 0;
 
   router.post('/casting', (req, res) => {
-    const { title, slots, candidates, predictions = {}, out } = req.body ?? {};
+    const { title, slots, candidates, predictions = {}, previews = [], out } = req.body ?? {};
     if (!Array.isArray(slots) || !slots.length || !Array.isArray(candidates) || !candidates.length)
       return res.status(400).json({ ok: false, error: 'slots and candidates are required' });
     const missing = candidates.filter((c) => !c.id || !c.path || !existsSync(c.path));
     if (missing.length)
       return res.status(400).json({ ok: false, error: `candidate files missing: ${missing.map((c) => c.id ?? '?').join(', ')}` });
     const id = `cast_${Date.now().toString(36)}${++seq}`;
-    state.casting.set(id, { id, title: title ?? 'casting session', slots, candidates, predictions, out, verdict: null });
+    state.casting.set(id, { id, title: title ?? 'casting session', slots, candidates, predictions, previews, out, verdict: null });
     res.json({ ok: true, data: { id, url: `/casting.html?id=${id}` } });
   });
 
@@ -26,7 +26,7 @@ export function castingRoutes(state) {
     const s = state.casting.get(req.params.id);
     if (!s) return res.status(404).json({ ok: false, error: 'not found' });
     res.json({ ok: true, data: {
-      id: s.id, title: s.title, slots: s.slots, predictions: s.predictions,
+      id: s.id, title: s.title, slots: s.slots, predictions: s.predictions, previews: s.previews ?? [],
       candidates: s.candidates.map(({ id, label }) => ({ id, label })),
       decided: !!s.verdict,
     } });
