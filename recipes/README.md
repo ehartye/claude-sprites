@@ -2,6 +2,14 @@
 
 Shareable `batch` files that demonstrate the per-frame parameterization workflow.
 
+## fallow-valley
+
+High-detail showcase (32×48 character + 128×96 environment, db-32) built with
+the generator-script pattern — `gen-hero.mjs` and `gen-farm.mjs` emit build
+JSONs replayed by a single `batch` call each, led by `clear` for idempotent
+iteration. The worked example behind
+`skills/sprite-editing/references/high-detail.md`; design notes in `DESIGN.md`.
+
 ## bounce-basketball
 
 An 8-frame bouncing-ball animation, db-32 palette, 64px cells.
