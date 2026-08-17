@@ -76,6 +76,12 @@ sprite.js view --cell 0,0 --scale 16 --out icon-512.png    # 32 × 16
 
 Reference the PNGs from the web manifest (192 + 512, `"purpose": "any maskable"` — keep important detail inside the inner ~80% for maskable) and `<link rel="icon">`. Proven on two shipped PWAs.
 
+## Verify before wiring
+
+Before any sheet reaches game code, run the `sprite-verification` skill: per-
+frame contact-sheet inspection, baseline alignment, and an in-engine loader
+check. Frame counts and registered animations are not verification.
+
 ## QA loop
 
 Judge art at scale before shipping it into the game:
