@@ -114,7 +114,7 @@ For generated sheets, frame selection is a judgment call that detection should
    the starting point.
 2. `sprite.js cast start --file casting.json --out verdict.json` → tell the
    user the review URL. The UI shows every candidate per slot with the
-   prediction starred; the user clicks to confirm, override, or mark **gap**.
+   prediction starred; the user clicks to confirm, override, select a candidate **mirrored** (recorded as `id:flip` — "right pose, wrong side"), or mark **gap**.
 3. `sprite.js cast status --id <id>` polls the verdict. The verdict records
    predictions AND selections with an agreement score and per-slot
    disagreements — **use the variance to refine the detectors**: every
