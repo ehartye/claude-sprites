@@ -123,6 +123,23 @@ Hard-won recipes from real builds:
   `group create walkd 0,1 0,0 0,2 0,0` plays `step-L, pass, step-R, pass`
   from three drawn frames. No duplicate art, no ping-pong tag needed.
 
+## Detail tiers — when to use what
+
+Match effort to on-screen size before drawing anything:
+
+- **Game sprites (16×16–16×32, many frames):** simple forms, 5–20 shapes/cell;
+  the auto lighting tools (`highlight`/`shadow`/`sphere-shade`) shine here;
+  clone + tween across frames.
+- **Showcase characters (32×48+):** 50–100 shapes; silhouette first; replace
+  auto lighting with hand-placed 1px seam lights (auto blobs read as noise at
+  this density); selective outlines in a darker step of the local color.
+- **Environment cells (96×96+):** 300–1000+ ops; generator script mandatory;
+  paint in depth bands back-to-front; single-phase dither rows for gradients;
+  lead the batch with `clear` so rebuilds are idempotent.
+
+Full recipes and the reasoning: **`references/high-detail.md`** — read it before
+attempting either of the higher tiers.
+
 ## Export
 
 ```
