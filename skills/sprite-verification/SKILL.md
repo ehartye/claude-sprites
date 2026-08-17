@@ -61,13 +61,20 @@ ground produce false alarms — two overlapping dark figures read as one broken
 split sprite. Diagnose frames on grey, never on the map.
 
 **5. Facing semantics.** A frame being *clean* says nothing about which way it
-*faces*. Determine facing from the pixels (nose, eye, stride direction) at
-6–8× zoom — **never from generation-prompt row labels; image models mirror
-rows routinely**. Then verify movement mapping by driving the character with
-real input in each direction and screenshotting mid-walk: the face must point
-where the body moves. A robust pattern for generated sheets: use the one
-unambiguous profile row per character and mirror-flip for the opposite side,
-rather than trusting two rows that were supposed to be mirrors.
+*faces*. Classify **every frame individually** — never a row at a glance, and
+**never from generation-prompt row labels; image models mirror rows routinely,
+including single frames inside an otherwise-consistent row**. One mirrored
+frame inside a walk cycle makes the character visibly oscillate left-right
+mid-stride, and it survives batch inspection because the row "mostly" faces
+one way. When eyeballing is ambiguous (impressionistic pixels, hats over
+faces), **measure instead of squinting**: compute the horizontal centroid of
+skin-tone pixels in the head region relative to sprite center — a profile
+face pushes it hard to one side, and the sign is the facing. Build each walk
+from same-sign frames only; a 2-frame cycle of verified frames beats a 4-beat
+cycle with one traitor. Then verify movement mapping by driving the character
+with real input in each direction and sampling the live texture-frame + flip
+state over a full second: every sample must come from the verified set with a
+constant flip.
 
 **6. Animation coherence.** For each animation, confirm its frame list uses
 only verified frames of a single facing, and that the sequence reads as a gait
@@ -77,6 +84,13 @@ Play each animation and watch at least one full loop — `sprite.js view-anim
 When testing in a live game, reset game state first — a timer-spawned
 encounter can freeze your test subject mid-verification and hand you stale
 animation state that looks like a bug.
+
+**Verify the running code is the code you shipped.** Browsers cache game
+scripts: a session opened before a deploy silently verifies the previous
+build even when the CDN already serves the new one. Before trusting any
+live-site check, introspect the running code for a marker unique to the new
+version (a function's `toString()`, a version constant) — if it's absent,
+you're testing the wrong build.
 
 ## The usage map
 
@@ -104,7 +118,9 @@ frames in.
 - [ ] Every frame individually inspected on a neutral backdrop (not the map)
 - [ ] Baselines level within each row
 - [ ] In-engine sheet matches file-level sheet (loader config verified)
-- [ ] Facing read from pixels at zoom AND confirmed by driving each direction
+- [ ] Facing classified per frame (measured when ambiguous), walks built from
+      same-sign frames only, confirmed by driving each direction with live
+      frame/flip sampling
 - [ ] Every animation plays one clean loop from verified frames only
 - [ ] Frame-usage map recorded, deliberately-unused frames listed
 
