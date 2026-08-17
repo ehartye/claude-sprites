@@ -1,6 +1,6 @@
 ---
-name: sprite-export
 description: Export sprite sheet PNG + Aseprite JSON atlas
+argument-hint: "[dest folder]"
 ---
 
 Export the current sprite project. Usage: /sprite-export [dest folder]

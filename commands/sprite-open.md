@@ -1,9 +1,11 @@
 ---
-name: sprite-open
 description: Reopen a stored sprite project
+argument-hint: "[name or id]"
 ---
 
 Reopen an earlier sprite project. Usage: /sprite-open [name or id]
+
+If the CLI reports missing server dependencies, run the `npm install` command it prints, then retry.
 
 Projects persist automatically in SQLite — no save file to hunt for. Run:
 

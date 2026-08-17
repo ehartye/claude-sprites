@@ -1,9 +1,11 @@
 ---
-name: sprite-new
 description: Create a new sprite sheet project
+argument-hint: "[name] [N|WxH] [rows]x[cols] [palette]"
 ---
 
 Create a new sprite sheet project. Usage: /sprite-new [name] [WxH or N cell size] [rows]x[cols] [palette]
+
+If the CLI reports missing server dependencies, run the `npm install` command it prints, then retry.
 
 Run:
 
