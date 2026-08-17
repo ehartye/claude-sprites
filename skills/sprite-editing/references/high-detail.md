@@ -82,6 +82,27 @@ dithered shadow: a dark ellipse with a second, smaller, darker one inside.
 - Iterate in the generator, not the session: the emitted `build.json` is the
   reviewable artifact; the session is disposable.
 
+## High-stakes calls need iterative user check-ins
+
+Most sprite work is cheap to redo; these calls are not, and they are the user's
+to make. Before acting on any of them, show current output and get a direction
+check — then move in small confirmed steps:
+
+- **Art-direction pivots** — changing the style contract, palette, perspective,
+  or fidelity target mid-project
+- **Replacing working assets** — swapping a shipped sprite set, pipeline, or
+  rendering approach for a new one
+- **Paid generation runs** — any image-model spend beyond a first exploratory
+  batch, and any model choice or upgrade
+- **Destructive conversions** — re-running converters or batch rebuilds that
+  overwrite curated outputs
+
+The cadence that works: produce one batch → render QA views → present with an
+honest assessment (what worked, what failed, what it costs to continue) → wait
+for direction → apply → next batch. Never chain generate → convert → integrate →
+ship in one unreviewed pass. The user's eye is part of the QA loop, and a
+check-in is cheaper than regenerating trust.
+
 ## Studying prior art before you draw
 
 Ten minutes of looking beats an hour of guessing. Pull actual sprite sheets of
