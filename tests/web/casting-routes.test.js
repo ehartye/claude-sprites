@@ -93,4 +93,18 @@ describe('Casting API Routes', () => {
     const { data: { id } } = await (await makeSession()).json();
     expect((await fetch(`${baseUrl}/api/casting/${id}/candidate/ZZ.png`)).status).toBe(404);
   });
+  test('optional previews definition round-trips for the animation preview', async () => {
+    const res = await makeSession({
+      previews: [{ label: 'walk down', slots: ['S2', 'S1'], fps: 8 }],
+    });
+    const { data: { id } } = await res.json();
+    const { data: got } = await (await fetch(`${baseUrl}/api/casting/${id}`)).json();
+    expect(got.previews).toEqual([{ label: 'walk down', slots: ['S2', 'S1'], fps: 8 }]);
+  });
+
+  test('previews default to empty when not supplied', async () => {
+    const { data: { id } } = await (await makeSession()).json();
+    const { data: got } = await (await fetch(`${baseUrl}/api/casting/${id}`)).json();
+    expect(got.previews).toEqual([]);
+  });
 });

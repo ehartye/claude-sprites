@@ -1,6 +1,6 @@
 {
   "name": "claude-sprites",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Pixel-art sprite authoring toolset for 2D game projects — Claude Code plugin",
   "type": "module",
   "main": "server/index.js",

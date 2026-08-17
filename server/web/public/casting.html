@@ -1,64 +1,92 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Frame Casting</title>
-<style>
-  body { margin: 0; background: #16141f; color: #d7d4e0; font: 14px/1.5 Consolas, monospace; padding: 20px; }
-  h1 { font-size: 18px; color: #df7126; margin: 0 0 4px; }
-  .sub { color: #847e87; margin-bottom: 18px; }
-  .slot { background: #1e1b2a; border: 1px solid #35304a; border-radius: 6px; padding: 12px; margin-bottom: 14px; }
-  .slot h2 { font-size: 14px; margin: 0 0 8px; color: #99e550; }
-  .strip { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; }
-  .cand { position: relative; border: 2px solid #35304a; border-radius: 4px; padding: 4px; cursor: pointer; background: #6b6878; text-align: center; }
-  .cand img { image-rendering: pixelated; width: 96px; display: block; }
-  .cand .tag { font-size: 11px; color: #16141f; background: #6b6878; display: block; }
-  .cand.predicted { border-color: #fbf236; }
-  .cand.predicted::after { content: "★ predicted"; position: absolute; top: -9px; left: 4px; font-size: 10px; color: #fbf236; background: #1e1b2a; padding: 0 4px; }
-  .cand.selected { border-color: #99e550; box-shadow: 0 0 0 2px #99e55055; }
-  .cand.flipped img { transform: scaleX(-1); }
-  .cand .flip { position: absolute; bottom: 16px; right: 2px; font-size: 12px; line-height: 1;
-    background: #16141f; color: #847e87; border: 1px solid #35304a; border-radius: 3px;
-    padding: 1px 4px; cursor: pointer; }
-  .cand.flipped .flip, .cand .flip:hover { color: #5fcde4; border-color: #5fcde4; }
-  .gapbtn { align-self: stretch; display: flex; align-items: center; padding: 0 14px; border: 2px dashed #35304a; border-radius: 4px; cursor: pointer; color: #847e87; }
-  .gapbtn.selected { border-color: #df7126; color: #df7126; }
-  #save { margin-top: 8px; font: inherit; background: #99e550; color: #16141f; border: 0; border-radius: 4px; padding: 10px 22px; cursor: pointer; font-weight: bold; }
-  #save:disabled { background: #35304a; color: #847e87; cursor: default; }
-  #result { margin-top: 14px; padding: 12px; border-radius: 6px; background: #1e1b2a; border: 1px solid #35304a; white-space: pre-wrap; display: none; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frame Casting · Claude Sprites</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/casting.css">
 </head>
 <body>
-<h1>Frame Casting</h1>
-<div class="sub" id="title">loading…</div>
-<div id="slots"></div>
-<button id="save">Save selections</button>
-<div id="result"></div>
+  <header id="top-bar">
+    <h1>Claude Sprites</h1>
+    <span id="project-name">Frame Casting</span>
+    <div id="top-bar-right">
+      <button id="theme-toggle" title="Toggle light/dark mode">☀</button>
+    </div>
+  </header>
+
+  <main id="casting-main">
+    <p class="subtitle" id="subtitle">loading…</p>
+
+    <section id="preview-bar" hidden>
+      <h2>Live preview</h2>
+      <div id="previews" style="display:flex;gap:1rem;flex-wrap:wrap"></div>
+      <label id="preview-speed">fps <input id="fps" type="range" min="2" max="16" value="8"><span id="fps-val">8</span></label>
+    </section>
+
+    <div id="slots"></div>
+
+    <div id="actions">
+      <button id="save">Save selections</button>
+      <span class="subtitle" style="margin:0">Selections apply to the preview immediately.</span>
+    </div>
+    <div id="result"></div>
+  </main>
+
 <script>
+/* -- Theme (shared convention with the editor: localStorage 'sprites-theme') -- */
+const savedTheme = localStorage.getItem('sprites-theme') || 'dark';
+document.documentElement.setAttribute('data-theme', savedTheme);
+const themeBtn = document.getElementById('theme-toggle');
+themeBtn.textContent = savedTheme === 'dark' ? '☀' : '◑';
+themeBtn.onclick = () => {
+  const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('sprites-theme', next);
+  themeBtn.textContent = next === 'dark' ? '☀' : '◑';
+};
+
 const id = new URLSearchParams(location.search).get('id');
 const selections = {};
-let session;
+const images = new Map();   // candidate id -> HTMLImageElement
+let session, fps = 8;
+
+const imgUrl = (cid) => `/api/casting/${id}/candidate/${cid}.png`;
 
 async function load() {
   const res = await fetch(`/api/casting/${id}`);
-  if (!res.ok) { document.getElementById('title').textContent = 'session not found'; return; }
+  if (!res.ok) { document.getElementById('subtitle').textContent = 'session not found'; return; }
   session = (await res.json()).data;
-  document.getElementById('title').textContent =
-    `${session.title} — ${session.slots.length} slots, ${session.candidates.length} candidates. ★ = Claude's prediction; click to override, ⇋ = select mirrored, dashed box = mark gap.`;
+  document.getElementById('subtitle').innerHTML =
+    `<b>${session.title}</b> — ${session.slots.length} slots, ${session.candidates.length} candidates. ` +
+    `<span class="star">★</span> is the predicted pick; click any frame to override, <b>⇋</b> selects it mirrored, ` +
+    `the dashed box marks a gap to generate.`;
+
+  // preload candidate images once, reuse for cards and preview canvases
+  await Promise.all(session.candidates.map((c) => new Promise((resolve) => {
+    const im = new Image();
+    im.onload = im.onerror = () => { images.set(c.id, im); resolve(); };
+    im.src = imgUrl(c.id);
+  })));
+
   const root = document.getElementById('slots');
   for (const slot of session.slots) {
     selections[slot.id] = session.predictions[slot.id] ?? 'gap';
     const div = document.createElement('div');
     div.className = 'slot';
-    div.innerHTML = `<h2>${slot.id} — ${slot.label}</h2>`;
+    div.innerHTML = `<h2><span class="slot-id">${slot.id}</span>${slot.label}` +
+      `<span class="pick" id="pick-${slot.id}"></span></h2>`;
     const strip = document.createElement('div');
     strip.className = 'strip';
     for (const c of session.candidates) {
       const el = document.createElement('div');
       el.className = 'cand';
       el.dataset.slot = slot.id; el.dataset.cand = c.id;
-      el.innerHTML = `<img src="/api/casting/${id}/candidate/${c.id}.png" alt="${c.id}">` +
+      el.innerHTML = `<img src="${imgUrl(c.id)}" alt="${c.id}">` +
         `<span class="flip" title="select mirrored">⇋</span><span class="tag">${c.id}</span>`;
       const pred = session.predictions[slot.id] ?? '';
       if (pred.split(':')[0] === c.id) {
@@ -72,13 +100,20 @@ async function load() {
     const gap = document.createElement('div');
     gap.className = 'gapbtn';
     gap.dataset.slot = slot.id; gap.dataset.cand = 'gap';
-    gap.textContent = 'GAP — none fit, generate this pose';
+    gap.textContent = 'GAP — generate';
     if (selections[slot.id] === 'gap') gap.classList.add('selected');
     gap.onclick = () => select(slot.id, 'gap');
     strip.appendChild(gap);
     div.appendChild(strip);
     root.appendChild(div);
+    updatePickLabel(slot.id);
   }
+  buildPreviews();
+}
+
+function updatePickLabel(slotId) {
+  const el = document.getElementById(`pick-${slotId}`);
+  if (el) el.textContent = selections[slotId] === 'gap' ? 'gap' : selections[slotId];
 }
 
 function select(slotId, value) {
@@ -89,6 +124,67 @@ function select(slotId, value) {
     el.classList.toggle('selected', on);
     el.classList.toggle('flipped', on && flip === 'flip');
   });
+  updatePickLabel(slotId);
+}
+
+/* -- Live animation preview: plays each defined cycle from current picks -- */
+function buildPreviews() {
+  // default: one cycle over every slot in order, if the spec didn't define any
+  const defs = session.previews?.length
+    ? session.previews
+    : [{ label: 'all slots', slots: session.slots.map((s) => s.id) }];
+  const host = document.getElementById('previews');
+  const bar = document.getElementById('preview-bar');
+  bar.hidden = false;
+  const first = images.values().next().value;
+  const w = first?.naturalWidth || 32, h = first?.naturalHeight || 48;
+  const scale = Math.max(1, Math.min(4, Math.floor(160 / h)));
+
+  const canvases = defs.map((def) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'preview';
+    const cv = document.createElement('canvas');
+    cv.width = w * scale; cv.height = h * scale;
+    const label = document.createElement('span');
+    label.textContent = def.label ?? 'preview';
+    wrap.append(cv, label);
+    host.appendChild(wrap);
+    return { def, ctx: cv.getContext('2d'), cv };
+  });
+
+  let tick = 0;
+  const draw = () => {
+    for (const { def, ctx, cv } of canvases) {
+      const slotIds = def.slots ?? [];
+      const pick = selections[slotIds[tick % slotIds.length]] ?? 'gap';
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      ctx.imageSmoothingEnabled = false;
+      if (pick === 'gap') {
+        ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-muted');
+        ctx.font = `${10 * scale / 2}px monospace`;
+        ctx.fillText('gap', cv.width / 2 - 12, cv.height / 2);
+        continue;
+      }
+      const [cid, flip] = pick.split(':');
+      const im = images.get(cid);
+      if (!im) continue;
+      ctx.save();
+      const mirror = flip === 'flip' ? !def.flip : !!def.flip;
+      if (mirror) { ctx.translate(cv.width, 0); ctx.scale(-1, 1); }
+      ctx.drawImage(im, 0, 0, cv.width, cv.height);
+      ctx.restore();
+    }
+    tick++;
+  };
+  draw();
+  let timer = setInterval(draw, 1000 / fps);
+  const fpsInput = document.getElementById('fps');
+  fpsInput.oninput = () => {
+    fps = Number(fpsInput.value);
+    document.getElementById('fps-val').textContent = fps;
+    clearInterval(timer);
+    timer = setInterval(draw, 1000 / fps);
+  };
 }
 
 document.getElementById('save').onclick = async () => {
@@ -99,9 +195,9 @@ document.getElementById('save').onclick = async () => {
   const v = (await res.json()).data;
   const out = document.getElementById('result');
   out.style.display = 'block';
-  out.textContent = `Saved. Agreement with predictions: ${v.agreement.matches}/${v.agreement.total} (${v.agreement.pct}%)` +
+  out.textContent = `Saved — agreement with predictions: ${v.agreement.matches}/${v.agreement.total} (${v.agreement.pct}%)` +
     (v.agreement.disagreements.length
-      ? '\nOverrides:\n' + v.agreement.disagreements.map((d) => `  ${d.slot}: predicted ${d.predicted} -> you chose ${d.selected}`).join('\n')
+      ? '\nOverrides:\n' + v.agreement.disagreements.map((d) => `  ${d.slot}: predicted ${d.predicted} → you chose ${d.selected}`).join('\n')
       : '\nFull agreement — detector calibrated.');
   document.getElementById('save').disabled = true;
 };
