@@ -1,8 +1,20 @@
 ---
 name: sprite-open
-description: Open a .sprites project file
+description: Reopen a stored sprite project
 ---
 
-Open a sprite sheet project file. Usage: /sprite-open [path]
+Reopen an earlier sprite project. Usage: /sprite-open [name or id]
 
-Call sprite_open_project with the given path. If no path given, look for .sprites files in the current directory and list them.
+Projects persist automatically in SQLite — no save file to hunt for. Run:
+
+```
+node "$CLAUDE_PLUGIN_ROOT/scripts/sprite.js" sessions
+```
+
+to list recent projects (id, name, last updated). If the user gave a name or id, open it directly; otherwise show the list and ask which one:
+
+```
+node "$CLAUDE_PLUGIN_ROOT/scripts/sprite.js" open --session <name|id>
+```
+
+Cell groups, shape groups, and pivot come back with the project. Load the `sprite-editing` skill before making edits.

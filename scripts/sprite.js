@@ -3,7 +3,7 @@
 import { spawn } from 'child_process';
 import { fileURLToPath } from 'url';
 import { dirname, join, resolve } from 'path';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const BASE_URL = `http://localhost:${process.env.SPRITE_PORT ?? 3377}`;
@@ -17,7 +17,13 @@ async function health() {
 
 async function ensureServer() {
   if (await health()) return;
-  const serverPath = join(__dirname, '..', 'server', 'index.js');
+  const root = join(__dirname, '..');
+  if (!existsSync(join(root, 'node_modules'))) {
+    // Fresh marketplace install: the CLI runs on builtins but the server can't.
+    console.error(`Server dependencies are not installed.\nRun: npm install --prefix "${root}"`);
+    process.exit(1);
+  }
+  const serverPath = join(root, 'server', 'index.js');
   const child = spawn(process.execPath, [serverPath], {
     detached: true, stdio: 'ignore',
     env: { ...process.env },

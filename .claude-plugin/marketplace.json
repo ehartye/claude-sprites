@@ -2,13 +2,13 @@
   "name": "claude-sprites",
   "description": "Local marketplace for claude-sprites plugin",
   "owner": {
-    "name": "ehart"
+    "name": "ehartye"
   },
   "plugins": [
     {
       "name": "claude-sprites",
-      "description": "Collaborative pixel art sprite sheet editor",
-      "version": "0.4.0",
+      "description": "Pixel-art sprite authoring toolset for 2D game projects — parametric shapes, ramp-aware lighting, animation groups, Aseprite JSON atlas export, and a live collaborative web UI",
+      "version": "0.5.0",
       "source": "./",
       "license": "MIT"
     }

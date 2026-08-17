@@ -1,11 +1,19 @@
 ---
 name: sprite-export
-description: Export sprite sheet to PNG
+description: Export sprite sheet PNG + Aseprite JSON atlas
 ---
 
-Export the current project. Usage: /sprite-export [target] [path]
+Export the current sprite project. Usage: /sprite-export [dest folder]
 
-Target can be "sheet", a cell ref ("0,0"), or a group name.
-Path defaults to ./{project-name}.png
+Before exporting, make sure the atlas metadata is set:
 
-Calls sprite_export_png and sprite_export_json.
+- `group fps <name> <fps>` on each animation cell group (becomes per-frame durations)
+- `pivot --anchor bottom-center` for characters (ships as an atlas slice)
+
+Then run:
+
+```
+node "$CLAUDE_PLUGIN_ROOT/scripts/sprite.js" export [--dest <folder>]
+```
+
+This writes a gapless sheet PNG plus `<name>.atlas.json` (Aseprite JSON: frames, `meta.frameTags` from cell groups, durations, pivot slice) to the project's asset folder under the current directory, or exactly `--dest`. Unity, Godot, and Phaser importers consume it directly — see the `game-integration` skill for wiring exports into a game project.
