@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Frame Casting</title>
+<style>
+  body { margin: 0; background: #16141f; color: #d7d4e0; font: 14px/1.5 Consolas, monospace; padding: 20px; }
+  h1 { font-size: 18px; color: #df7126; margin: 0 0 4px; }
+  .sub { color: #847e87; margin-bottom: 18px; }
+  .slot { background: #1e1b2a; border: 1px solid #35304a; border-radius: 6px; padding: 12px; margin-bottom: 14px; }
+  .slot h2 { font-size: 14px; margin: 0 0 8px; color: #99e550; }
+  .strip { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; }
+  .cand { position: relative; border: 2px solid #35304a; border-radius: 4px; padding: 4px; cursor: pointer; background: #6b6878; text-align: center; }
+  .cand img { image-rendering: pixelated; width: 96px; display: block; }
+  .cand .tag { font-size: 11px; color: #16141f; background: #6b6878; display: block; }
+  .cand.predicted { border-color: #fbf236; }
+  .cand.predicted::after { content: "★ predicted"; position: absolute; top: -9px; left: 4px; font-size: 10px; color: #fbf236; background: #1e1b2a; padding: 0 4px; }
+  .cand.selected { border-color: #99e550; box-shadow: 0 0 0 2px #99e55055; }
+  .gapbtn { align-self: stretch; display: flex; align-items: center; padding: 0 14px; border: 2px dashed #35304a; border-radius: 4px; cursor: pointer; color: #847e87; }
+  .gapbtn.selected { border-color: #df7126; color: #df7126; }
+  #save { margin-top: 8px; font: inherit; background: #99e550; color: #16141f; border: 0; border-radius: 4px; padding: 10px 22px; cursor: pointer; font-weight: bold; }
+  #save:disabled { background: #35304a; color: #847e87; cursor: default; }
+  #result { margin-top: 14px; padding: 12px; border-radius: 6px; background: #1e1b2a; border: 1px solid #35304a; white-space: pre-wrap; display: none; }
+</style>
+</head>
+<body>
+<h1>Frame Casting</h1>
+<div class="sub" id="title">loading…</div>
+<div id="slots"></div>
+<button id="save">Save selections</button>
+<div id="result"></div>
+<script>
+const id = new URLSearchParams(location.search).get('id');
+const selections = {};
+let session;
+
+async function load() {
+  const res = await fetch(`/api/casting/${id}`);
+  if (!res.ok) { document.getElementById('title').textContent = 'session not found'; return; }
+  session = (await res.json()).data;
+  document.getElementById('title').textContent =
+    `${session.title} — ${session.slots.length} slots, ${session.candidates.length} candidates. ★ = Claude's prediction; click to override, dashed box = mark gap.`;
+  const root = document.getElementById('slots');
+  for (const slot of session.slots) {
+    selections[slot.id] = session.predictions[slot.id] ?? 'gap';
+    const div = document.createElement('div');
+    div.className = 'slot';
+    div.innerHTML = `<h2>${slot.id} — ${slot.label}</h2>`;
+    const strip = document.createElement('div');
+    strip.className = 'strip';
+    for (const c of session.candidates) {
+      const el = document.createElement('div');
+      el.className = 'cand';
+      el.dataset.slot = slot.id; el.dataset.cand = c.id;
+      el.innerHTML = `<img src="/api/casting/${id}/candidate/${c.id}.png" alt="${c.id}"><span class="tag">${c.id}</span>`;
+      if (session.predictions[slot.id] === c.id) el.classList.add('predicted', 'selected');
+      el.onclick = () => select(slot.id, c.id);
+      strip.appendChild(el);
+    }
+    const gap = document.createElement('div');
+    gap.className = 'gapbtn';
+    gap.dataset.slot = slot.id; gap.dataset.cand = 'gap';
+    gap.textContent = 'GAP — none fit, generate this pose';
+    if (selections[slot.id] === 'gap') gap.classList.add('selected');
+    gap.onclick = () => select(slot.id, 'gap');
+    strip.appendChild(gap);
+    div.appendChild(strip);
+    root.appendChild(div);
+  }
+}
+
+function select(slotId, candId) {
+  selections[slotId] = candId;
+  document.querySelectorAll(`[data-slot="${slotId}"]`).forEach((el) =>
+    el.classList.toggle('selected', el.dataset.cand === candId));
+}
+
+document.getElementById('save').onclick = async () => {
+  const res = await fetch(`/api/casting/${id}/verdict`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ selections }),
+  });
+  const v = (await res.json()).data;
+  const out = document.getElementById('result');
+  out.style.display = 'block';
+  out.textContent = `Saved. Agreement with predictions: ${v.agreement.matches}/${v.agreement.total} (${v.agreement.pct}%)` +
+    (v.agreement.disagreements.length
+      ? '\nOverrides:\n' + v.agreement.disagreements.map((d) => `  ${d.slot}: predicted ${d.predicted} -> you chose ${d.selected}`).join('\n')
+      : '\nFull agreement — detector calibrated.');
+  document.getElementById('save').disabled = true;
+};
+
+load();
+</script>
+</body>
+</html>
