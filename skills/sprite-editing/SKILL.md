@@ -159,3 +159,4 @@ The atlas is Aseprite-format JSON: cell groups become `meta.frameTags`, group fp
 - **`sprite-palette` skill** — palette selection, ramp-aware base colors, headroom, tradeoffs
 - **`sprite-composition` skill** — draw order / z-index discipline, naming conventions, groups, sheet layout
 - **`game-integration` skill** — wiring exports into Phaser/Unity/Godot, full-game asset builds, app icons from sprites
+- **`sprite-verification` skill** — per-frame contact-sheet inspection, baseline alignment, in-engine loader checks before wiring any sheet into a game
