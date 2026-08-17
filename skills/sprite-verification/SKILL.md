@@ -112,6 +112,11 @@ frames in.
 
 ## Generated / converted sheets (extra checks)
 
+- **Convert into standard cell dimensions**, bottom-center anchored with the
+  scale fit-clamped — emergent bbox-sized cells change on every regeneration
+  and silently invalidate the game's loader constants and body offsets. With
+  padded standard cells, measure analysis bands relative to CONTENT bounds,
+  never the cell.
 - **Verify slicing used whitespace gutters, not even division.** Generated
   grids drift; confirm the slicer detected transparent gutter bands and that
   the band count matches the expected rows × cols.
