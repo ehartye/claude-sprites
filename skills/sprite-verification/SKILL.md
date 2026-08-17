@@ -102,6 +102,26 @@ live-site check, introspect the running code for a marker unique to the new
 version (a function's `toString()`, a version constant) — if it's absent,
 you're testing the wrong build.
 
+## Collaborative casting (frame selection with the user)
+
+For generated sheets, frame selection is a judgment call that detection should
+*propose* and a human should *decide*. The server ships a casting UI for this:
+
+1. Build a casting spec: pose **slots** (e.g. "side step — lead leg forward,
+   opposite arm forward"), **candidates** (isolated, standardized,
+   palette-corrected frame PNGs — every generation's frames are candidates),
+   and **predictions** — the deterministic detectors' proposed assignment as
+   the starting point.
+2. `sprite.js cast start --file casting.json --out verdict.json` → tell the
+   user the review URL. The UI shows every candidate per slot with the
+   prediction starred; the user clicks to confirm, override, or mark **gap**.
+3. `sprite.js cast status --id <id>` polls the verdict. The verdict records
+   predictions AND selections with an agreement score and per-slot
+   disagreements — **use the variance to refine the detectors**: every
+   override is labeled ground truth for what the measurement missed.
+4. Slots marked gap become the generation list (reference-image generation of
+   only the missing poses) — spend scales with what is actually missing.
+
 ## The usage map
 
 End verification with an explicit frame-usage map: which frames each animation

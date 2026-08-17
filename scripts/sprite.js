@@ -467,6 +467,32 @@ async function run() {
         ? await api('POST', '/api/session/open-session', { ref: args.session })
         : await api('POST', '/api/session/open', { path: sub });
       break;
+    case 'cast': {
+      if (sub === 'start') {
+        const spec = JSON.parse(readFileSync(resolve(args.file), 'utf8'));
+        if (args.out) spec.out = resolve(args.out);
+        result = await api('POST', '/api/casting', spec);
+        if (result.ok) {
+          console.log(`casting session ${result.data.id}`);
+          console.log(`review at ${BASE_URL}${result.data.url}`);
+          return;
+        }
+      } else if (sub === 'status') {
+        result = await api('GET', `/api/casting/${args.id}/verdict`);
+        if (result.ok) {
+          const v = result.data;
+          console.log(`decided ${v.decidedAt} — agreement ${v.agreement.matches}/${v.agreement.total} (${v.agreement.pct}%)`);
+          for (const dg of v.agreement.disagreements) console.log(`  ${dg.slot}: predicted ${dg.predicted} -> selected ${dg.selected}`);
+          return;
+        }
+        if (result.error === 'pending') { console.log('pending — selections not saved yet'); return; }
+      } else {
+        console.error('usage: cast start --file casting.json [--out verdict.json] | cast status --id <id>');
+        (process.exitCode = 1);
+        return;
+      }
+      break;
+    }
     case 'sessions': {
       result = await api('GET', '/api/session/list');
       if (result.ok) {
