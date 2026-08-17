@@ -17,6 +17,11 @@
   .cand.predicted { border-color: #fbf236; }
   .cand.predicted::after { content: "★ predicted"; position: absolute; top: -9px; left: 4px; font-size: 10px; color: #fbf236; background: #1e1b2a; padding: 0 4px; }
   .cand.selected { border-color: #99e550; box-shadow: 0 0 0 2px #99e55055; }
+  .cand.flipped img { transform: scaleX(-1); }
+  .cand .flip { position: absolute; bottom: 16px; right: 2px; font-size: 12px; line-height: 1;
+    background: #16141f; color: #847e87; border: 1px solid #35304a; border-radius: 3px;
+    padding: 1px 4px; cursor: pointer; }
+  .cand.flipped .flip, .cand .flip:hover { color: #5fcde4; border-color: #5fcde4; }
   .gapbtn { align-self: stretch; display: flex; align-items: center; padding: 0 14px; border: 2px dashed #35304a; border-radius: 4px; cursor: pointer; color: #847e87; }
   .gapbtn.selected { border-color: #df7126; color: #df7126; }
   #save { margin-top: 8px; font: inherit; background: #99e550; color: #16141f; border: 0; border-radius: 4px; padding: 10px 22px; cursor: pointer; font-weight: bold; }
@@ -40,7 +45,7 @@ async function load() {
   if (!res.ok) { document.getElementById('title').textContent = 'session not found'; return; }
   session = (await res.json()).data;
   document.getElementById('title').textContent =
-    `${session.title} — ${session.slots.length} slots, ${session.candidates.length} candidates. ★ = Claude's prediction; click to override, dashed box = mark gap.`;
+    `${session.title} — ${session.slots.length} slots, ${session.candidates.length} candidates. ★ = Claude's prediction; click to override, ⇋ = select mirrored, dashed box = mark gap.`;
   const root = document.getElementById('slots');
   for (const slot of session.slots) {
     selections[slot.id] = session.predictions[slot.id] ?? 'gap';
@@ -53,9 +58,15 @@ async function load() {
       const el = document.createElement('div');
       el.className = 'cand';
       el.dataset.slot = slot.id; el.dataset.cand = c.id;
-      el.innerHTML = `<img src="/api/casting/${id}/candidate/${c.id}.png" alt="${c.id}"><span class="tag">${c.id}</span>`;
-      if (session.predictions[slot.id] === c.id) el.classList.add('predicted', 'selected');
+      el.innerHTML = `<img src="/api/casting/${id}/candidate/${c.id}.png" alt="${c.id}">` +
+        `<span class="flip" title="select mirrored">⇋</span><span class="tag">${c.id}</span>`;
+      const pred = session.predictions[slot.id] ?? '';
+      if (pred.split(':')[0] === c.id) {
+        el.classList.add('predicted', 'selected');
+        if (pred.endsWith(':flip')) el.classList.add('flipped');
+      }
       el.onclick = () => select(slot.id, c.id);
+      el.querySelector('.flip').onclick = (ev) => { ev.stopPropagation(); select(slot.id, `${c.id}:flip`); };
       strip.appendChild(el);
     }
     const gap = document.createElement('div');
@@ -70,10 +81,14 @@ async function load() {
   }
 }
 
-function select(slotId, candId) {
-  selections[slotId] = candId;
-  document.querySelectorAll(`[data-slot="${slotId}"]`).forEach((el) =>
-    el.classList.toggle('selected', el.dataset.cand === candId));
+function select(slotId, value) {
+  selections[slotId] = value;
+  const [candId, flip] = value.split(':');
+  document.querySelectorAll(`[data-slot="${slotId}"]`).forEach((el) => {
+    const on = el.dataset.cand === candId;
+    el.classList.toggle('selected', on);
+    el.classList.toggle('flipped', on && flip === 'flip');
+  });
 }
 
 document.getElementById('save').onclick = async () => {
