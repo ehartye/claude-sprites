@@ -76,9 +76,19 @@ with real input in each direction and sampling the live texture-frame + flip
 state over a full second: every sample must come from the verified set with a
 constant flip.
 
-**6. Animation coherence.** For each animation, confirm its frame list uses
-only verified frames of a single facing, and that the sequence reads as a gait
-(step, pass, step, pass — repeated cells/frames are the normal 4-beat trick).
+**6. Animation coherence and gait.** For each animation, confirm its frame
+list uses only verified frames of a single facing, and that the sequence reads
+as a gait (step, pass, step, pass — repeated cells/frames are the normal
+4-beat trick). "Reads as a gait" is measurable, and should be when a walk
+looks stilted or arms look frozen: per frame, cluster the opaque pixels in the
+bottom rows (feet: baseline y, cluster count, spread) and the skin pixels in
+the torso band (hands: position). A real stride pair alternates feet-apart /
+feet-together; hand positions should shift between stride frames. Two frames
+with near-identical hand coordinates across a cycle mean the sheet contains no
+arm swing — no frame selection fixes that; either regenerate the row or fake
+body motion with a 1px display-origin bob on alternate frames. Pick walk
+frames by these numbers, not by which row the generator put them in — the best
+gait pair may span rows.
 Play each animation and watch at least one full loop — `sprite.js view-anim
 <group> --fps N --loops 3` for claude-sprites projects, in-engine otherwise.
 When testing in a live game, reset game state first — a timer-spawned
@@ -122,6 +132,8 @@ frames in.
       same-sign frames only, confirmed by driving each direction with live
       frame/flip sampling
 - [ ] Every animation plays one clean loop from verified frames only
+- [ ] Walks measured for gait: feet alternate apart/together, hands move
+      between stride frames (or a bob compensates for a swing-less sheet)
 - [ ] Frame-usage map recorded, deliberately-unused frames listed
 
 Run this before the wiring steps in the `game-integration` skill.
