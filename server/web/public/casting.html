@@ -28,6 +28,12 @@
       <label id="preview-speed">fps <input id="fps" type="range" min="2" max="16" value="8"><span id="fps-val">8</span></label>
     </section>
 
+    <details id="provenance" hidden>
+      <summary>Generation prompt &amp; settings</summary>
+      <div id="gen-meta"></div>
+      <pre id="gen-prompt"></pre>
+    </details>
+
     <div id="slots"></div>
 
     <div id="actions">
@@ -109,6 +115,24 @@ async function load() {
     updatePickLabel(slot.id);
   }
   buildPreviews();
+  buildProvenance();
+}
+
+/* -- The prompt that produced these candidates, reviewable in place -- */
+function buildProvenance() {
+  const g = session.generation;
+  if (!g) return;
+  const box = document.getElementById('provenance');
+  box.hidden = false;
+  const bits = [];
+  if (g.model) bits.push(['model', g.model]);
+  if (g.size) bits.push(['size', g.size]);
+  if (g.refs?.length) bits.push(['references', g.refs.join(', ') + ' (first has highest fidelity)']);
+  if (g.cells) bits.push(['cells requested', g.cells]);
+  if (g.prompt) bits.push(['prompt length', g.prompt.length + ' chars']);
+  document.getElementById('gen-meta').innerHTML =
+    bits.map(([k, v]) => `<span class="gen-k">${k}</span><span class="gen-v">${v}</span>`).join('');
+  document.getElementById('gen-prompt').textContent = g.prompt ?? '(prompt not recorded)';
 }
 
 function updatePickLabel(slotId) {

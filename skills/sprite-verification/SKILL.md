@@ -115,11 +115,15 @@ For generated sheets, frame selection is a judgment call that detection should
 2. `sprite.js cast start --file casting.json --out verdict.json` → tell the
    user the review URL. The UI shows every candidate per slot with the
    prediction starred; the user clicks to confirm, override, select a candidate **mirrored** (recorded as `id:flip` — "right pose, wrong side"), or mark **gap**.
-3. `sprite.js cast status --id <id>` polls the verdict. The verdict records
+3. Pass `generation` in the spec — `{ prompt, model, size, refs, cells }` —
+   and the UI shows the prompt that produced the candidates, collapsed,
+   above them. Reviewing frames without the prompt beside them makes
+   "the model ignored the brief" and "the brief was wrong" look identical.
+4. `sprite.js cast status --id <id>` polls the verdict. The verdict records
    predictions AND selections with an agreement score and per-slot
    disagreements — **use the variance to refine the detectors**: every
    override is labeled ground truth for what the measurement missed.
-4. Slots marked gap become the generation list (reference-image generation of
+5. Slots marked gap become the generation list (reference-image generation of
    only the missing poses) — spend scales with what is actually missing.
 
 ## The usage map
