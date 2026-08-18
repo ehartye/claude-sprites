@@ -135,39 +135,35 @@ body { display: block; }
   letter-spacing: 0.04em;
 }
 
-.cand.predicted { border-color: var(--accent-hover); }
+.cand.predicted { border-color: color-mix(in srgb, var(--pick) 55%, transparent); }
 .cand.predicted::after {
   content: "★";
   position: absolute;
   top: -7px; left: 3px;
   font-size: 0.7rem;
-  color: var(--accent);
+  color: var(--pick);
   background: var(--bg-surface);
   padding: 0 2px;
   border-radius: 2px;
 }
+/* Selection is the SAME weight as the unselected border, just green - a thick
+   ring plus a glow crowded the sprite it was supposed to showcase. */
 .cand.selected {
   border-color: var(--pick);
-  box-shadow: 0 0 0 3px var(--pick), 0 0 14px color-mix(in srgb, var(--pick) 55%, transparent);
-  transform: translateY(-3px);
+  transform: translateY(-2px);
 }
-.cand.selected .tag {
-  background: var(--pick);
-  color: var(--pick-ink);
-  font-weight: 700;
-}
+.cand.selected .tag { color: var(--pick); font-weight: 700; }
 .cand.selected::before {
   content: "✓";
   position: absolute;
-  top: -9px; right: -6px;
+  top: -7px; right: -4px;
   z-index: 2;
-  width: 18px; height: 18px;
+  width: 13px; height: 13px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 0.72rem; font-weight: 700;
+  font-size: 0.6rem; font-weight: 700;
   color: var(--pick-ink);
   background: var(--pick);
   border-radius: 50%;
-  box-shadow: 0 0 8px color-mix(in srgb, var(--pick) 70%, transparent);
 }
 /* unpicked candidates recede so the chosen frame reads instantly */
 .strip:hover .cand:not(.selected) { opacity: 1; }
@@ -243,8 +239,8 @@ body { display: block; }
 }
 
 /* a candidate the agent just generated — must not get lost in a long strip */
-.cand.is-new { border-color: var(--accent); }
-.cand.is-new .tag { color: var(--accent); font-weight: 700; }
+.cand.is-new { border-color: color-mix(in srgb, var(--pick) 40%, var(--border)); }
+.cand.is-new .tag { color: var(--text-secondary); }
 
 /* .cand.is-new sets an accent border and is declared later in this file, so it
    was winning over .cand.selected at equal specificity — a selected new
