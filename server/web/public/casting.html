@@ -84,10 +84,10 @@ async function load() {
     strip.className = 'strip';
     for (const c of session.candidates) {
       const el = document.createElement('div');
-      el.className = 'cand';
+      el.className = 'cand' + (c.isNew ? ' is-new' : '');
       el.dataset.slot = slot.id; el.dataset.cand = c.id;
       el.innerHTML = `<img src="${imgUrl(c.id)}" alt="${c.id}">` +
-        `<span class="flip" title="select mirrored">⇋</span><span class="tag">${c.id}</span>`;
+        `<span class="flip" title="select mirrored">⇋</span><span class="tag">${c.label ?? c.id}</span>`;
       const pred = session.predictions[slot.id] ?? '';
       if (pred.split(':')[0] === c.id) {
         el.classList.add('predicted', 'selected');

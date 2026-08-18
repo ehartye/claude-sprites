@@ -205,3 +205,7 @@ body { display: block; }
   color: var(--text-secondary);
   display: none;
 }
+
+/* a candidate the agent just generated — must not get lost in a long strip */
+.cand.is-new { border-color: var(--accent); }
+.cand.is-new .tag { color: var(--accent); font-weight: 700; }
