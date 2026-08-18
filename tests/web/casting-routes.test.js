@@ -107,4 +107,25 @@ describe('Casting API Routes', () => {
     const { data: got } = await (await fetch(`${baseUrl}/api/casting/${id}`)).json();
     expect(got.previews).toEqual([]);
   });
+  test('generation provenance round-trips so the prompt can be reviewed', async () => {
+    const res = await makeSession({
+      generation: {
+        prompt: 'a weathered war-veteran farmer ... CONTACT means the feet are farthest apart',
+        model: 'gpt-image-2',
+        size: '2048x3072',
+        refs: ['B1', 'B10'],
+      },
+    });
+    const { data: { id } } = await res.json();
+    const { data: got } = await (await fetch(`${baseUrl}/api/casting/${id}`)).json();
+    expect(got.generation.model).toBe('gpt-image-2');
+    expect(got.generation.refs).toEqual(['B1', 'B10']);
+    expect(got.generation.prompt).toContain('CONTACT means');
+  });
+
+  test('generation is null when not supplied', async () => {
+    const { data: { id } } = await (await makeSession()).json();
+    const { data: got } = await (await fetch(`${baseUrl}/api/casting/${id}`)).json();
+    expect(got.generation).toBeNull();
+  });
 });
