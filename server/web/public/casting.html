@@ -113,7 +113,10 @@ async function load() {
 
 function updatePickLabel(slotId) {
   const el = document.getElementById(`pick-${slotId}`);
-  if (el) el.textContent = selections[slotId] === 'gap' ? 'gap' : selections[slotId];
+  if (!el) return;
+  const v = selections[slotId];
+  el.textContent = v === 'gap' ? 'GAP' : v;
+  el.classList.toggle('gap', v === 'gap');
 }
 
 function select(slotId, value) {
