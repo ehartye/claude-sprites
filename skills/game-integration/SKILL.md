@@ -76,6 +76,15 @@ sprite.js view --cell 0,0 --scale 16 --out icon-512.png    # 32 × 16
 
 Reference the PNGs from the web manifest (192 + 512, `"purpose": "any maskable"` — keep important detail inside the inner ~80% for maskable) and `<link rel="icon">`. Proven on two shipped PWAs.
 
+## Sourcing art from image models
+
+If assets come from an image-generation model rather than the parametric
+toolset, read `sprite-editing/references/generated-sprites.md` first. The
+short version: the model will not hold character height across runs, so
+calibrate every run to one canonical standing height before the frames reach
+an atlas; never request a transparent background, request a flat key colour;
+and slice on whitespace gutters, never by grid division.
+
 ## Verify before wiring
 
 Before any sheet reaches game code, run the `sprite-verification` skill: per-
