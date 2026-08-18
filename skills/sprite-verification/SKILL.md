@@ -142,7 +142,16 @@ frames in.
   the band count matches the expected rows × cols.
 - **Verify alpha is real** before trusting it: sample the corner pixels. A
   "transparent background" request can come back as a solid painted panel,
-  which silently breaks alpha-mask slicing.
+  which silently breaks alpha-mask slicing. **A model accepting a
+  `background: transparent` parameter is not a guarantee it honours it** —
+  the same request has returned true alpha from one model and a panelled
+  opaque sheet from another. Detect alpha at conversion time and keep the
+  chroma-key path configurable (key colour, distance threshold, and a force
+  flag to ignore alpha entirely) rather than hardcoding one assumption.
+- **Probe model limits from the API, not from memory.** Sending a deliberately
+  invalid enum (`size`, `background`, `output_format`) returns a 400 listing
+  the supported values and generates nothing, so capability differences
+  between model versions cost nothing to establish.
 - After palette quantization, re-inspect at game scale — quantization can
   merge the eye pixels into the face ramp or erase 1px details that read fine
   at source resolution.
