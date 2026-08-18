@@ -27,7 +27,7 @@ export function castingRoutes(state) {
     if (!s) return res.status(404).json({ ok: false, error: 'not found' });
     res.json({ ok: true, data: {
       id: s.id, title: s.title, slots: s.slots, predictions: s.predictions, previews: s.previews ?? [],
-      candidates: s.candidates.map(({ id, label }) => ({ id, label })),
+      candidates: s.candidates.map(({ id, label, isNew }) => ({ id, label, isNew })),
       decided: !!s.verdict,
     } });
   });
